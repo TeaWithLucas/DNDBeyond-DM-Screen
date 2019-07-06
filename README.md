@@ -6,10 +6,10 @@ This Tampermonkey userscript aims to provide simple DM screen by extracting json
 
 ## usage
 
-Install tampermonkey
-Create new script
-Paste content of ddb-dm-screen.js to the window
-Save
+1. Install tampermonkey
+2. Create new script
+3. Paste content of ddb-dm-screen.js to the window
+4. Save
 
 ## security
 
