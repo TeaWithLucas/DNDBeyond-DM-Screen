@@ -1,0 +1,4854 @@
+{
+  "character": {
+    "id": 13220650,
+    "readonlyUrl": "https://dndbeyond.com/characters/13220650",
+    "avatarUrl": "https://media-waterdeep.cursecdn.com/avatars/thumbnails/17/204/150/150/636377839475886288.jpeg",
+    "frameAvatarUrl": "",
+    "backdropAvatarUrl": "",
+    "smallBackdropAvatarUrl": "",
+    "largeBackdropAvatarUrl": "",
+    "thumbnailBackdropAvatarUrl": "",
+    "defaultBackdrop": {
+      "backdropAvatarUrl": "https://media-waterdeep.cursecdn.com/avatars/61/544/636453167791328397.jpeg",
+      "smallBackdropAvatarUrl": "https://media-waterdeep.cursecdn.com/avatars/61/545/636453167792109644.jpeg",
+      "largeBackdropAvatarUrl": "https://media-waterdeep.cursecdn.com/avatars/61/546/636453167793515953.jpeg",
+      "thumbnailBackdropAvatarUrl": "https://media-waterdeep.cursecdn.com/avatars/61/547/636453167794140909.jpeg"
+    },
+    "avatarId": 17204,
+    "frameAvatarId": null,
+    "backdropAvatarId": null,
+    "smallBackdropAvatarId": null,
+    "largeBackdropAvatarId": null,
+    "thumbnailAvatarId": null,
+    "themeColorId": null,
+    "themeColor": null,
+    "name": "Willie Hardstone",
+    "socialName": null,
+    "gender": "male",
+    "faith": null,
+    "age": 24,
+    "hair": "Black",
+    "eyes": null,
+    "skin": "",
+    "height": null,
+    "weight": null,
+    "inspiration": false,
+    "baseHitPoints": 8,
+    "bonusHitPoints": null,
+    "overrideHitPoints": null,
+    "removedHitPoints": 1,
+    "temporaryHitPoints": 0,
+    "currentXp": 0,
+    "alignmentId": 2,
+    "lifestyleId": 6,
+    "stats": [
+      {
+        "id": 1,
+        "name": null,
+        "value": 9
+      },
+      {
+        "id": 2,
+        "name": null,
+        "value": 15
+      },
+      {
+        "id": 3,
+        "name": null,
+        "value": 12
+      },
+      {
+        "id": 4,
+        "name": null,
+        "value": 10
+      },
+      {
+        "id": 5,
+        "name": null,
+        "value": 10
+      },
+      {
+        "id": 6,
+        "name": null,
+        "value": 15
+      }
+    ],
+    "bonusStats": [
+      {
+        "id": 1,
+        "name": null,
+        "value": null
+      },
+      {
+        "id": 2,
+        "name": null,
+        "value": null
+      },
+      {
+        "id": 3,
+        "name": null,
+        "value": null
+      },
+      {
+        "id": 4,
+        "name": null,
+        "value": null
+      },
+      {
+        "id": 5,
+        "name": null,
+        "value": null
+      },
+      {
+        "id": 6,
+        "name": null,
+        "value": null
+      }
+    ],
+    "overrideStats": [
+      {
+        "id": 1,
+        "name": null,
+        "value": null
+      },
+      {
+        "id": 2,
+        "name": null,
+        "value": null
+      },
+      {
+        "id": 3,
+        "name": null,
+        "value": null
+      },
+      {
+        "id": 4,
+        "name": null,
+        "value": null
+      },
+      {
+        "id": 5,
+        "name": null,
+        "value": null
+      },
+      {
+        "id": 6,
+        "name": null,
+        "value": null
+      }
+    ],
+    "background": {
+      "hasCustomBackground": false,
+      "definition": {
+        "id": 14,
+        "entityTypeId": 1669830167,
+        "name": "Entertainer",
+        "description": "<p>You thrive in front of an audience. You know how to entrance them, entertain them, and even inspire them. Your poetics can stir the hearts of those who hear you, awakening grief or joy, laughter or anger. Your music raises their spirits or captures their sorrow. Your dance steps captivate, your humor cuts to the quick. Whatever techniques you use, your ar<span>t is your life.</span></p>\r\n<div class=\"line character margintop20 marginbottom20\">&nbsp;</div>\r\n<p><strong><span>Skill Proficiencies: </span></strong><span></span>Acrobati<span>cs, Performance<br></span><strong><span>Tool Proficiencies:</span></strong> Disguise kit, one type of mus<span>ical instrument<br></span><strong><span>Equipment:</span> </strong>A musical instrument (one of your choice), the favor of an admirer (love letter, lock of hair, or trinket), a costume, and a pouch c<span>ontaining 15 gp</span></p>\r\n<div class=\"line character margintop20 marginbottom20\">&nbsp;</div>\r\n<h5>Entertainer Routines</h5>\r\n<p>A good entertainer is versatile, spicing up every performance with a variety of different routines. Choose one to three routines or roll on the table below to define your expertise as a<span>n entertainer.</span></p>\r\n<div>\r\n<div>\r\n<table class=\"compendium-left-aligned-table\">\r\n<thead>\r\n<tr>\r\n<th>d10</th>\r\n<th style=\"text-align:left\">Entertainer Routine</th>\r\n</tr>\r\n</thead>\r\n<tbody>\r\n<tr>\r\n<td>1</td>\r\n<td>Actor</td>\r\n</tr>\r\n<tr>\r\n<td>2</td>\r\n<td>Dancer</td>\r\n</tr>\r\n<tr>\r\n<td>3</td>\r\n<td>Fire-eater</td>\r\n</tr>\r\n<tr>\r\n<td>4</td>\r\n<td>Jester</td>\r\n</tr>\r\n<tr>\r\n<td>5</td>\r\n<td>Juggler</td>\r\n</tr>\r\n<tr>\r\n<td>6</td>\r\n<td>Instrumentalist</td>\r\n</tr>\r\n<tr>\r\n<td>7</td>\r\n<td>Poet</td>\r\n</tr>\r\n<tr>\r\n<td>8</td>\r\n<td>Singer</td>\r\n</tr>\r\n<tr>\r\n<td>9</td>\r\n<td>Storyteller</td>\r\n</tr>\r\n<tr>\r\n<td>10</td>\r\n<td>Tumbler</td>\r\n</tr>\r\n</tbody>\r\n</table>\r\n</div>\r\n</div>\r\n<blockquote>\r\n<p><strong>FEATURE: BY POPULAR DEMAND</strong></p>\r\n<p>You can always find a place to perform, usually in an inn or tavern but possibly with a circus, at a theater, or even in a noble&rsquo;s court. At such a place, you receive free lodging and food of a modest or comfortable standard (depending on the quality of the establishment), as long as you perform each night. In addition, your performance makes you something of a local figure. When strangers recognize you in a town where you have performed, they typically take a<span> liking to you.</span></p>\r\n</blockquote>\r\n<div class=\"line character margintop20 marginbottom20\">&nbsp;</div>\r\n<h5>Variant Entertainer: Gladiator</h5>\r\n<p>A gladiator is as much an entertainer as any minstrel or circus performer, trained to make the arts of combat into a spectacle the crowd can enjoy. This kind of flashy combat is your entertainer routine, though you might also have some skills as a tumbler or actor. Using your By Popular Demand feature, you can find a place to perform in any place that features combat for entertainment &mdash; perhaps a gladiatorial arena or secret pit fighting club. You can replace the musical instrument in your equipment package with an inexpensive but unusual weapon, such as a <span>trident or net.</span></p>\r\n<div class=\"line character margintop20 marginbottom20\">&nbsp;</div>\r\n<h5>Suggested Characteristics</h5>\r\n<p>Successful entertainers have to be able to capture and hold an audience&rsquo;s attention, so they tend to have flamboyant or forceful personalities. They&rsquo;re inclined toward the romantic and often cling to high-minded ideals about the practice of art and the apprecia<span>tion of beauty.</span></p>\r\n<table class=\"compendium-left-aligned-table\">\r\n<thead>\r\n<tr>\r\n<th>d8</th>\r\n<th style=\"text-align:left\">Personality Trait</th>\r\n</tr>\r\n</thead>\r\n<tbody>\r\n<tr>\r\n<td>1</td>\r\n<td>I know a story relevant to almost every situation.</td>\r\n</tr>\r\n<tr>\r\n<td>2</td>\r\n<td>Whenever I come to a new place, I collect local rumors and spread gossip.</td>\r\n</tr>\r\n<tr>\r\n<td>3</td>\r\n<td>I&rsquo;m a hopeless romantic, always searching for that &ldquo;special someone.&rdquo;</td>\r\n</tr>\r\n<tr>\r\n<td>4</td>\r\n<td>Nobody stays angry at me or around me for long, since I can defuse any amount of tension.</td>\r\n</tr>\r\n<tr>\r\n<td>5</td>\r\n<td>I love a good insult, even one directed at me.</td>\r\n</tr>\r\n<tr>\r\n<td>6</td>\r\n<td>I get bitter if I&rsquo;m not the center of attention.</td>\r\n</tr>\r\n<tr>\r\n<td>7</td>\r\n<td>I&rsquo;ll settle for nothing less than perfection.</td>\r\n</tr>\r\n<tr>\r\n<td>8</td>\r\n<td>I change my mood or my mind as quickly as I change key in a song.</td>\r\n</tr>\r\n</tbody>\r\n</table>\r\n<table class=\"compendium-left-aligned-table\">\r\n<thead>\r\n<tr>\r\n<th>d6</th>\r\n<th style=\"text-align:left\">Ideal</th>\r\n</tr>\r\n</thead>\r\n<tbody>\r\n<tr>\r\n<td>1</td>\r\n<td><span>Beauty.</span> When I perform, I make the world better than it was. (Good)</td>\r\n</tr>\r\n<tr>\r\n<td>2</td>\r\n<td><span>Tradition.</span> The stories, legends, and songs of the past must never be forgotten, for they teach us who we are. (Lawful)</td>\r\n</tr>\r\n<tr>\r\n<td>3</td>\r\n<td><span>Creativity.</span> The world is in need of new ideas and bold action. (Chaotic)</td>\r\n</tr>\r\n<tr>\r\n<td>4</td>\r\n<td><span>Greed.</span> I&rsquo;m only in it for the money and fame. (Evil)</td>\r\n</tr>\r\n<tr>\r\n<td>5</td>\r\n<td><span>People.</span> I like seeing the smiles on people&rsquo;s faces when I perform. That&rsquo;s all that matters. (Neutral)</td>\r\n</tr>\r\n<tr>\r\n<td>6</td>\r\n<td><span>Honesty. </span>Art should reflect the soul; it should come from within and reveal who we really are. (Any)</td>\r\n</tr>\r\n</tbody>\r\n</table>\r\n<table class=\"compendium-left-aligned-table\">\r\n<thead>\r\n<tr>\r\n<th>d6</th>\r\n<th style=\"text-align:left\">Bond</th>\r\n</tr>\r\n</thead>\r\n<tbody>\r\n<tr>\r\n<td>1</td>\r\n<td>My instrument is my most treasured possession, and it reminds me of someone I love.</td>\r\n</tr>\r\n<tr>\r\n<td>2</td>\r\n<td>Someone stole my precious instrument, and someday I&rsquo;ll get it back.</td>\r\n</tr>\r\n<tr>\r\n<td>3</td>\r\n<td>I want to be famous, whatever it takes.</td>\r\n</tr>\r\n<tr>\r\n<td>4</td>\r\n<td>I idolize a hero of the old tales and measure my deeds against that person&rsquo;s.</td>\r\n</tr>\r\n<tr>\r\n<td>5</td>\r\n<td>I will do anything to prove myself superior to my hated rival.</td>\r\n</tr>\r\n<tr>\r\n<td>6</td>\r\n<td>I would do anything for the other members of my old troupe.</td>\r\n</tr>\r\n</tbody>\r\n</table>\r\n<table class=\"compendium-left-aligned-table\">\r\n<thead>\r\n<tr>\r\n<th>d6</th>\r\n<th style=\"text-align:left\">Flaw</th>\r\n</tr>\r\n</thead>\r\n<tbody>\r\n<tr>\r\n<td>1</td>\r\n<td>I&rsquo;ll do anything to win fame and renown.</td>\r\n</tr>\r\n<tr>\r\n<td>2</td>\r\n<td>I&rsquo;m a sucker for a pretty face.</td>\r\n</tr>\r\n<tr>\r\n<td>3</td>\r\n<td>A scandal prevents me from ever going home again. That kind of trouble seems to follow me around.</td>\r\n</tr>\r\n<tr>\r\n<td>4</td>\r\n<td>I once satirized a noble who still wants my head. It was a mistake that I will likely repeat.</td>\r\n</tr>\r\n<tr>\r\n<td>5</td>\r\n<td>I have trouble keeping my true feelings hidden. My sharp tongue lands me in trouble.</td>\r\n</tr>\r\n<tr>\r\n<td>6</td>\r\n<td>Despite my best efforts, I am unreliable to my friends.</td>\r\n</tr>\r\n</tbody>\r\n</table>\r\n<p>&nbsp;</p>",
+        "snippet": "",
+        "shortDescription": "<p>You thrive in front of an audience. You know how to entrance them, entertain them, and even inspire them. Your poetics can stir the hearts of those who hear you, awakening grief or joy, laughter or anger. Your music raises their spirits or captures their sorrow. Your dance steps captivate, your humor cuts to the quick. Whatever techniques you use, your ar<span>t is your life.</span></p>",
+        "skillProficienciesDescription": "Acrobatics, Performance",
+        "toolProficienciesDescription": "Disguise kit, one type of musical instrument",
+        "languagesDescription": "",
+        "equipmentDescription": "A musical instrument (one of your choice), the favor of an admirer (love letter, lock of hair, or trinket), a Clothes, Costume;costume, and a pouch containing 15 gp",
+        "featureName": "By Popular Demand",
+        "featureDescription": "<p>You can always find a place to perform, usually in an inn or tavern but possibly with a circus, at a theater, or even in a noble&rsquo;s court. At such a place, you receive free lodging and food of a modest or comfortable standard (depending on the quality of the establishment), as long as you perform each night. In addition, your performance makes you something of a local figure. When strangers recognize you in a town where you have performed, they typically take a<span> liking to you.</span></p>",
+        "avatarUrl": null,
+        "largeAvatarUrl": null,
+        "suggestedCharacteristicsDescription": "<p>Successful entertainers have to be able to capture and hold an audience&rsquo;s attention, so they tend to have flamboyant or forceful personalities. They&rsquo;re inclined toward the romantic and often cling to high-minded ideals about the practice of art and the apprecia<span>tion of beauty.</span></p>",
+        "suggestedProficiencies": [
+          "Acrobatics",
+          "Performance"
+        ],
+        "suggestedLanguages": [],
+        "organization": null,
+        "contractsDescription": "",
+        "spellsPreDescription": "",
+        "spellsPostDescription": "",
+        "personalityTraits": [
+          {
+            "id": 225,
+            "description": "I know a story relevant to almost every situation.",
+            "diceRoll": 1
+          },
+          {
+            "id": 226,
+            "description": "Whenever I come to a new place, I collect local rumors and spread gossip.",
+            "diceRoll": 2
+          },
+          {
+            "id": 227,
+            "description": "I’m a hopeless romantic, always searching for that “special someone.”",
+            "diceRoll": 3
+          },
+          {
+            "id": 228,
+            "description": "Nobody stays angry at me or around me for long, since I can defuse any amount of tension.",
+            "diceRoll": 4
+          },
+          {
+            "id": 229,
+            "description": "I love a good insult, even one directed at me.",
+            "diceRoll": 5
+          },
+          {
+            "id": 230,
+            "description": "I get bitter if I’m not the center of attention.",
+            "diceRoll": 6
+          },
+          {
+            "id": 231,
+            "description": "I’ll settle for nothing less than perfection.",
+            "diceRoll": 7
+          },
+          {
+            "id": 232,
+            "description": "I change my mood or my mind as quickly as I change key in a song.",
+            "diceRoll": 8
+          }
+        ],
+        "ideals": [
+          {
+            "id": 233,
+            "description": "Beauty. When I perform, I make the world better than it was. (Good)",
+            "diceRoll": 1
+          },
+          {
+            "id": 234,
+            "description": "Tradition. The stories, legends, and songs of the past must never be forgotten, for they teach us who we are. (Lawful)",
+            "diceRoll": 2
+          },
+          {
+            "id": 235,
+            "description": "Creativity. The world is in need of new ideas and bold action. (Chaotic)",
+            "diceRoll": 3
+          },
+          {
+            "id": 236,
+            "description": "Greed. I’m only in it for the money and fame. (Evil)",
+            "diceRoll": 4
+          },
+          {
+            "id": 237,
+            "description": "People. I like seeing the smiles on people’s faces when I perform. That’s all that matters. (Neutral)",
+            "diceRoll": 5
+          },
+          {
+            "id": 238,
+            "description": "Honesty. Art should reflect the soul; it should come from within and reveal who we really are. (Any)",
+            "diceRoll": 6
+          }
+        ],
+        "bonds": [
+          {
+            "id": 239,
+            "description": "My instrument is my most treasured possession, and it reminds me of someone I love.",
+            "diceRoll": 1
+          },
+          {
+            "id": 240,
+            "description": "Someone stole my precious instrument, and someday I’ll get it back.",
+            "diceRoll": 2
+          },
+          {
+            "id": 241,
+            "description": "I want to be famous, whatever it takes.",
+            "diceRoll": 3
+          },
+          {
+            "id": 242,
+            "description": "I idolize a hero of the old tales and measure my deeds against that person’s.",
+            "diceRoll": 4
+          },
+          {
+            "id": 243,
+            "description": "\tI will do anything to prove myself superior to my hated rival.",
+            "diceRoll": 5
+          },
+          {
+            "id": 244,
+            "description": "I would do anything for the other members of my old troupe.",
+            "diceRoll": 6
+          }
+        ],
+        "flaws": [
+          {
+            "id": 245,
+            "description": "I’ll do anything to win fame and renown.",
+            "diceRoll": 1
+          },
+          {
+            "id": 246,
+            "description": "I’m a sucker for a pretty face.",
+            "diceRoll": 2
+          },
+          {
+            "id": 247,
+            "description": "A scandal prevents me from ever going home again. That kind of trouble seems to follow me around.",
+            "diceRoll": 3
+          },
+          {
+            "id": 248,
+            "description": "I once satirized a noble who still wants my head. It was a mistake that I will likely repeat.",
+            "diceRoll": 4
+          },
+          {
+            "id": 249,
+            "description": "I have trouble keeping my true feelings hidden. My sharp tongue lands me in trouble.",
+            "diceRoll": 5
+          },
+          {
+            "id": 250,
+            "description": "Despite my best efforts, I am unreliable to my friends.",
+            "diceRoll": 6
+          }
+        ]
+      },
+      "customBackground": {
+        "id": 13220650,
+        "entityTypeId": 1581111423,
+        "name": null,
+        "description": null,
+        "featuresBackground": null,
+        "characteristicsBackground": null,
+        "backgroundType": null
+      }
+    },
+    "race": {
+      "entityRaceId": 9,
+      "entityRaceTypeId": 1228963568,
+      "fullName": "Variant Human",
+      "baseRaceId": 1,
+      "baseRaceTypeId": 1743923279,
+      "description": "<p>Humans are the most adaptable and ambitious people among the common races.&nbsp;Whatever drives them, humans are the innovators, the achievers, and the pioneers o<span>f the worlds.</span></p>\r\n<p class=\"characters-statblock\" style=\"font-family:Roboto Condensed\"><strong>Racial Traits</strong><br>+1 to All Ability Scores, Extra Language</p><p>If your campaign uses the optional feat rules from the <em>Player&rsquo;s Handbook</em>, your Dungeon Master might allow these variant traits, all of which replace the human&rsquo;s Ability Score Increase trait.</p>",
+      "avatarUrl": null,
+      "largeAvatarUrl": null,
+      "portraitAvatarUrl": "https://media-waterdeep.cursecdn.com/avatars/9/387/636327460929201730.jpeg",
+      "moreDetailsUrl": "/races/human#VariantHuman",
+      "isHomebrew": false,
+      "sourceIds": [
+        1,
+        2
+      ],
+      "groupIds": [
+        1
+      ],
+      "type": 3,
+      "subRaceShortName": "Variant",
+      "baseName": "Human",
+      "racialTraits": [
+        {
+          "definition": {
+            "id": 150,
+            "entityTypeId": 1960452172,
+            "displayOrder": 2,
+            "name": "Age",
+            "description": "<p>Humans reach adulthood in their late teens and live less than a century.</p>",
+            "snippet": null,
+            "hideInBuilder": true,
+            "hideInSheet": true,
+            "activation": {
+              "activationTime": null,
+              "activationType": null
+            },
+            "sourceId": 2,
+            "sourcePageNumber": 31,
+            "creatureRules": []
+          }
+        },
+        {
+          "definition": {
+            "id": 151,
+            "entityTypeId": 1960452172,
+            "displayOrder": 3,
+            "name": "Alignment",
+            "description": "<p>&nbsp;Humans tend toward no particular alignment. The best and the worst are found among them.</p>",
+            "snippet": null,
+            "hideInBuilder": true,
+            "hideInSheet": true,
+            "activation": {
+              "activationTime": null,
+              "activationType": null
+            },
+            "sourceId": 2,
+            "sourcePageNumber": 31,
+            "creatureRules": []
+          }
+        },
+        {
+          "definition": {
+            "id": 152,
+            "entityTypeId": 1960452172,
+            "displayOrder": 4,
+            "name": "Size",
+            "description": "<p>Humans vary widely in height and build, from barely 5 feet to well over 6 feet tall. Regardless of your position in that range, your size is Medium.</p>",
+            "snippet": null,
+            "hideInBuilder": true,
+            "hideInSheet": true,
+            "activation": {
+              "activationTime": null,
+              "activationType": null
+            },
+            "sourceId": 2,
+            "sourcePageNumber": 31,
+            "creatureRules": []
+          }
+        },
+        {
+          "definition": {
+            "id": 153,
+            "entityTypeId": 1960452172,
+            "displayOrder": 5,
+            "name": "Speed",
+            "description": "<p>Your base walking speed is 30 feet.</p>",
+            "snippet": null,
+            "hideInBuilder": true,
+            "hideInSheet": true,
+            "activation": {
+              "activationTime": null,
+              "activationType": null
+            },
+            "sourceId": 2,
+            "sourcePageNumber": 31,
+            "creatureRules": []
+          }
+        },
+        {
+          "definition": {
+            "id": 64,
+            "entityTypeId": 1960452172,
+            "displayOrder": 6,
+            "name": "Languages",
+            "description": "<p>You can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.</p>",
+            "snippet": "You can speak, read, and write Common and one extra language.",
+            "hideInBuilder": false,
+            "hideInSheet": false,
+            "activation": {
+              "activationTime": null,
+              "activationType": null
+            },
+            "sourceId": 2,
+            "sourcePageNumber": 31,
+            "creatureRules": []
+          }
+        },
+        {
+          "definition": {
+            "id": 102,
+            "entityTypeId": 1960452172,
+            "displayOrder": 100,
+            "name": "Ability Score Increase",
+            "description": "<p>Two different ability scores of your choice increase by 1.</p>",
+            "snippet": "Two different ability scores of your choice increase by 1.",
+            "hideInBuilder": false,
+            "hideInSheet": false,
+            "activation": {
+              "activationTime": null,
+              "activationType": null
+            },
+            "sourceId": 2,
+            "sourcePageNumber": 31,
+            "creatureRules": []
+          }
+        },
+        {
+          "definition": {
+            "id": 65,
+            "entityTypeId": 1960452172,
+            "displayOrder": 200,
+            "name": "Skills",
+            "description": "<p>You gain proficiency in one skill of your choice.</p>",
+            "snippet": "You gain proficiency in one skill of your choice.",
+            "hideInBuilder": false,
+            "hideInSheet": false,
+            "activation": {
+              "activationTime": null,
+              "activationType": null
+            },
+            "sourceId": 2,
+            "sourcePageNumber": 31,
+            "creatureRules": []
+          }
+        },
+        {
+          "definition": {
+            "id": 103,
+            "entityTypeId": 1960452172,
+            "displayOrder": 300,
+            "name": "Feat",
+            "description": "<p>You gain one feat of your choice.</p>",
+            "snippet": "You gain one feat of your choice.",
+            "hideInBuilder": false,
+            "hideInSheet": false,
+            "activation": {
+              "activationTime": null,
+              "activationType": null
+            },
+            "sourceId": 2,
+            "sourcePageNumber": 31,
+            "creatureRules": []
+          }
+        }
+      ],
+      "weightSpeeds": {
+        "normal": {
+          "walk": 30,
+          "fly": 0,
+          "burrow": 0,
+          "swim": 0,
+          "climb": 0
+        },
+        "encumbered": null,
+        "heavilyEncumbered": null,
+        "pushDragLift": null,
+        "override": null
+      },
+      "featIds": [],
+      "size": "Medium",
+      "sizeId": 4
+    },
+    "notes": {
+      "allies": null,
+      "personalPossessions": "a lock of hair",
+      "otherHoldings": null,
+      "organizations": null,
+      "enemies": null,
+      "backstory": "Pracował w obwoźnej trupie kuglarskiej, występował jako grajek, robił pokazowe walki na miecze, niemagiczne sztuczki magiczne, takie tam. Podczas jednego z występów za bardzo pocisnął jednemu z lokalnych nobli (prawdopodobnie coś o byciu spasionym knurem bogatym na pracy swoich chłopów), ten wziął to za bardzo do siebie, Willie musiał wiać daleko, dzikie ostępy Tęczowej Doliny zapraszają każdego kto chciałby na jakiś czas zniknąć z życia.",
+      "otherNotes": "Kwatermistrz: Carasol - Niziołek\n\n\n4 głowy pseudokoboldów\n1 organ dezitegrujący\nrysunek organów\n\n\n"
+    },
+    "traits": {
+      "personalityTraits": "I love a good insult, even one directed at me.\nNobody stays angry at me or around me for long, since I can defuse any amount of tension.",
+      "ideals": "People. I like seeing the smiles on people’s faces when I perform. That’s all that matters. (Neutral)",
+      "bonds": "I idolize a hero of the old tales and measure my deeds against that person’s.",
+      "flaws": "I once satirized a noble who still wants my head. It was a mistake that I will likely repeat.",
+      "appearance": null
+    },
+    "preferences": {
+      "useHomebrewContent": false,
+      "progressionType": 2,
+      "encumbranceType": 1,
+      "ignoreCoinWeight": true,
+      "hitPointType": 1,
+      "showUnarmedStrike": true,
+      "showCompanions": false,
+      "showWildShape": false,
+      "primarySense": 5,
+      "primaryMovement": 1,
+      "privacyType": 3,
+      "sharingType": 2,
+      "abilityScoreDisplayType": 2,
+      "enforceFeatRules": true,
+      "enforceMulticlassRules": true
+    },
+    "lifestyle": null,
+    "inventory": [
+      {
+        "id": 127804337,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "baseItemId": 10,
+          "baseArmorName": "Leather",
+          "strengthRequirement": null,
+          "armorClass": 11,
+          "stealthCheck": 1,
+          "id": 10,
+          "baseTypeId": 701257905,
+          "entityTypeId": 701257905,
+          "canEquip": true,
+          "magic": false,
+          "name": "Leather",
+          "snippet": null,
+          "weight": 10,
+          "type": "Light Armor",
+          "description": "<p>The breastplate and shoulder protectors of this armor are made of leather that has been stiffened by being boiled in oil. The rest of the armor is made of softer and more flexible materials.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": false,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Armor",
+          "cost": 10,
+          "isPack": false,
+          "tags": [
+            "Warding"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": false,
+        "equipped": true,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 127804338,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "baseItemId": 3,
+          "damage": {
+            "diceCount": 1,
+            "diceValue": 4,
+            "diceMultiplier": null,
+            "fixedValue": null,
+            "diceString": "1d4"
+          },
+          "damageType": "Piercing",
+          "fixedDamage": null,
+          "properties": [
+            {
+              "id": 8,
+              "name": "Finesse",
+              "description": "When making an attack with a finesse weapon, you use your choice of your Strength or Dexterity modifier for the attack and damage rolls. You must use the same modifier for both rolls. ",
+              "notes": null
+            },
+            {
+              "id": 9,
+              "name": "Light",
+              "description": "A light weapon is small and easy to handle, making it ideal for use when fighting with two weapons. ",
+              "notes": null
+            },
+            {
+              "id": 10,
+              "name": "Thrown",
+              "description": "If a weapon has the thrown property, you can throw the weapon to make a ranged attack. If the weapon is a melee weapon, you use the same ability modifier for that attack roll and damage roll that you would use for a melee attack with the weapon. For example, if you throw a handaxe, you use your Strength, but if you throw a dagger, you can use either your Strength or your Dexterity, since the dagger has the finesse property. ",
+              "notes": null
+            }
+          ],
+          "attackType": 1,
+          "categoryId": 1,
+          "range": 20,
+          "longRange": 60,
+          "isMonkWeapon": true,
+          "weaponBehaviors": [],
+          "id": 3,
+          "baseTypeId": 1782728300,
+          "entityTypeId": 1782728300,
+          "canEquip": true,
+          "magic": false,
+          "name": "Dagger",
+          "snippet": null,
+          "weight": 1,
+          "type": "Dagger",
+          "description": "<p>Proficiency with a dagger allows you to add your proficiency bonus to the attack roll for any attack you make with it.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": false,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Weapon",
+          "cost": 2,
+          "isPack": false,
+          "tags": [
+            "Damage",
+            "Combat"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": null,
+        "equipped": false,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 127804339,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "baseItemId": 3,
+          "damage": {
+            "diceCount": 1,
+            "diceValue": 4,
+            "diceMultiplier": null,
+            "fixedValue": null,
+            "diceString": "1d4"
+          },
+          "damageType": "Piercing",
+          "fixedDamage": null,
+          "properties": [
+            {
+              "id": 8,
+              "name": "Finesse",
+              "description": "When making an attack with a finesse weapon, you use your choice of your Strength or Dexterity modifier for the attack and damage rolls. You must use the same modifier for both rolls. ",
+              "notes": null
+            },
+            {
+              "id": 9,
+              "name": "Light",
+              "description": "A light weapon is small and easy to handle, making it ideal for use when fighting with two weapons. ",
+              "notes": null
+            },
+            {
+              "id": 10,
+              "name": "Thrown",
+              "description": "If a weapon has the thrown property, you can throw the weapon to make a ranged attack. If the weapon is a melee weapon, you use the same ability modifier for that attack roll and damage roll that you would use for a melee attack with the weapon. For example, if you throw a handaxe, you use your Strength, but if you throw a dagger, you can use either your Strength or your Dexterity, since the dagger has the finesse property. ",
+              "notes": null
+            }
+          ],
+          "attackType": 1,
+          "categoryId": 1,
+          "range": 20,
+          "longRange": 60,
+          "isMonkWeapon": true,
+          "weaponBehaviors": [],
+          "id": 3,
+          "baseTypeId": 1782728300,
+          "entityTypeId": 1782728300,
+          "canEquip": true,
+          "magic": false,
+          "name": "Dagger",
+          "snippet": null,
+          "weight": 1,
+          "type": "Dagger",
+          "description": "<p>Proficiency with a dagger allows you to add your proficiency bonus to the attack roll for any attack you make with it.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": false,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Weapon",
+          "cost": 2,
+          "isPack": false,
+          "tags": [
+            "Damage",
+            "Combat"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": null,
+        "equipped": false,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 127804327,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "baseItemId": 30,
+          "damage": {
+            "diceCount": 1,
+            "diceValue": 6,
+            "diceMultiplier": null,
+            "fixedValue": null,
+            "diceString": "1d6"
+          },
+          "damageType": "Piercing",
+          "fixedDamage": null,
+          "properties": [
+            {
+              "id": 53,
+              "name": "Finesse",
+              "description": "When making an attack with a finesse weapon, you use your choice of your Strength or Dexterity modifier for the attack and damage rolls. You must use the same modifier for both rolls. ",
+              "notes": null
+            },
+            {
+              "id": 54,
+              "name": "Light",
+              "description": "A light weapon is small and easy to handle, making it ideal for use when fighting with two weapons. ",
+              "notes": null
+            }
+          ],
+          "attackType": 1,
+          "categoryId": 2,
+          "range": 5,
+          "longRange": 5,
+          "isMonkWeapon": true,
+          "weaponBehaviors": [],
+          "id": 30,
+          "baseTypeId": 1782728300,
+          "entityTypeId": 1782728300,
+          "canEquip": true,
+          "magic": false,
+          "name": "Shortsword",
+          "snippet": null,
+          "weight": 2,
+          "type": "Shortsword",
+          "description": "<p>Proficiency with a shortsword allows you to add your proficiency bonus to the attack roll for any attack you make with it.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": false,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Weapon",
+          "cost": 10,
+          "isPack": false,
+          "tags": [
+            "Damage",
+            "Combat"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": null,
+        "equipped": true,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 127804328,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "baseItemId": 30,
+          "damage": {
+            "diceCount": 1,
+            "diceValue": 6,
+            "diceMultiplier": null,
+            "fixedValue": null,
+            "diceString": "1d6"
+          },
+          "damageType": "Piercing",
+          "fixedDamage": null,
+          "properties": [
+            {
+              "id": 53,
+              "name": "Finesse",
+              "description": "When making an attack with a finesse weapon, you use your choice of your Strength or Dexterity modifier for the attack and damage rolls. You must use the same modifier for both rolls. ",
+              "notes": null
+            },
+            {
+              "id": 54,
+              "name": "Light",
+              "description": "A light weapon is small and easy to handle, making it ideal for use when fighting with two weapons. ",
+              "notes": null
+            }
+          ],
+          "attackType": 1,
+          "categoryId": 2,
+          "range": 5,
+          "longRange": 5,
+          "isMonkWeapon": true,
+          "weaponBehaviors": [],
+          "id": 30,
+          "baseTypeId": 1782728300,
+          "entityTypeId": 1782728300,
+          "canEquip": true,
+          "magic": false,
+          "name": "Shortsword",
+          "snippet": null,
+          "weight": 2,
+          "type": "Shortsword",
+          "description": "<p>Proficiency with a shortsword allows you to add your proficiency bonus to the attack roll for any attack you make with it.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": false,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Weapon",
+          "cost": 10,
+          "isPack": false,
+          "tags": [
+            "Damage",
+            "Combat"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": null,
+        "equipped": true,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 127804329,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "subType": "Adventuring Gear",
+          "isConsumable": false,
+          "weaponBehaviors": [],
+          "id": 20,
+          "baseTypeId": 2103445194,
+          "entityTypeId": 2103445194,
+          "canEquip": false,
+          "magic": false,
+          "name": "Backpack",
+          "snippet": null,
+          "weight": 5,
+          "type": "Gear",
+          "description": "<p>A backpack is a leather pack carried on the back, typically with straps to secure it. A backpack can hold&nbsp;1 cubic foot/ 30 pounds of gear.</p>\r\n<p>You can also strap items, such as a bedroll or a coil of rope, to the outside of a backpack.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": true,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Other Gear",
+          "cost": 2,
+          "isPack": false,
+          "tags": [
+            "Container"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": false,
+        "equipped": false,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 127804330,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "subType": "Adventuring Gear",
+          "isConsumable": false,
+          "weaponBehaviors": [],
+          "id": 24,
+          "baseTypeId": 2103445194,
+          "entityTypeId": 2103445194,
+          "canEquip": false,
+          "magic": false,
+          "name": "Bedroll",
+          "snippet": null,
+          "weight": 7,
+          "type": "Gear",
+          "description": "<p>You never know where you&rsquo;re going to sleep, and a bedroll helps you get better sleep in a hayloft or on the cold ground. A bedroll consists of bedding and a blanket thin enough to be rolled up and tied. In an emergency, it can double as a stretcher.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": true,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Other Gear",
+          "cost": 1,
+          "isPack": false,
+          "tags": [
+            "Utility"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": false,
+        "equipped": false,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 127804342,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "subType": "Adventuring Gear",
+          "isConsumable": false,
+          "weaponBehaviors": [],
+          "id": 39,
+          "baseTypeId": 2103445194,
+          "entityTypeId": 2103445194,
+          "canEquip": false,
+          "magic": false,
+          "name": "Clothes, Costume",
+          "snippet": null,
+          "weight": 4,
+          "type": "Gear",
+          "description": "<p>This set of&nbsp;clothes is fashioned after a particular costume, typically meant for entertaining.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": true,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Other Gear",
+          "cost": 5,
+          "isPack": false,
+          "tags": [
+            "Social",
+            "Deception",
+            "Outerwear"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": false,
+        "equipped": false,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 130465833,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "subType": "Adventuring Gear",
+          "isConsumable": false,
+          "weaponBehaviors": [],
+          "id": 41,
+          "baseTypeId": 2103445194,
+          "entityTypeId": 2103445194,
+          "canEquip": false,
+          "magic": false,
+          "name": "Clothes, Traveler's",
+          "snippet": null,
+          "weight": 4,
+          "type": "Gear",
+          "description": "<p>This set of clothes could consist of boots, a wool skirt or breeches, a sturdy belt, a shirt (perhaps with a vest or jacket), and an ample cloak with a hood.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": true,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Other Gear",
+          "cost": 2,
+          "isPack": false,
+          "tags": [
+            "Social",
+            "Outerwear"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": false,
+        "equipped": false,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 127804331,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "subType": "Adventuring Gear",
+          "isConsumable": false,
+          "weaponBehaviors": [],
+          "id": 61,
+          "baseTypeId": 2103445194,
+          "entityTypeId": 2103445194,
+          "canEquip": false,
+          "magic": false,
+          "name": "Mess Kit",
+          "snippet": null,
+          "weight": 1,
+          "type": "Gear",
+          "description": "<p>This tin box contains a cup and simple cutlery. The box clamps together, and one side can be used as a cooking pan and the other as a plate or shallow bowl.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": true,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Other Gear",
+          "cost": 0.2,
+          "isPack": false,
+          "tags": [
+            "Social",
+            "Utility"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": false,
+        "equipped": false,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 127804334,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "subType": "Adventuring Gear",
+          "isConsumable": false,
+          "weaponBehaviors": [],
+          "id": 75,
+          "baseTypeId": 2103445194,
+          "entityTypeId": 2103445194,
+          "canEquip": false,
+          "magic": false,
+          "name": "Rations (1 day)",
+          "snippet": null,
+          "weight": 2,
+          "type": "Gear",
+          "description": "<p>Rations consist of dry foods suitable for extended travel, including jerky, dried fruit, hardtack, and nuts.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": true,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Other Gear",
+          "cost": 0.5,
+          "isPack": false,
+          "tags": [
+            "Social",
+            "Utility",
+            "Consumable"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 10,
+        "isAttuned": false,
+        "equipped": false,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 127804336,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "subType": "Adventuring Gear",
+          "isConsumable": false,
+          "weaponBehaviors": [],
+          "id": 77,
+          "baseTypeId": 2103445194,
+          "entityTypeId": 2103445194,
+          "canEquip": false,
+          "magic": false,
+          "name": "Rope, Hempen (50 feet)",
+          "snippet": null,
+          "weight": 10,
+          "type": "Gear",
+          "description": "<p>Rope,&nbsp;has 2 hit points and can be burst with a DC 17 Strength check.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": true,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Other Gear",
+          "cost": 1,
+          "isPack": false,
+          "tags": [
+            "Utility",
+            "Exploration"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": false,
+        "equipped": false,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 127804332,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "subType": "Adventuring Gear",
+          "isConsumable": false,
+          "weaponBehaviors": [],
+          "id": 90,
+          "baseTypeId": 2103445194,
+          "entityTypeId": 2103445194,
+          "canEquip": false,
+          "magic": false,
+          "name": "Tinderbox",
+          "snippet": null,
+          "weight": 1,
+          "type": "Gear",
+          "description": "<p>This small container holds flint, fire steel, and tinder (usually dry cloth soaked in light oil) used to kindle a fire. Using it to light a torch -- or anything else with abundant, exposed fuel -- takes an action. Lighting any other fire takes 1 minute.</p>\r\n<p>&nbsp;</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": true,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Other Gear",
+          "cost": 0.5,
+          "isPack": false,
+          "tags": [
+            "Utility",
+            "Exploration"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": false,
+        "equipped": false,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 127804333,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "subType": "Adventuring Gear",
+          "isConsumable": false,
+          "weaponBehaviors": [],
+          "id": 91,
+          "baseTypeId": 2103445194,
+          "entityTypeId": 2103445194,
+          "canEquip": false,
+          "magic": false,
+          "name": "Torch",
+          "snippet": null,
+          "weight": 1,
+          "type": "Gear",
+          "description": "<p>A torch burns for 1 hour, providing bright light in a 20-foot radius and dim light for an additional 20 feet. If you make a melee attack with a burning torch and hit, it deals 1 fire damage.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": true,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Other Gear",
+          "cost": 0.001,
+          "isPack": false,
+          "tags": [
+            "Damage",
+            "Utility",
+            "Exploration",
+            "Combat"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 10,
+        "isAttuned": false,
+        "equipped": false,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 127804335,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "subType": "Adventuring Gear",
+          "isConsumable": false,
+          "weaponBehaviors": [],
+          "id": 92,
+          "baseTypeId": 2103445194,
+          "entityTypeId": 2103445194,
+          "canEquip": false,
+          "magic": false,
+          "name": "Waterskin",
+          "snippet": null,
+          "weight": 5,
+          "type": "Gear",
+          "description": "<p>A waterskin can hold&nbsp;4 pints of liquid.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": true,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Other Gear",
+          "cost": 0.2,
+          "isPack": false,
+          "tags": [
+            "Container"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": false,
+        "equipped": false,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 130448247,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "subType": "Tool",
+          "isConsumable": false,
+          "weaponBehaviors": [],
+          "id": 123,
+          "baseTypeId": 2103445194,
+          "entityTypeId": 2103445194,
+          "canEquip": false,
+          "magic": false,
+          "name": "Herbalism Kit",
+          "snippet": null,
+          "weight": 3,
+          "type": "Gear",
+          "description": "<p>This kit contains a variety of instruments such as clippers, mortar and pestle, and pouches and vials used by herbalists to create remedies and potions. Proficiency with this kit lets you add your proficiency bonus to any ability checks you make to identify or apply herbs. Also, proficiency with this kit is required to create antitoxin and any <strong>potion of healing</strong>.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": true,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Other Gear",
+          "cost": 5,
+          "isPack": false,
+          "tags": [
+            "Healing",
+            "Utility"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": false,
+        "equipped": false,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 127804340,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "subType": "Tool",
+          "isConsumable": false,
+          "weaponBehaviors": [],
+          "id": 126,
+          "baseTypeId": 2103445194,
+          "entityTypeId": 2103445194,
+          "canEquip": false,
+          "magic": false,
+          "name": "Thieves' Tools",
+          "snippet": null,
+          "weight": 1,
+          "type": "Gear",
+          "description": "<p>This set of tools includes a small file, a set of lock picks, a small mirror mounted on a metal handle, a set of narrow-bladed scissors, and a pair of pliers. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make to disarm traps or open locks.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": true,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Other Gear",
+          "cost": 25,
+          "isPack": false,
+          "tags": [
+            "Utility",
+            "Exploration"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": false,
+        "equipped": false,
+        "limitedUse": null
+      },
+      {
+        "displayAsAttack": null,
+        "id": 127804341,
+        "entityTypeId": 1439493548,
+        "definition": {
+          "subType": "Tool",
+          "isConsumable": false,
+          "weaponBehaviors": [],
+          "id": 131,
+          "baseTypeId": 2103445194,
+          "entityTypeId": 2103445194,
+          "canEquip": false,
+          "magic": false,
+          "name": "Lute",
+          "snippet": null,
+          "weight": 2,
+          "type": "Gear",
+          "description": "<p>If you have proficiency with a given musical instrument, you can add your proficiency bonus to any ability checks you make to play music with the instrument. A bard can use a musical instrument as a spellcasting focus.</p>",
+          "canAttune": false,
+          "attunementDescription": null,
+          "rarity": "Common",
+          "isHomebrew": false,
+          "version": null,
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": true,
+          "bundleSize": 1,
+          "avatarUrl": null,
+          "largeAvatarUrl": null,
+          "filterType": "Other Gear",
+          "cost": 35,
+          "isPack": false,
+          "tags": [
+            "Instrument"
+          ],
+          "grantedModifiers": []
+        },
+        "quantity": 1,
+        "isAttuned": false,
+        "equipped": false,
+        "limitedUse": null
+      }
+    ],
+    "currencies": {
+      "cp": 0,
+      "sp": 0,
+      "gp": 8,
+      "ep": 0,
+      "pp": 0
+    },
+    "classes": [
+      {
+        "id": 15432391,
+        "entityTypeId": 1446578651,
+        "level": 1,
+        "isStartingClass": true,
+        "hitDiceUsed": 0,
+        "definition": {
+          "id": 12,
+          "name": "Rogue",
+          "description": "<p>A scoundrel who uses stealth and trickery to overcome obstacles and enemies</p>\r\n<p class=\"characters-statblock\" style=\"font-family:Roboto Condensed;font-size:14px\"><strong>Hit Die:</strong> d8<br><strong>Primary Ability:</strong> Dexterity<br><strong>Saves:</strong>&nbsp;Dexterity &amp; Intelligence</p>",
+          "equipmentDescription": "<p>You start with the following equipment, in addition to the equipment granted by your background:</p>\r\n<ul>\r\n<li>(<span>a</span>) a rapier or (<span>b</span>) a shortsword</li>\r\n<li>(<span>a</span>) a shortbow and quiver of 20 arrows or (<span>b</span>) a shortsword</li>\r\n<li>(<span>a</span>) a burglar&rsquo;s pack, (<span>b</span>) a dungeoneer&rsquo;s pack, or (<span>c</span>) an explorer&rsquo;s pack</li>\r\n<li>Leather armor, two daggers, and thieves&rsquo; tools</li>\r\n</ul>",
+          "parentClassId": null,
+          "avatarUrl": "https://media-waterdeep.cursecdn.com/avatars/thumbnails/6/383/315/315/636272820318807897.png",
+          "largeAvatarUrl": "https://media-waterdeep.cursecdn.com/avatars/6/384/636272820319276620.png",
+          "portraitAvatarUrl": "https://media-waterdeep.cursecdn.com/avatars/10/8/636336417681318097.jpeg",
+          "moreDetailsUrl": "/classes/rogue",
+          "spellCastingAbilityId": null,
+          "sourceIds": [
+            1
+          ],
+          "hitDice": 8,
+          "classFeatures": [
+            {
+              "id": 539,
+              "name": "Hit Points",
+              "prerequisite": null,
+              "description": "<p><strong><span>Hit Dice:</span></strong> 1d8 per rogue level<br><strong><span>Hit Points at 1st Level:</span></strong> 8 + your Constitution modifier<br><strong><span>Hit Points at Higher Levels:</span></strong> 1d8 (or 5) + your Constitution modifier per rogue level after 1st</p>",
+              "requiredLevel": 1,
+              "displayOrder": 1
+            },
+            {
+              "id": 467,
+              "name": "Proficiencies",
+              "prerequisite": null,
+              "description": "<p><strong><span>Armor</span><span>:</span></strong> Light armor<br><strong><span>Weapons:</span></strong> Simple weapons, hand crossbows, longswords, rapiers, shortswords<br><strong><span>Tools: </span></strong>Thieves&rsquo; tools<br><strong><span>Saving Throws: </span></strong>Dexterity, Intelligence<br><strong><span>Skills: </span></strong>Choose four from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth</p>",
+              "requiredLevel": 1,
+              "displayOrder": 2
+            },
+            {
+              "id": 342,
+              "name": "Expertise",
+              "prerequisite": null,
+              "description": "<p>At 1st level, choose two of your skill proficiencies, or one of your skill proficiencies and your proficiency with thieves&rsquo; tools. Your proficiency bonus is doubled for any ability check you make that uses either of the chosen proficiencies.</p>\r\n<p>At 6th level, you can choose two more of your proficiencies (in skills or with thieves&rsquo; tools) to gain this benefit.</p>",
+              "requiredLevel": 1,
+              "displayOrder": 3
+            },
+            {
+              "id": 343,
+              "name": "Sneak Attack",
+              "prerequisite": null,
+              "description": "<p>Beginning at 1st level, you know how to strike subtly and exploit a foe&rsquo;s distraction. Once per turn, you can deal an extra 1d6 damage to one creature you hit with an attack if you have advantage on the attack roll. The attack must use a finesse or a ranged weapon.</p>\r\n<p>You don&rsquo;t need advantage on the attack roll if another enemy of the target is within 5 feet of it, that enemy isn&rsquo;t incapacitated, and you don&rsquo;t have disadvantage on the attack roll.</p>\r\n<p>The amount of the extra damage increases as you gain levels in this class, as shown in the Sneak Attack column of the Rogue table.</p>",
+              "requiredLevel": 1,
+              "displayOrder": 4
+            },
+            {
+              "id": 344,
+              "name": "Thieves’ Cant",
+              "prerequisite": null,
+              "description": "<p>During your rogue training you learned thieves&rsquo; cant, a secret mix of dialect, jargon, and code that allows you to hide messages in seemingly normal conversation. Only another creature that knows thieves&rsquo; cant understands such messages. It takes four times longer to convey such a message than it does to speak the same idea plainly.</p>\r\n<p>In addition, you understand a set of secret signs and symbols used to convey short, simple messages, such as whether an area is dangerous or the territory of a thieves&rsquo; guild, whether loot is nearby, or whether the people in an area are easy marks or will provide a safe house for thieves on the run.</p>",
+              "requiredLevel": 1,
+              "displayOrder": 5
+            },
+            {
+              "id": 345,
+              "name": "Cunning Action",
+              "prerequisite": null,
+              "description": "<p>Starting at 2nd level, your quick thinking and agility allow you to move and act quickly. You can take a bonus action on each of your turns in combat. This action can be used only to take the Dash, Disengage, or&nbsp;Hide action.</p>",
+              "requiredLevel": 2,
+              "displayOrder": 6
+            },
+            {
+              "id": 346,
+              "name": "Roguish Archetype",
+              "prerequisite": null,
+              "description": "<p>At 3rd level, you choose an archetype that you emulate in the exercise of your rogue abilities: Thief, detailed at the end of the class description, or one from another source. Your archetype choice grants you features at 3rd level and then again at 9th, 13th, and 17th level.</p>",
+              "requiredLevel": 3,
+              "displayOrder": 7
+            },
+            {
+              "id": 313,
+              "name": "Ability Score Improvement",
+              "prerequisite": null,
+              "description": "<p>When you reach 4th level, and again at 8th, 10th, 12th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can&rsquo;t increase an ability score above 20 using this feature.</p>\r\n<p>Using the optional feats rule, you can forgo taking this feature to take a feat of your choice instead.</p>",
+              "requiredLevel": 4,
+              "displayOrder": 8
+            },
+            {
+              "id": 347,
+              "name": "Uncanny Dodge",
+              "prerequisite": null,
+              "description": "<p>Starting at 5th level, when an attacker that you can see hits you with an attack, you can use your reaction to halve the attack&rsquo;s damage against you.</p>",
+              "requiredLevel": 5,
+              "displayOrder": 9
+            },
+            {
+              "id": 471,
+              "name": "Expertise",
+              "prerequisite": null,
+              "description": "<p>At 6th level, choose two more of your skill proficiencies, or one more of your skill proficiencies and your proficiency with thieves&rsquo; tools. Your proficiency bonus is doubled for any ability check you make that uses either of the chosen proficiencies.</p>",
+              "requiredLevel": 6,
+              "displayOrder": 10
+            },
+            {
+              "id": 348,
+              "name": "Evasion",
+              "prerequisite": null,
+              "description": "<p>Beginning at 7th level, you can nimbly dodge out of the way of certain area effects, such as an ancient red dragon&rsquo;s fiery breath or an <span>ice storm</span> spell. When you are subjected to an effect that allows you to make a Dexterity saving throw to take only half damage, you instead take no damage if you succeed on the saving throw, and only half damage if you fail.</p>",
+              "requiredLevel": 7,
+              "displayOrder": 11
+            },
+            {
+              "id": 314,
+              "name": "Ability Score Improvement",
+              "prerequisite": null,
+              "description": "<p>When you reach 8th level, and again at 10th, 12th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can&rsquo;t increase an ability score above 20 using this feature.</p>\r\n<p>Using the optional feats rule, you can forgo taking this feature to take a feat of your choice instead.</p>",
+              "requiredLevel": 8,
+              "displayOrder": 12
+            },
+            {
+              "id": 591,
+              "name": "Ability Score Improvement",
+              "prerequisite": null,
+              "description": "<p>When you reach 10th level, and again at 12th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can&rsquo;t increase an ability score above 20 using&nbsp;this feature.</p>\r\n<p>Using the optional feats rule, you can forgo taking this feature to take a feat of your choice instead.</p>",
+              "requiredLevel": 10,
+              "displayOrder": 13
+            },
+            {
+              "id": 349,
+              "name": "Reliable Talent",
+              "prerequisite": null,
+              "description": "<p>By 11th level, you have refined your chosen skills until they approach perfection. Whenever you make an ability check that lets you add your proficiency bonus, you can treat a d20 roll of 9 or lower as a 10.</p>",
+              "requiredLevel": 11,
+              "displayOrder": 13
+            },
+            {
+              "id": 315,
+              "name": "Ability Score Improvement",
+              "prerequisite": null,
+              "description": "<p>When you reach 12th level, and again at 16th and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can&rsquo;t increase an ability score above 20 using this feature.</p>\r\n<p>Using the optional feats rule, you can forgo taking this feature to take a feat of your choice instead.</p>",
+              "requiredLevel": 12,
+              "displayOrder": 14
+            },
+            {
+              "id": 350,
+              "name": "Blindsense",
+              "prerequisite": null,
+              "description": "<p>Starting at 14th level, if you are able to hear, you are aware of the location of any hidden or invisible creature within 10 feet of you.</p>",
+              "requiredLevel": 14,
+              "displayOrder": 15
+            },
+            {
+              "id": 351,
+              "name": "Slippery Mind",
+              "prerequisite": null,
+              "description": "<p>By 15th level, you have acquired greater mental strength. You gain proficiency in Wisdom saving throws.</p>",
+              "requiredLevel": 15,
+              "displayOrder": 16
+            },
+            {
+              "id": 316,
+              "name": "Ability Score Improvement",
+              "prerequisite": null,
+              "description": "<p>When you reach 16th level, and again at 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can&rsquo;t increase an ability score above 20 using this feature.</p>\r\n<p>Using the optional feats rule, you can forgo taking this feature to take a feat of your choice instead.</p>",
+              "requiredLevel": 16,
+              "displayOrder": 17
+            },
+            {
+              "id": 352,
+              "name": "Elusive",
+              "prerequisite": null,
+              "description": "<p>Beginning at 18th level, you are so evasive that attackers rarely gain the upper hand against you. No attack roll has advantage against you while you aren&rsquo;t incapacitated.</p>",
+              "requiredLevel": 18,
+              "displayOrder": 18
+            },
+            {
+              "id": 317,
+              "name": "Ability Score Improvement",
+              "prerequisite": null,
+              "description": "<p>When you reach 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can&rsquo;t increase an ability score above 20 using this feature.</p>\r\n<p>Using the optional feats rule, you can forgo taking this feature to take a feat of your choice instead.</p>",
+              "requiredLevel": 19,
+              "displayOrder": 19
+            },
+            {
+              "id": 353,
+              "name": "Stroke of Luck",
+              "prerequisite": null,
+              "description": "<p>At 20th level, you have an uncanny knack for succeeding when you need to. If your attack misses a target within range, you can turn the miss into a hit. Alternatively, if you fail an ability check, you can treat the d20 roll as a 20.</p>\r\n<p>Once you use this feature, you can&rsquo;t use it again until you finish a short or long rest.</p>",
+              "requiredLevel": 20,
+              "displayOrder": 20
+            }
+          ],
+          "wealthDice": {
+            "diceCount": 4,
+            "diceValue": 4,
+            "diceMultiplier": 10,
+            "fixedValue": null,
+            "diceString": "4d4"
+          },
+          "canCastSpells": false,
+          "knowsAllSpells": null,
+          "spellPrepareType": null,
+          "spellContainerName": null,
+          "sourceId": 1,
+          "sourcePageNumber": 94
+        },
+        "subclassDefinition": null,
+        "classFeatures": [
+          {
+            "definition": {
+              "id": 539,
+              "entityTypeId": 12168134,
+              "displayOrder": 1,
+              "name": "Hit Points",
+              "description": "<p><strong><span>Hit Dice:</span></strong> 1d8 per rogue level<br><strong><span>Hit Points at 1st Level:</span></strong> 8 + your Constitution modifier<br><strong><span>Hit Points at Higher Levels:</span></strong> 1d8 (or 5) + your Constitution modifier per rogue level after 1st</p>",
+              "snippet": "",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 1,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 95,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 467,
+              "entityTypeId": 12168134,
+              "displayOrder": 2,
+              "name": "Proficiencies",
+              "description": "<p><strong><span>Armor</span><span>:</span></strong> Light armor<br><strong><span>Weapons:</span></strong> Simple weapons, hand crossbows, longswords, rapiers, shortswords<br><strong><span>Tools: </span></strong>Thieves&rsquo; tools<br><strong><span>Saving Throws: </span></strong>Dexterity, Intelligence<br><strong><span>Skills: </span></strong>Choose four from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth</p>",
+              "snippet": "",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "<p><strong><span>Armor</span><span>:</span></strong> Light armor<br><strong><span>Tools: </span></strong>Thieves&rsquo; tools<br><strong><span>Skills: </span></strong>Choose one from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth</p>",
+              "requiredLevel": 1,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 95,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 342,
+              "entityTypeId": 12168134,
+              "displayOrder": 3,
+              "name": "Expertise",
+              "description": "<p>At 1st level, choose two of your skill proficiencies, or one of your skill proficiencies and your proficiency with thieves&rsquo; tools. Your proficiency bonus is doubled for any ability check you make that uses either of the chosen proficiencies.</p>\r\n<p>At 6th level, you can choose two more of your proficiencies (in skills or with thieves&rsquo; tools) to gain this benefit.</p>",
+              "snippet": "Your proficiency bonus is doubled for any ability check you make for two chosen proficiencies. [6th] Choose two additional proficiencies.",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 1,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 343,
+              "entityTypeId": 12168134,
+              "displayOrder": 4,
+              "name": "Sneak Attack",
+              "description": "<p>Beginning at 1st level, you know how to strike subtly and exploit a foe&rsquo;s distraction. Once per turn, you can deal an extra 1d6 damage to one creature you hit with an attack if you have advantage on the attack roll. The attack must use a finesse or a ranged weapon.</p>\r\n<p>You don&rsquo;t need advantage on the attack roll if another enemy of the target is within 5 feet of it, that enemy isn&rsquo;t incapacitated, and you don&rsquo;t have disadvantage on the attack roll.</p>\r\n<p>The amount of the extra damage increases as you gain levels in this class, as shown in the Sneak Attack column of the Rogue table.</p>",
+              "snippet": "Once per turn, you can deal an extra {{scalevalue}} damage to one creature you hit with an attack with a finesse or ranged weapon if you have advantage on the attack roll. You don’t need advantage on the attack roll if another enemy of the target is within 5 ft. of it, that enemy isn’t incapacitated, and you don’t have disadvantage on the attack roll.",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 1,
+              "isSubClassFeature": false,
+              "limitedUse": [
+                {
+                  "level": null,
+                  "uses": 1
+                }
+              ],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": {
+              "id": 16,
+              "level": 1,
+              "description": "1d6",
+              "dice": {
+                "diceCount": 1,
+                "diceValue": 6,
+                "diceMultiplier": null,
+                "fixedValue": null,
+                "diceString": "1d6"
+              },
+              "fixedValue": null
+            }
+          },
+          {
+            "definition": {
+              "id": 344,
+              "entityTypeId": 12168134,
+              "displayOrder": 5,
+              "name": "Thieves’ Cant",
+              "description": "<p>During your rogue training you learned thieves&rsquo; cant, a secret mix of dialect, jargon, and code that allows you to hide messages in seemingly normal conversation. Only another creature that knows thieves&rsquo; cant understands such messages. It takes four times longer to convey such a message than it does to speak the same idea plainly.</p>\r\n<p>In addition, you understand a set of secret signs and symbols used to convey short, simple messages, such as whether an area is dangerous or the territory of a thieves&rsquo; guild, whether loot is nearby, or whether the people in an area are easy marks or will provide a safe house for thieves on the run.</p>",
+              "snippet": "You have learned thieves’ cant, a secret mix of dialect, jargon, and code that allows you to hide messages in seemingly normal conversation. It takes four times longer to convey such a message than it does to speak the same idea plainly.",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 1,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 345,
+              "entityTypeId": 12168134,
+              "displayOrder": 6,
+              "name": "Cunning Action",
+              "description": "<p>Starting at 2nd level, your quick thinking and agility allow you to move and act quickly. You can take a bonus action on each of your turns in combat. This action can be used only to take the Dash, Disengage, or&nbsp;Hide action.</p>",
+              "snippet": "You can take a bonus action on each of your turns to take the Dash, Disengage, or Hide action.",
+              "activation": {
+                "activationTime": 1,
+                "activationType": 3
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 2,
+              "isSubClassFeature": false,
+              "limitedUse": [
+                {
+                  "level": null,
+                  "uses": 1
+                }
+              ],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 346,
+              "entityTypeId": 12168134,
+              "displayOrder": 7,
+              "name": "Roguish Archetype",
+              "description": "<p>At 3rd level, you choose an archetype that you emulate in the exercise of your rogue abilities: Thief, detailed at the end of the class description, or one from another source. Your archetype choice grants you features at 3rd level and then again at 9th, 13th, and 17th level.</p>",
+              "snippet": "",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 3,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 313,
+              "entityTypeId": 12168134,
+              "displayOrder": 8,
+              "name": "Ability Score Improvement",
+              "description": "<p>When you reach 4th level, and again at 8th, 10th, 12th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can&rsquo;t increase an ability score above 20 using this feature.</p>\r\n<p>Using the optional feats rule, you can forgo taking this feature to take a feat of your choice instead.</p>",
+              "snippet": "",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 4,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 347,
+              "entityTypeId": 12168134,
+              "displayOrder": 9,
+              "name": "Uncanny Dodge",
+              "description": "<p>Starting at 5th level, when an attacker that you can see hits you with an attack, you can use your reaction to halve the attack&rsquo;s damage against you.</p>",
+              "snippet": "When an attacker that you can see hits you with an attack, you can use your reaction to halve the attack’s damage against you.",
+              "activation": {
+                "activationTime": 1,
+                "activationType": 4
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 5,
+              "isSubClassFeature": false,
+              "limitedUse": [
+                {
+                  "level": null,
+                  "uses": 1
+                }
+              ],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 471,
+              "entityTypeId": 12168134,
+              "displayOrder": 10,
+              "name": "Expertise",
+              "description": "<p>At 6th level, choose two more of your skill proficiencies, or one more of your skill proficiencies and your proficiency with thieves&rsquo; tools. Your proficiency bonus is doubled for any ability check you make that uses either of the chosen proficiencies.</p>",
+              "snippet": "Your proficiency bonus is doubled for any ability check you make that uses any of the chosen proficiencies.",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 6,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 348,
+              "entityTypeId": 12168134,
+              "displayOrder": 11,
+              "name": "Evasion",
+              "description": "<p>Beginning at 7th level, you can nimbly dodge out of the way of certain area effects, such as an ancient red dragon&rsquo;s fiery breath or an <span>ice storm</span> spell. When you are subjected to an effect that allows you to make a Dexterity saving throw to take only half damage, you instead take no damage if you succeed on the saving throw, and only half damage if you fail.</p>",
+              "snippet": "When you are subjected to an effect that allows you to make a DEX saving throw to take only half damage, you instead take no damage if you succeed on the saving throw, and only half damage if you fail.",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 7,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 314,
+              "entityTypeId": 12168134,
+              "displayOrder": 12,
+              "name": "Ability Score Improvement",
+              "description": "<p>When you reach 8th level, and again at 10th, 12th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can&rsquo;t increase an ability score above 20 using this feature.</p>\r\n<p>Using the optional feats rule, you can forgo taking this feature to take a feat of your choice instead.</p>",
+              "snippet": "",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 8,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 591,
+              "entityTypeId": 12168134,
+              "displayOrder": 13,
+              "name": "Ability Score Improvement",
+              "description": "<p>When you reach 10th level, and again at 12th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can&rsquo;t increase an ability score above 20 using&nbsp;this feature.</p>\r\n<p>Using the optional feats rule, you can forgo taking this feature to take a feat of your choice instead.</p>",
+              "snippet": "",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 10,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 349,
+              "entityTypeId": 12168134,
+              "displayOrder": 13,
+              "name": "Reliable Talent",
+              "description": "<p>By 11th level, you have refined your chosen skills until they approach perfection. Whenever you make an ability check that lets you add your proficiency bonus, you can treat a d20 roll of 9 or lower as a 10.</p>",
+              "snippet": "Whenever you make an ability check that lets you add your proficiency bonus, you can treat a d20 roll of 9 or lower as a 10.",
+              "activation": {
+                "activationTime": null,
+                "activationType": 8
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 11,
+              "isSubClassFeature": false,
+              "limitedUse": [
+                {
+                  "level": null,
+                  "uses": 1
+                }
+              ],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 315,
+              "entityTypeId": 12168134,
+              "displayOrder": 14,
+              "name": "Ability Score Improvement",
+              "description": "<p>When you reach 12th level, and again at 16th and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can&rsquo;t increase an ability score above 20 using this feature.</p>\r\n<p>Using the optional feats rule, you can forgo taking this feature to take a feat of your choice instead.</p>",
+              "snippet": "",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 12,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 350,
+              "entityTypeId": 12168134,
+              "displayOrder": 15,
+              "name": "Blindsense",
+              "description": "<p>Starting at 14th level, if you are able to hear, you are aware of the location of any hidden or invisible creature within 10 feet of you.</p>",
+              "snippet": "If you are able to hear, you are aware of the location of any hidden or invisible creature within 10 ft. of you.",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 14,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 351,
+              "entityTypeId": 12168134,
+              "displayOrder": 16,
+              "name": "Slippery Mind",
+              "description": "<p>By 15th level, you have acquired greater mental strength. You gain proficiency in Wisdom saving throws.</p>",
+              "snippet": "You gain proficiency in Wisdom saving throws.",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 15,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 316,
+              "entityTypeId": 12168134,
+              "displayOrder": 17,
+              "name": "Ability Score Improvement",
+              "description": "<p>When you reach 16th level, and again at 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can&rsquo;t increase an ability score above 20 using this feature.</p>\r\n<p>Using the optional feats rule, you can forgo taking this feature to take a feat of your choice instead.</p>",
+              "snippet": "",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 16,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 352,
+              "entityTypeId": 12168134,
+              "displayOrder": 18,
+              "name": "Elusive",
+              "description": "<p>Beginning at 18th level, you are so evasive that attackers rarely gain the upper hand against you. No attack roll has advantage against you while you aren&rsquo;t incapacitated.</p>",
+              "snippet": "No attack roll has advantage against you while you aren’t incapacitated.",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 18,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 317,
+              "entityTypeId": 12168134,
+              "displayOrder": 19,
+              "name": "Ability Score Improvement",
+              "description": "<p>When you reach 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can&rsquo;t increase an ability score above 20 using this feature.</p>\r\n<p>Using the optional feats rule, you can forgo taking this feature to take a feat of your choice instead.</p>",
+              "snippet": "",
+              "activation": {
+                "activationTime": null,
+                "activationType": null
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 19,
+              "isSubClassFeature": false,
+              "limitedUse": [],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 96,
+              "creatureRules": []
+            },
+            "levelScale": null
+          },
+          {
+            "definition": {
+              "id": 353,
+              "entityTypeId": 12168134,
+              "displayOrder": 20,
+              "name": "Stroke of Luck",
+              "description": "<p>At 20th level, you have an uncanny knack for succeeding when you need to. If your attack misses a target within range, you can turn the miss into a hit. Alternatively, if you fail an ability check, you can treat the d20 roll as a 20.</p>\r\n<p>Once you use this feature, you can&rsquo;t use it again until you finish a short or long rest.</p>",
+              "snippet": "Once per short rest, if your attack misses a target within range, you can turn the miss into a hit. Alternatively, if you fail an ability check, you can treat the d20 roll as a 20.",
+              "activation": {
+                "activationTime": null,
+                "activationType": 8
+              },
+              "multiClassDescription": "",
+              "requiredLevel": 20,
+              "isSubClassFeature": false,
+              "limitedUse": [
+                {
+                  "level": null,
+                  "uses": 1
+                }
+              ],
+              "hideInBuilder": false,
+              "hideInSheet": false,
+              "sourceId": 2,
+              "sourcePageNumber": 97,
+              "creatureRules": []
+            },
+            "levelScale": null
+          }
+        ]
+      }
+    ],
+    "feats": [
+      {
+        "componentTypeId": 1960452172,
+        "componentId": 103,
+        "definition": {
+          "id": 88,
+          "entityTypeId": 1088085227,
+          "name": "Prodigy",
+          "description": "<p>You have a knack for learning new things. You gain the following benefits:</p>\r\n<ul>\r\n<li>You gain one skill proficiency of your choice, one tool proficiency of your choice, and fluency in one language of your choice.</li>\r\n<li>Choose one skill in which you have proficiency. You gain expertise with that skill, which means your proficiency bonus is doubled for any ability check you make with it. The skill you choose must be one that isn&rsquo;t already benefiting from a feature, such as Expertise, that doubles your proficiency bonus.</li>\r\n</ul>",
+          "snippet": "You gain one skill proficiency, one tool proficiency, and learn one language of your choice. You gain expertise (apply twice your proficiency bonus) with one chosen skill.",
+          "activation": {
+            "activationTime": null,
+            "activationType": null
+          },
+          "features": null,
+          "sourceId": 27,
+          "sourcePageNumber": 75,
+          "creatureRules": [],
+          "prerequisites": [
+            {
+              "description": "Half-elf,",
+              "prerequisiteMappings": [
+                {
+                  "id": 104,
+                  "entityId": 20,
+                  "entityTypeId": 1743923279,
+                  "type": "race",
+                  "subType": "half-elf",
+                  "value": null,
+                  "friendlyTypeName": "Race",
+                  "friendlySubTypeName": "Half-Elf"
+                }
+              ]
+            },
+            {
+              "description": "Half-orc, ",
+              "prerequisiteMappings": [
+                {
+                  "id": 105,
+                  "entityId": 2,
+                  "entityTypeId": 1743923279,
+                  "type": "race",
+                  "subType": "half-orc",
+                  "value": null,
+                  "friendlyTypeName": "Race",
+                  "friendlySubTypeName": "Half-Orc"
+                }
+              ]
+            },
+            {
+              "description": "or Human",
+              "prerequisiteMappings": [
+                {
+                  "id": 107,
+                  "entityId": 1,
+                  "entityTypeId": 1743923279,
+                  "type": "race",
+                  "subType": "human",
+                  "value": null,
+                  "friendlyTypeName": "Race",
+                  "friendlySubTypeName": "Human"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "customDefenseAdjustments": [],
+    "customSenses": [],
+    "customSpeeds": [],
+    "customProficiencies": [],
+    "spellDefenses": null,
+    "customActions": [],
+    "characterValues": [],
+    "conditions": [],
+    "deathSaves": {
+      "failCount": null,
+      "successCount": null,
+      "isStabilized": false
+    },
+    "adjustmentXp": null,
+    "spellSlots": [
+      {
+        "level": 1,
+        "used": 0,
+        "available": 0
+      },
+      {
+        "level": 2,
+        "used": 0,
+        "available": 0
+      },
+      {
+        "level": 3,
+        "used": 0,
+        "available": 0
+      },
+      {
+        "level": 4,
+        "used": 0,
+        "available": 0
+      },
+      {
+        "level": 5,
+        "used": 0,
+        "available": 0
+      },
+      {
+        "level": 6,
+        "used": 0,
+        "available": 0
+      },
+      {
+        "level": 7,
+        "used": 0,
+        "available": 0
+      },
+      {
+        "level": 8,
+        "used": 0,
+        "available": 0
+      },
+      {
+        "level": 9,
+        "used": 0,
+        "available": 0
+      }
+    ],
+    "pactMagic": [
+      {
+        "level": 1,
+        "used": 0,
+        "available": 0
+      },
+      {
+        "level": 2,
+        "used": 0,
+        "available": 0
+      },
+      {
+        "level": 3,
+        "used": 0,
+        "available": 0
+      },
+      {
+        "level": 4,
+        "used": 0,
+        "available": 0
+      },
+      {
+        "level": 5,
+        "used": 0,
+        "available": 0
+      }
+    ],
+    "activeSourceCategories": [
+      1
+    ],
+    "spells": {
+      "race": [],
+      "class": [],
+      "item": [],
+      "feat": []
+    },
+    "options": {
+      "race": [],
+      "class": [],
+      "feat": []
+    },
+    "choices": {
+      "race": [
+        {
+          "id": "2-1472",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 3,
+          "optionValue": 4061,
+          "label": "Choose a Language",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [
+            {
+              "id": 4045,
+              "label": "Abyssal",
+              "description": null
+            },
+            {
+              "id": 4049,
+              "label": "Celestial",
+              "description": null
+            },
+            {
+              "id": 4050,
+              "label": "Common",
+              "description": null
+            },
+            {
+              "id": 4051,
+              "label": "Deep Speech",
+              "description": null
+            },
+            {
+              "id": 4052,
+              "label": "Draconic",
+              "description": null
+            },
+            {
+              "id": 4054,
+              "label": "Dwarvish",
+              "description": null
+            },
+            {
+              "id": 4055,
+              "label": "Elvish",
+              "description": null
+            },
+            {
+              "id": 4056,
+              "label": "Giant",
+              "description": null
+            },
+            {
+              "id": 5064,
+              "label": "Gith",
+              "description": null
+            },
+            {
+              "id": 4061,
+              "label": "Gnomish",
+              "description": null
+            },
+            {
+              "id": 4062,
+              "label": "Goblin",
+              "description": null
+            },
+            {
+              "id": 4063,
+              "label": "Halfling",
+              "description": null
+            },
+            {
+              "id": 4065,
+              "label": "Infernal",
+              "description": null
+            },
+            {
+              "id": 5110,
+              "label": "Kraul",
+              "description": null
+            },
+            {
+              "id": 5109,
+              "label": "Loxodon",
+              "description": null
+            },
+            {
+              "id": 5108,
+              "label": "Minotaur",
+              "description": null
+            },
+            {
+              "id": 4066,
+              "label": "Orc",
+              "description": null
+            },
+            {
+              "id": 4068,
+              "label": "Primordial",
+              "description": null
+            },
+            {
+              "id": 4071,
+              "label": "Sylvan",
+              "description": null
+            },
+            {
+              "id": 4074,
+              "label": "Undercommon",
+              "description": null
+            },
+            {
+              "id": 5111,
+              "label": "Vedalken",
+              "description": null
+            }
+          ],
+          "componentId": 64,
+          "componentTypeId": 1960452172
+        },
+        {
+          "id": "2-1473",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 1,
+          "optionValue": 3794,
+          "label": "Choose a Skill",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [
+            {
+              "id": 3784,
+              "label": "Acrobatics",
+              "description": null
+            },
+            {
+              "id": 3792,
+              "label": "Animal Handling",
+              "description": null
+            },
+            {
+              "id": 3787,
+              "label": "Arcana",
+              "description": null
+            },
+            {
+              "id": 3783,
+              "label": "Athletics",
+              "description": null
+            },
+            {
+              "id": 3797,
+              "label": "Deception",
+              "description": null
+            },
+            {
+              "id": 3788,
+              "label": "History",
+              "description": null
+            },
+            {
+              "id": 3793,
+              "label": "Insight",
+              "description": null
+            },
+            {
+              "id": 3798,
+              "label": "Intimidation",
+              "description": null
+            },
+            {
+              "id": 3789,
+              "label": "Investigation",
+              "description": null
+            },
+            {
+              "id": 3794,
+              "label": "Medicine",
+              "description": null
+            },
+            {
+              "id": 3790,
+              "label": "Nature",
+              "description": null
+            },
+            {
+              "id": 3795,
+              "label": "Perception",
+              "description": null
+            },
+            {
+              "id": 3799,
+              "label": "Performance",
+              "description": null
+            },
+            {
+              "id": 3800,
+              "label": "Persuasion",
+              "description": null
+            },
+            {
+              "id": 3791,
+              "label": "Religion",
+              "description": null
+            },
+            {
+              "id": 3785,
+              "label": "Sleight of Hand",
+              "description": null
+            },
+            {
+              "id": 3786,
+              "label": "Stealth",
+              "description": null
+            },
+            {
+              "id": 3796,
+              "label": "Survival",
+              "description": null
+            }
+          ],
+          "componentId": 65,
+          "componentTypeId": 1960452172
+        },
+        {
+          "id": "2-1658",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 5,
+          "optionValue": 3521,
+          "label": "Choose an Ability Score",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [
+            {
+              "id": 3522,
+              "label": "Constitution Score",
+              "description": null
+            },
+            {
+              "id": 3521,
+              "label": "Dexterity Score",
+              "description": null
+            },
+            {
+              "id": 3523,
+              "label": "Intelligence Score",
+              "description": null
+            },
+            {
+              "id": 3520,
+              "label": "Strength Score",
+              "description": null
+            },
+            {
+              "id": 3524,
+              "label": "Wisdom Score",
+              "description": null
+            }
+          ],
+          "componentId": 102,
+          "componentTypeId": 1960452172
+        },
+        {
+          "id": "2-1659",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 5,
+          "optionValue": 3525,
+          "label": "Choose an Ability Score",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [
+            {
+              "id": 3525,
+              "label": "Charisma Score",
+              "description": null
+            },
+            {
+              "id": 3522,
+              "label": "Constitution Score",
+              "description": null
+            },
+            {
+              "id": 3523,
+              "label": "Intelligence Score",
+              "description": null
+            },
+            {
+              "id": 3520,
+              "label": "Strength Score",
+              "description": null
+            },
+            {
+              "id": 3524,
+              "label": "Wisdom Score",
+              "description": null
+            }
+          ],
+          "componentId": 102,
+          "componentTypeId": 1960452172
+        },
+        {
+          "id": "6-103",
+          "parentChoiceId": null,
+          "type": 6,
+          "subType": null,
+          "optionValue": 88,
+          "label": "Choose a Feat",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [],
+          "componentId": 103,
+          "componentTypeId": 1960452172
+        }
+      ],
+      "class": [
+        {
+          "id": "2-1447",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 2,
+          "optionValue": 4253,
+          "label": "Choose Rogue Expertise",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [
+            {
+              "id": 4246,
+              "label": "Acrobatics",
+              "description": null
+            },
+            {
+              "id": 4368,
+              "label": "Animal Handling",
+              "description": null
+            },
+            {
+              "id": 4369,
+              "label": "Arcana",
+              "description": null
+            },
+            {
+              "id": 4247,
+              "label": "Athletics",
+              "description": null
+            },
+            {
+              "id": 4248,
+              "label": "Deception",
+              "description": null
+            },
+            {
+              "id": 4370,
+              "label": "History",
+              "description": null
+            },
+            {
+              "id": 4249,
+              "label": "Insight",
+              "description": null
+            },
+            {
+              "id": 4250,
+              "label": "Intimidation",
+              "description": null
+            },
+            {
+              "id": 4251,
+              "label": "Investigation",
+              "description": null
+            },
+            {
+              "id": 4371,
+              "label": "Medicine",
+              "description": null
+            },
+            {
+              "id": 4372,
+              "label": "Nature",
+              "description": null
+            },
+            {
+              "id": 4252,
+              "label": "Perception",
+              "description": null
+            },
+            {
+              "id": 4253,
+              "label": "Performance",
+              "description": null
+            },
+            {
+              "id": 4254,
+              "label": "Persuasion",
+              "description": null
+            },
+            {
+              "id": 4373,
+              "label": "Religion",
+              "description": null
+            },
+            {
+              "id": 4255,
+              "label": "Sleight of Hand",
+              "description": null
+            },
+            {
+              "id": 4256,
+              "label": "Stealth",
+              "description": null
+            },
+            {
+              "id": 4374,
+              "label": "Survival",
+              "description": null
+            },
+            {
+              "id": 4257,
+              "label": "Thieves' Tools",
+              "description": null
+            }
+          ],
+          "componentId": 342,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "2-1448",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 2,
+          "optionValue": 4246,
+          "label": "Choose Rogue Expertise",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [
+            {
+              "id": 4246,
+              "label": "Acrobatics",
+              "description": null
+            },
+            {
+              "id": 4368,
+              "label": "Animal Handling",
+              "description": null
+            },
+            {
+              "id": 4369,
+              "label": "Arcana",
+              "description": null
+            },
+            {
+              "id": 4247,
+              "label": "Athletics",
+              "description": null
+            },
+            {
+              "id": 4248,
+              "label": "Deception",
+              "description": null
+            },
+            {
+              "id": 4370,
+              "label": "History",
+              "description": null
+            },
+            {
+              "id": 4249,
+              "label": "Insight",
+              "description": null
+            },
+            {
+              "id": 4250,
+              "label": "Intimidation",
+              "description": null
+            },
+            {
+              "id": 4251,
+              "label": "Investigation",
+              "description": null
+            },
+            {
+              "id": 4371,
+              "label": "Medicine",
+              "description": null
+            },
+            {
+              "id": 4372,
+              "label": "Nature",
+              "description": null
+            },
+            {
+              "id": 4252,
+              "label": "Perception",
+              "description": null
+            },
+            {
+              "id": 4253,
+              "label": "Performance",
+              "description": null
+            },
+            {
+              "id": 4254,
+              "label": "Persuasion",
+              "description": null
+            },
+            {
+              "id": 4373,
+              "label": "Religion",
+              "description": null
+            },
+            {
+              "id": 4255,
+              "label": "Sleight of Hand",
+              "description": null
+            },
+            {
+              "id": 4256,
+              "label": "Stealth",
+              "description": null
+            },
+            {
+              "id": 4374,
+              "label": "Survival",
+              "description": null
+            },
+            {
+              "id": 4257,
+              "label": "Thieves' Tools",
+              "description": null
+            }
+          ],
+          "componentId": 342,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "2-1568",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 1,
+          "optionValue": 4146,
+          "label": "Choose a Rogue Skill",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [
+            {
+              "id": 4137,
+              "label": "Acrobatics",
+              "description": null
+            },
+            {
+              "id": 4138,
+              "label": "Athletics",
+              "description": null
+            },
+            {
+              "id": 4139,
+              "label": "Deception",
+              "description": null
+            },
+            {
+              "id": 4140,
+              "label": "Insight",
+              "description": null
+            },
+            {
+              "id": 4141,
+              "label": "Intimidation",
+              "description": null
+            },
+            {
+              "id": 4142,
+              "label": "Investigation",
+              "description": null
+            },
+            {
+              "id": 4143,
+              "label": "Perception",
+              "description": null
+            },
+            {
+              "id": 4144,
+              "label": "Performance",
+              "description": null
+            },
+            {
+              "id": 4145,
+              "label": "Persuasion",
+              "description": null
+            },
+            {
+              "id": 4146,
+              "label": "Sleight of Hand",
+              "description": null
+            },
+            {
+              "id": 4147,
+              "label": "Stealth",
+              "description": null
+            }
+          ],
+          "componentId": 467,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "2-1569",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 1,
+          "optionValue": 4147,
+          "label": "Choose a Rogue Skill",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [
+            {
+              "id": 4137,
+              "label": "Acrobatics",
+              "description": null
+            },
+            {
+              "id": 4138,
+              "label": "Athletics",
+              "description": null
+            },
+            {
+              "id": 4139,
+              "label": "Deception",
+              "description": null
+            },
+            {
+              "id": 4140,
+              "label": "Insight",
+              "description": null
+            },
+            {
+              "id": 4141,
+              "label": "Intimidation",
+              "description": null
+            },
+            {
+              "id": 4142,
+              "label": "Investigation",
+              "description": null
+            },
+            {
+              "id": 4143,
+              "label": "Perception",
+              "description": null
+            },
+            {
+              "id": 4144,
+              "label": "Performance",
+              "description": null
+            },
+            {
+              "id": 4145,
+              "label": "Persuasion",
+              "description": null
+            },
+            {
+              "id": 4146,
+              "label": "Sleight of Hand",
+              "description": null
+            },
+            {
+              "id": 4147,
+              "label": "Stealth",
+              "description": null
+            }
+          ],
+          "componentId": 467,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "2-1570",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 1,
+          "optionValue": 4140,
+          "label": "Choose a Rogue Skill",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [
+            {
+              "id": 4137,
+              "label": "Acrobatics",
+              "description": null
+            },
+            {
+              "id": 4138,
+              "label": "Athletics",
+              "description": null
+            },
+            {
+              "id": 4139,
+              "label": "Deception",
+              "description": null
+            },
+            {
+              "id": 4140,
+              "label": "Insight",
+              "description": null
+            },
+            {
+              "id": 4141,
+              "label": "Intimidation",
+              "description": null
+            },
+            {
+              "id": 4142,
+              "label": "Investigation",
+              "description": null
+            },
+            {
+              "id": 4143,
+              "label": "Perception",
+              "description": null
+            },
+            {
+              "id": 4144,
+              "label": "Performance",
+              "description": null
+            },
+            {
+              "id": 4145,
+              "label": "Persuasion",
+              "description": null
+            },
+            {
+              "id": 4146,
+              "label": "Sleight of Hand",
+              "description": null
+            },
+            {
+              "id": 4147,
+              "label": "Stealth",
+              "description": null
+            }
+          ],
+          "componentId": 467,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "2-1571",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 1,
+          "optionValue": 4145,
+          "label": "Choose a Rogue Skill",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [
+            {
+              "id": 4137,
+              "label": "Acrobatics",
+              "description": null
+            },
+            {
+              "id": 4138,
+              "label": "Athletics",
+              "description": null
+            },
+            {
+              "id": 4139,
+              "label": "Deception",
+              "description": null
+            },
+            {
+              "id": 4140,
+              "label": "Insight",
+              "description": null
+            },
+            {
+              "id": 4141,
+              "label": "Intimidation",
+              "description": null
+            },
+            {
+              "id": 4142,
+              "label": "Investigation",
+              "description": null
+            },
+            {
+              "id": 4143,
+              "label": "Perception",
+              "description": null
+            },
+            {
+              "id": 4144,
+              "label": "Performance",
+              "description": null
+            },
+            {
+              "id": 4145,
+              "label": "Persuasion",
+              "description": null
+            },
+            {
+              "id": 4146,
+              "label": "Sleight of Hand",
+              "description": null
+            },
+            {
+              "id": 4147,
+              "label": "Stealth",
+              "description": null
+            }
+          ],
+          "componentId": 467,
+          "componentTypeId": 12168134
+        }
+      ],
+      "background": [
+        {
+          "id": "2-2173",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 1,
+          "optionValue": 3904,
+          "label": "Choose a Musical Instrument",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [
+            {
+              "id": 3900,
+              "label": "Bagpipes",
+              "description": null
+            },
+            {
+              "id": 3901,
+              "label": "Drum",
+              "description": null
+            },
+            {
+              "id": 3902,
+              "label": "Dulcimer",
+              "description": null
+            },
+            {
+              "id": 3903,
+              "label": "Flute",
+              "description": null
+            },
+            {
+              "id": 3906,
+              "label": "Horn",
+              "description": null
+            },
+            {
+              "id": 3904,
+              "label": "Lute",
+              "description": null
+            },
+            {
+              "id": 3905,
+              "label": "Lyre",
+              "description": null
+            },
+            {
+              "id": 3907,
+              "label": "Pan Flute",
+              "description": null
+            },
+            {
+              "id": 3908,
+              "label": "Shawm",
+              "description": null
+            },
+            {
+              "id": 3909,
+              "label": "Viol",
+              "description": null
+            }
+          ],
+          "componentId": 14,
+          "componentTypeId": 1669830167
+        },
+        {
+          "id": "2-2170",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 1,
+          "optionValue": 3784,
+          "label": "Choose a Skill",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [
+            "Acrobatics"
+          ],
+          "options": [
+            {
+              "id": 3784,
+              "label": "Acrobatics",
+              "description": null
+            },
+            {
+              "id": 3792,
+              "label": "Animal Handling",
+              "description": null
+            },
+            {
+              "id": 3787,
+              "label": "Arcana",
+              "description": null
+            },
+            {
+              "id": 3783,
+              "label": "Athletics",
+              "description": null
+            },
+            {
+              "id": 3797,
+              "label": "Deception",
+              "description": null
+            },
+            {
+              "id": 3788,
+              "label": "History",
+              "description": null
+            },
+            {
+              "id": 3793,
+              "label": "Insight",
+              "description": null
+            },
+            {
+              "id": 3798,
+              "label": "Intimidation",
+              "description": null
+            },
+            {
+              "id": 3789,
+              "label": "Investigation",
+              "description": null
+            },
+            {
+              "id": 3794,
+              "label": "Medicine",
+              "description": null
+            },
+            {
+              "id": 3790,
+              "label": "Nature",
+              "description": null
+            },
+            {
+              "id": 3795,
+              "label": "Perception",
+              "description": null
+            },
+            {
+              "id": 3799,
+              "label": "Performance",
+              "description": null
+            },
+            {
+              "id": 3800,
+              "label": "Persuasion",
+              "description": null
+            },
+            {
+              "id": 3791,
+              "label": "Religion",
+              "description": null
+            },
+            {
+              "id": 3785,
+              "label": "Sleight of Hand",
+              "description": null
+            },
+            {
+              "id": 3786,
+              "label": "Stealth",
+              "description": null
+            },
+            {
+              "id": 3796,
+              "label": "Survival",
+              "description": null
+            }
+          ],
+          "componentId": 14,
+          "componentTypeId": 1669830167
+        },
+        {
+          "id": "2-2171",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 1,
+          "optionValue": 3799,
+          "label": "Choose a Skill",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [
+            "Performance"
+          ],
+          "options": [
+            {
+              "id": 3784,
+              "label": "Acrobatics",
+              "description": null
+            },
+            {
+              "id": 3792,
+              "label": "Animal Handling",
+              "description": null
+            },
+            {
+              "id": 3787,
+              "label": "Arcana",
+              "description": null
+            },
+            {
+              "id": 3783,
+              "label": "Athletics",
+              "description": null
+            },
+            {
+              "id": 3797,
+              "label": "Deception",
+              "description": null
+            },
+            {
+              "id": 3788,
+              "label": "History",
+              "description": null
+            },
+            {
+              "id": 3793,
+              "label": "Insight",
+              "description": null
+            },
+            {
+              "id": 3798,
+              "label": "Intimidation",
+              "description": null
+            },
+            {
+              "id": 3789,
+              "label": "Investigation",
+              "description": null
+            },
+            {
+              "id": 3794,
+              "label": "Medicine",
+              "description": null
+            },
+            {
+              "id": 3790,
+              "label": "Nature",
+              "description": null
+            },
+            {
+              "id": 3795,
+              "label": "Perception",
+              "description": null
+            },
+            {
+              "id": 3799,
+              "label": "Performance",
+              "description": null
+            },
+            {
+              "id": 3800,
+              "label": "Persuasion",
+              "description": null
+            },
+            {
+              "id": 3791,
+              "label": "Religion",
+              "description": null
+            },
+            {
+              "id": 3785,
+              "label": "Sleight of Hand",
+              "description": null
+            },
+            {
+              "id": 3786,
+              "label": "Stealth",
+              "description": null
+            },
+            {
+              "id": 3796,
+              "label": "Survival",
+              "description": null
+            }
+          ],
+          "componentId": 14,
+          "componentTypeId": 1669830167
+        },
+        {
+          "id": "2-2172",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 1,
+          "optionValue": 3947,
+          "label": "Choose a Tool",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [
+            "Disguise Kit"
+          ],
+          "options": [
+            {
+              "id": 3930,
+              "label": "Alchemist's Supplies",
+              "description": null
+            },
+            {
+              "id": 3955,
+              "label": "Bagpipes",
+              "description": null
+            },
+            {
+              "id": 3931,
+              "label": "Brewer's Supplies",
+              "description": null
+            },
+            {
+              "id": 3932,
+              "label": "Calligrapher's Supplies",
+              "description": null
+            },
+            {
+              "id": 3933,
+              "label": "Carpenter's Tools",
+              "description": null
+            },
+            {
+              "id": 3934,
+              "label": "Cartographer's Tools",
+              "description": null
+            },
+            {
+              "id": 3935,
+              "label": "Cobbler's Tools",
+              "description": null
+            },
+            {
+              "id": 3936,
+              "label": "Cook's Utensils",
+              "description": null
+            },
+            {
+              "id": 3953,
+              "label": "Dice Set",
+              "description": null
+            },
+            {
+              "id": 3947,
+              "label": "Disguise Kit",
+              "description": null
+            },
+            {
+              "id": 4377,
+              "label": "Dragonchess Set",
+              "description": null
+            },
+            {
+              "id": 3956,
+              "label": "Drum",
+              "description": null
+            },
+            {
+              "id": 3957,
+              "label": "Dulcimer",
+              "description": null
+            },
+            {
+              "id": 3958,
+              "label": "Flute",
+              "description": null
+            },
+            {
+              "id": 3948,
+              "label": "Forgery Kit",
+              "description": null
+            },
+            {
+              "id": 3937,
+              "label": "Glassblower's Tools",
+              "description": null
+            },
+            {
+              "id": 3949,
+              "label": "Herbalism Kit",
+              "description": null
+            },
+            {
+              "id": 3961,
+              "label": "Horn",
+              "description": null
+            },
+            {
+              "id": 3938,
+              "label": "Jeweler's Tools",
+              "description": null
+            },
+            {
+              "id": 3939,
+              "label": "Leatherworker's Tools",
+              "description": null
+            },
+            {
+              "id": 3959,
+              "label": "Lute",
+              "description": null
+            },
+            {
+              "id": 3960,
+              "label": "Lyre",
+              "description": null
+            },
+            {
+              "id": 3940,
+              "label": "Mason's Tools",
+              "description": null
+            },
+            {
+              "id": 3950,
+              "label": "Navigator's Tools",
+              "description": null
+            },
+            {
+              "id": 3941,
+              "label": "Painter's Supplies",
+              "description": null
+            },
+            {
+              "id": 3962,
+              "label": "Pan Flute",
+              "description": null
+            },
+            {
+              "id": 3954,
+              "label": "Playing Card Set",
+              "description": null
+            },
+            {
+              "id": 3951,
+              "label": "Poisoner's Kit",
+              "description": null
+            },
+            {
+              "id": 3942,
+              "label": "Potter's Tools",
+              "description": null
+            },
+            {
+              "id": 3963,
+              "label": "Shawm",
+              "description": null
+            },
+            {
+              "id": 3943,
+              "label": "Smith's Tools",
+              "description": null
+            },
+            {
+              "id": 3952,
+              "label": "Thieves' Tools",
+              "description": null
+            },
+            {
+              "id": 4378,
+              "label": "Three-Dragon Ante Set",
+              "description": null
+            },
+            {
+              "id": 3944,
+              "label": "Tinker's Tools",
+              "description": null
+            },
+            {
+              "id": 4345,
+              "label": "Vehicles (Land)",
+              "description": null
+            },
+            {
+              "id": 5080,
+              "label": "Vehicles (Sea/Air)",
+              "description": null
+            },
+            {
+              "id": 4346,
+              "label": "Vehicles (Water)",
+              "description": null
+            },
+            {
+              "id": 3964,
+              "label": "Viol",
+              "description": null
+            },
+            {
+              "id": 3945,
+              "label": "Weaver's Tools",
+              "description": null
+            },
+            {
+              "id": 3946,
+              "label": "Woodcarver's Tools",
+              "description": null
+            }
+          ],
+          "componentId": 14,
+          "componentTypeId": 1669830167
+        }
+      ],
+      "feat": [
+        {
+          "id": "2-1060212",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 1,
+          "optionValue": 3797,
+          "label": "Choose a Skill",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [
+            {
+              "id": 3784,
+              "label": "Acrobatics",
+              "description": null
+            },
+            {
+              "id": 3792,
+              "label": "Animal Handling",
+              "description": null
+            },
+            {
+              "id": 3787,
+              "label": "Arcana",
+              "description": null
+            },
+            {
+              "id": 3783,
+              "label": "Athletics",
+              "description": null
+            },
+            {
+              "id": 3797,
+              "label": "Deception",
+              "description": null
+            },
+            {
+              "id": 3788,
+              "label": "History",
+              "description": null
+            },
+            {
+              "id": 3793,
+              "label": "Insight",
+              "description": null
+            },
+            {
+              "id": 3798,
+              "label": "Intimidation",
+              "description": null
+            },
+            {
+              "id": 3789,
+              "label": "Investigation",
+              "description": null
+            },
+            {
+              "id": 3794,
+              "label": "Medicine",
+              "description": null
+            },
+            {
+              "id": 3790,
+              "label": "Nature",
+              "description": null
+            },
+            {
+              "id": 3795,
+              "label": "Perception",
+              "description": null
+            },
+            {
+              "id": 3799,
+              "label": "Performance",
+              "description": null
+            },
+            {
+              "id": 3800,
+              "label": "Persuasion",
+              "description": null
+            },
+            {
+              "id": 3791,
+              "label": "Religion",
+              "description": null
+            },
+            {
+              "id": 3785,
+              "label": "Sleight of Hand",
+              "description": null
+            },
+            {
+              "id": 3786,
+              "label": "Stealth",
+              "description": null
+            },
+            {
+              "id": 3796,
+              "label": "Survival",
+              "description": null
+            }
+          ],
+          "componentId": 88,
+          "componentTypeId": 1088085227
+        },
+        {
+          "id": "2-1060229",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 1,
+          "optionValue": 3949,
+          "label": "Choose a Tool",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [
+            {
+              "id": 3930,
+              "label": "Alchemist's Supplies",
+              "description": null
+            },
+            {
+              "id": 3955,
+              "label": "Bagpipes",
+              "description": null
+            },
+            {
+              "id": 3931,
+              "label": "Brewer's Supplies",
+              "description": null
+            },
+            {
+              "id": 3932,
+              "label": "Calligrapher's Supplies",
+              "description": null
+            },
+            {
+              "id": 3933,
+              "label": "Carpenter's Tools",
+              "description": null
+            },
+            {
+              "id": 3934,
+              "label": "Cartographer's Tools",
+              "description": null
+            },
+            {
+              "id": 3935,
+              "label": "Cobbler's Tools",
+              "description": null
+            },
+            {
+              "id": 3936,
+              "label": "Cook's Utensils",
+              "description": null
+            },
+            {
+              "id": 3953,
+              "label": "Dice Set",
+              "description": null
+            },
+            {
+              "id": 3947,
+              "label": "Disguise Kit",
+              "description": null
+            },
+            {
+              "id": 4377,
+              "label": "Dragonchess Set",
+              "description": null
+            },
+            {
+              "id": 3956,
+              "label": "Drum",
+              "description": null
+            },
+            {
+              "id": 3957,
+              "label": "Dulcimer",
+              "description": null
+            },
+            {
+              "id": 3958,
+              "label": "Flute",
+              "description": null
+            },
+            {
+              "id": 3948,
+              "label": "Forgery Kit",
+              "description": null
+            },
+            {
+              "id": 3937,
+              "label": "Glassblower's Tools",
+              "description": null
+            },
+            {
+              "id": 3949,
+              "label": "Herbalism Kit",
+              "description": null
+            },
+            {
+              "id": 3961,
+              "label": "Horn",
+              "description": null
+            },
+            {
+              "id": 3938,
+              "label": "Jeweler's Tools",
+              "description": null
+            },
+            {
+              "id": 3939,
+              "label": "Leatherworker's Tools",
+              "description": null
+            },
+            {
+              "id": 3959,
+              "label": "Lute",
+              "description": null
+            },
+            {
+              "id": 3960,
+              "label": "Lyre",
+              "description": null
+            },
+            {
+              "id": 3940,
+              "label": "Mason's Tools",
+              "description": null
+            },
+            {
+              "id": 3950,
+              "label": "Navigator's Tools",
+              "description": null
+            },
+            {
+              "id": 3941,
+              "label": "Painter's Supplies",
+              "description": null
+            },
+            {
+              "id": 3962,
+              "label": "Pan Flute",
+              "description": null
+            },
+            {
+              "id": 3954,
+              "label": "Playing Card Set",
+              "description": null
+            },
+            {
+              "id": 3951,
+              "label": "Poisoner's Kit",
+              "description": null
+            },
+            {
+              "id": 3942,
+              "label": "Potter's Tools",
+              "description": null
+            },
+            {
+              "id": 3963,
+              "label": "Shawm",
+              "description": null
+            },
+            {
+              "id": 3943,
+              "label": "Smith's Tools",
+              "description": null
+            },
+            {
+              "id": 3952,
+              "label": "Thieves' Tools",
+              "description": null
+            },
+            {
+              "id": 4378,
+              "label": "Three-Dragon Ante Set",
+              "description": null
+            },
+            {
+              "id": 3944,
+              "label": "Tinker's Tools",
+              "description": null
+            },
+            {
+              "id": 4345,
+              "label": "Vehicles (Land)",
+              "description": null
+            },
+            {
+              "id": 5080,
+              "label": "Vehicles (Sea/Air)",
+              "description": null
+            },
+            {
+              "id": 4346,
+              "label": "Vehicles (Water)",
+              "description": null
+            },
+            {
+              "id": 3964,
+              "label": "Viol",
+              "description": null
+            },
+            {
+              "id": 3945,
+              "label": "Weaver's Tools",
+              "description": null
+            },
+            {
+              "id": 3946,
+              "label": "Woodcarver's Tools",
+              "description": null
+            }
+          ],
+          "componentId": 88,
+          "componentTypeId": 1088085227
+        },
+        {
+          "id": "2-1060250",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 3,
+          "optionValue": 4055,
+          "label": "Choose a Language",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [
+            {
+              "id": 4045,
+              "label": "Abyssal",
+              "description": null
+            },
+            {
+              "id": 4049,
+              "label": "Celestial",
+              "description": null
+            },
+            {
+              "id": 4050,
+              "label": "Common",
+              "description": null
+            },
+            {
+              "id": 4051,
+              "label": "Deep Speech",
+              "description": null
+            },
+            {
+              "id": 4052,
+              "label": "Draconic",
+              "description": null
+            },
+            {
+              "id": 4054,
+              "label": "Dwarvish",
+              "description": null
+            },
+            {
+              "id": 4055,
+              "label": "Elvish",
+              "description": null
+            },
+            {
+              "id": 4056,
+              "label": "Giant",
+              "description": null
+            },
+            {
+              "id": 5064,
+              "label": "Gith",
+              "description": null
+            },
+            {
+              "id": 4061,
+              "label": "Gnomish",
+              "description": null
+            },
+            {
+              "id": 4062,
+              "label": "Goblin",
+              "description": null
+            },
+            {
+              "id": 4063,
+              "label": "Halfling",
+              "description": null
+            },
+            {
+              "id": 4065,
+              "label": "Infernal",
+              "description": null
+            },
+            {
+              "id": 5110,
+              "label": "Kraul",
+              "description": null
+            },
+            {
+              "id": 5109,
+              "label": "Loxodon",
+              "description": null
+            },
+            {
+              "id": 5108,
+              "label": "Minotaur",
+              "description": null
+            },
+            {
+              "id": 4066,
+              "label": "Orc",
+              "description": null
+            },
+            {
+              "id": 4068,
+              "label": "Primordial",
+              "description": null
+            },
+            {
+              "id": 4071,
+              "label": "Sylvan",
+              "description": null
+            },
+            {
+              "id": 4074,
+              "label": "Undercommon",
+              "description": null
+            },
+            {
+              "id": 5111,
+              "label": "Vedalken",
+              "description": null
+            }
+          ],
+          "componentId": 88,
+          "componentTypeId": 1088085227
+        },
+        {
+          "id": "2-1060263",
+          "parentChoiceId": null,
+          "type": 2,
+          "subType": 2,
+          "optionValue": 3803,
+          "label": "Choose a Skill",
+          "isOptional": false,
+          "isInfinite": false,
+          "defaultSubtypes": [],
+          "options": [
+            {
+              "id": 3802,
+              "label": "Acrobatics",
+              "description": null
+            },
+            {
+              "id": 3810,
+              "label": "Animal Handling",
+              "description": null
+            },
+            {
+              "id": 3805,
+              "label": "Arcana",
+              "description": null
+            },
+            {
+              "id": 3801,
+              "label": "Athletics",
+              "description": null
+            },
+            {
+              "id": 3815,
+              "label": "Deception",
+              "description": null
+            },
+            {
+              "id": 3806,
+              "label": "History",
+              "description": null
+            },
+            {
+              "id": 3811,
+              "label": "Insight",
+              "description": null
+            },
+            {
+              "id": 3816,
+              "label": "Intimidation",
+              "description": null
+            },
+            {
+              "id": 3807,
+              "label": "Investigation",
+              "description": null
+            },
+            {
+              "id": 3812,
+              "label": "Medicine",
+              "description": null
+            },
+            {
+              "id": 3808,
+              "label": "Nature",
+              "description": null
+            },
+            {
+              "id": 3813,
+              "label": "Perception",
+              "description": null
+            },
+            {
+              "id": 3817,
+              "label": "Performance",
+              "description": null
+            },
+            {
+              "id": 3818,
+              "label": "Persuasion",
+              "description": null
+            },
+            {
+              "id": 3809,
+              "label": "Religion",
+              "description": null
+            },
+            {
+              "id": 3803,
+              "label": "Sleight of Hand",
+              "description": null
+            },
+            {
+              "id": 3804,
+              "label": "Stealth",
+              "description": null
+            },
+            {
+              "id": 3814,
+              "label": "Survival",
+              "description": null
+            }
+          ],
+          "componentId": 88,
+          "componentTypeId": 1088085227
+        }
+      ]
+    },
+    "actions": {
+      "race": [],
+      "class": [
+        {
+          "id": 71185,
+          "entityTypeId": 222216831,
+          "limitedUse": null,
+          "name": "Sneak Attack",
+          "description": "<p>Beginning at 1st level, you know how to strike subtly and exploit a foe&rsquo;s distraction. Once per turn, you can deal an extra 1d6 damage to one creature you hit with an attack if you have advantage on the attack roll. The attack must use a finesse or a r<span>anged weapon.</span></p>\r\n<p>You don&rsquo;t need advantage on the attack roll if another enemy of the target is within 5 feet of it, that enemy isn&rsquo;t incapacitated, and you don&rsquo;t have disadvantage on the<span>&nbsp;attack roll.</span></p>\r\n<p>The amount of the extra damage increases as you gain levels in this class, as shown in the Sneak Attack column of the<span>&nbsp;Rogue table.</span></p>",
+          "snippet": "Once per turn, you can deal an extra {{scalevalue}} damage to one creature you hit with an attack with a finesse or ranged weapon if you have advantage on the attack roll. You don’t need advantage on the attack roll if another enemy of the target is within 5 ft. of it, that enemy isn’t incapacitated, and you don’t have disadvantage on the attack roll.",
+          "abilityModifierStatId": null,
+          "onMissDescription": "",
+          "saveFailDescription": "",
+          "saveSuccessDescription": "",
+          "saveStatId": null,
+          "fixedSaveDc": null,
+          "attackTypeRange": null,
+          "actionType": 3,
+          "attackSubtype": null,
+          "dice": null,
+          "value": null,
+          "damageTypeId": null,
+          "isMartialArts": false,
+          "isProficient": false,
+          "spellRangeType": null,
+          "displayAsAttack": null,
+          "range": {
+            "range": null,
+            "longRange": null,
+            "aoeType": null,
+            "aoeSize": null,
+            "hasAoeSpecialDescription": false
+          },
+          "activation": {
+            "activationTime": null,
+            "activationType": 8
+          },
+          "attackCustomData": {
+            "name": null,
+            "notes": null,
+            "damageBonus": null,
+            "toHitBonus": null,
+            "toHit": null,
+            "isOffhand": null,
+            "isSilver": null,
+            "isAdamantine": null,
+            "isProficient": null,
+            "saveDcBonus": null,
+            "saveDc": null,
+            "weight": null,
+            "displayAsAttack": null,
+            "cost": null
+          },
+          "componentId": 343,
+          "componentTypeId": 12168134
+        }
+      ],
+      "feat": []
+    },
+    "modifiers": {
+      "race": [
+        {
+          "id": "racialTrait_64_1471",
+          "entityId": 1,
+          "entityTypeId": 906033267,
+          "type": "language",
+          "subType": "common",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Language",
+          "friendlySubtypeName": "Common",
+          "isGranted": true,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 64,
+          "componentTypeId": 1960452172
+        },
+        {
+          "id": "racialTrait_64_1472",
+          "entityId": 5,
+          "entityTypeId": 906033267,
+          "type": "language",
+          "subType": "gnomish",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Language",
+          "friendlySubtypeName": "Gnomish",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 64,
+          "componentTypeId": 1960452172
+        },
+        {
+          "id": "racialTrait_65_1473",
+          "entityId": 13,
+          "entityTypeId": 1958004211,
+          "type": "proficiency",
+          "subType": "medicine",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Medicine",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 65,
+          "componentTypeId": 1960452172
+        },
+        {
+          "id": "racialTrait_102_1658",
+          "entityId": 2,
+          "entityTypeId": 1472902489,
+          "type": "bonus",
+          "subType": "dexterity-score",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Bonus",
+          "friendlySubtypeName": "Dexterity Score",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": 1,
+          "componentId": 102,
+          "componentTypeId": 1960452172
+        },
+        {
+          "id": "racialTrait_102_1659",
+          "entityId": 6,
+          "entityTypeId": 1472902489,
+          "type": "bonus",
+          "subType": "charisma-score",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Bonus",
+          "friendlySubtypeName": "Charisma Score",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": 1,
+          "componentId": 102,
+          "componentTypeId": 1960452172
+        }
+      ],
+      "class": [
+        {
+          "id": "classFeature_342_1447",
+          "entityId": 18,
+          "entityTypeId": 1958004211,
+          "type": "expertise",
+          "subType": "performance",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Expertise",
+          "friendlySubtypeName": "Performance",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 342,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "classFeature_342_1448",
+          "entityId": 3,
+          "entityTypeId": 1958004211,
+          "type": "expertise",
+          "subType": "acrobatics",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Expertise",
+          "friendlySubtypeName": "Acrobatics",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 342,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "classFeature_467_1559",
+          "entityId": 1,
+          "entityTypeId": 174869515,
+          "type": "proficiency",
+          "subType": "light-armor",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Light Armor",
+          "isGranted": true,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 467,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "classFeature_467_1560",
+          "entityId": 1,
+          "entityTypeId": 660121713,
+          "type": "proficiency",
+          "subType": "simple-weapons",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Simple Weapons",
+          "isGranted": true,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 467,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "classFeature_467_1561",
+          "entityId": 1,
+          "entityTypeId": 1782728300,
+          "type": "proficiency",
+          "subType": "crossbow-hand",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Crossbow, Hand",
+          "isGranted": true,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 467,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "classFeature_467_1562",
+          "entityId": 4,
+          "entityTypeId": 1782728300,
+          "type": "proficiency",
+          "subType": "longsword",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Longsword",
+          "isGranted": true,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 467,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "classFeature_467_1563",
+          "entityId": 28,
+          "entityTypeId": 1782728300,
+          "type": "proficiency",
+          "subType": "rapier",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Rapier",
+          "isGranted": true,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 467,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "classFeature_467_1564",
+          "entityId": 30,
+          "entityTypeId": 1782728300,
+          "type": "proficiency",
+          "subType": "shortsword",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Shortsword",
+          "isGranted": true,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 467,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "classFeature_467_1565",
+          "entityId": 126,
+          "entityTypeId": 2103445194,
+          "type": "proficiency",
+          "subType": "thieves-tools",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Thieves' Tools",
+          "isGranted": true,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 467,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "classFeature_467_1566",
+          "entityId": null,
+          "entityTypeId": null,
+          "type": "proficiency",
+          "subType": "dexterity-saving-throws",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Dexterity Saving Throws",
+          "isGranted": true,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 467,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "classFeature_467_1567",
+          "entityId": null,
+          "entityTypeId": null,
+          "type": "proficiency",
+          "subType": "intelligence-saving-throws",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Intelligence Saving Throws",
+          "isGranted": true,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 467,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "classFeature_467_1568",
+          "entityId": 4,
+          "entityTypeId": 1958004211,
+          "type": "proficiency",
+          "subType": "sleight-of-hand",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Sleight of Hand",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 467,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "classFeature_467_1569",
+          "entityId": 5,
+          "entityTypeId": 1958004211,
+          "type": "proficiency",
+          "subType": "stealth",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Stealth",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 467,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "classFeature_467_1570",
+          "entityId": 12,
+          "entityTypeId": 1958004211,
+          "type": "proficiency",
+          "subType": "insight",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Insight",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 467,
+          "componentTypeId": 12168134
+        },
+        {
+          "id": "classFeature_467_1571",
+          "entityId": 19,
+          "entityTypeId": 1958004211,
+          "type": "proficiency",
+          "subType": "persuasion",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Persuasion",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 467,
+          "componentTypeId": 12168134
+        }
+      ],
+      "background": [
+        {
+          "id": "background_14_2170",
+          "entityId": 3,
+          "entityTypeId": 1958004211,
+          "type": "proficiency",
+          "subType": "acrobatics",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Acrobatics",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 14,
+          "componentTypeId": 1669830167
+        },
+        {
+          "id": "background_14_2171",
+          "entityId": 18,
+          "entityTypeId": 1958004211,
+          "type": "proficiency",
+          "subType": "performance",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Performance",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 14,
+          "componentTypeId": 1669830167
+        },
+        {
+          "id": "background_14_2172",
+          "entityId": 119,
+          "entityTypeId": 2103445194,
+          "type": "proficiency",
+          "subType": "disguise-kit",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Disguise Kit",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 14,
+          "componentTypeId": 1669830167
+        },
+        {
+          "id": "background_14_2173",
+          "entityId": 131,
+          "entityTypeId": 2103445194,
+          "type": "proficiency",
+          "subType": "lute",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Lute",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 14,
+          "componentTypeId": 1669830167
+        }
+      ],
+      "item": [],
+      "feat": [
+        {
+          "id": "feat_88_1060212",
+          "entityId": 16,
+          "entityTypeId": 1958004211,
+          "type": "proficiency",
+          "subType": "deception",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Deception",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 88,
+          "componentTypeId": 1088085227
+        },
+        {
+          "id": "feat_88_1060229",
+          "entityId": 123,
+          "entityTypeId": 2103445194,
+          "type": "proficiency",
+          "subType": "herbalism-kit",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Proficiency",
+          "friendlySubtypeName": "Herbalism Kit",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 88,
+          "componentTypeId": 1088085227
+        },
+        {
+          "id": "feat_88_1060250",
+          "entityId": 3,
+          "entityTypeId": 906033267,
+          "type": "language",
+          "subType": "elvish",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Language",
+          "friendlySubtypeName": "Elvish",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 88,
+          "componentTypeId": 1088085227
+        },
+        {
+          "id": "feat_88_1060263",
+          "entityId": 4,
+          "entityTypeId": 1958004211,
+          "type": "expertise",
+          "subType": "sleight-of-hand",
+          "dice": null,
+          "restriction": "",
+          "statId": null,
+          "requiresAttunement": false,
+          "duration": null,
+          "friendlyTypeName": "Expertise",
+          "friendlySubtypeName": "Sleight of Hand",
+          "isGranted": false,
+          "bonusTypes": [],
+          "value": null,
+          "componentId": 88,
+          "componentTypeId": 1088085227
+        }
+      ],
+      "condition": []
+    },
+    "classSpells": [
+      {
+        "entityTypeId": 1446578651,
+        "characterClassId": 15432391,
+        "spells": []
+      }
+    ],
+    "customItems": [],
+    "campaign": null,
+    "creatures": [],
+    "vehicles": [],
+    "components": []
+  }
+}
