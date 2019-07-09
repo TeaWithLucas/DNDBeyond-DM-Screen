@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         New Userscript
+// @name         ddb-dm-screen
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.9
 // @description  try to take over the world!
 // @author       You
 // @match        https://www.dndbeyond.com/campaigns/*
@@ -16,24 +16,26 @@ class Stat {
   };
     bonus() {
       if (this.value == 1) {return -5;}
-      else if (this.value <= 3)  {return -4;}
-      else if (this.value <= 5)  {return -3;}
-      else if (this.value <= 7)  {return -2;}
-      else if (this.value <= 9)  {return -1;}
-      else if (this.value <= 11) {return 0;}
-      else if (this.value <= 13) {return 1;}
-      else if (this.value <= 15) {return 2;}
-      else if (this.value <= 17) {return 3;}
-      else if (this.value <= 19) {return 4;}
-      else if (this.value <= 21) {return 5;}
-      else if (this.value <= 23) {return 6;}
-      else if (this.value <= 25) {return 7;}
-      else if (this.value <= 27) {return 8;}
-      else if (this.value <= 29) {return 9;}
+      else if (this.value <= 3)  {return '-4';}
+      else if (this.value <= 5)  {return '-3';}
+      else if (this.value <= 7)  {return '-2';}
+      else if (this.value <= 9)  {return '-1';}
+      else if (this.value <= 11) {return '0';}
+      else if (this.value <= 13) {return '+1';}
+      else if (this.value <= 15) {return '+2';}
+      else if (this.value <= 17) {return '+3';}
+      else if (this.value <= 19) {return '+4';}
+      else if (this.value <= 21) {return '+5';}
+      else if (this.value <= 23) {return '+6';}
+      else if (this.value <= 25) {return '+7';}
+      else if (this.value <= 27) {return '+8';}
+      else if (this.value <= 29) {return '+9';}
     };
     savingThrow(proficiency) {
-        if (this.saveProficiency) {return this.bonus + proficiency;}
-        else { return this.bonus;}
+        if (this.saveProficiency) {var ret = parseInt(this.bonus()) + proficiency;}
+        else { var ret = parseInt(this.bonus());}
+        if (ret <= 0) {return ret;}
+        else {return '+' + ret;}
     };
 };
 
@@ -48,15 +50,13 @@ class Stat {
         function(index, value) {
             //if not ddb-campaigns-detail-body-listing-inactive
             if (!($(this).parents().hasClass('ddb-campaigns-detail-body-listing-inactive'))) {
+                var charLink = $(this);
                 var charString = $(this).attr('href')+"/json";
                 //console.log(charString);
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                        var myObj = JSON.parse(this.responseText);
-                        //console.log(myObj.character);
-                        characterJSON.push(myObj.character);
-                        var x = myObj.character;
+                        var x = JSON.parse(this.responseText).character;
                         var character = new Object();
                         // assign character data
                         character.name = x.name;
@@ -110,16 +110,30 @@ class Stat {
                                 };
                             };
                         };
-                        character.maxHP = x.baseHitPoints + x.removedHitPoints;
-                        character.currentHP = x.baseHitPoints + x.temporaryHitPoints;
+                        character.maxHP = x.baseHitPoints + (character.level * parseInt(character.stats.con.bonus())) - x.removedHitPoints;
+                        character.currentHP = character.maxHP + x.temporaryHitPoints - x.removedHitPoints;
 
-                        characterData.push(character);
+                        //characterData.push(character);
                         // debug info
-                        console.log(character);
+                        //console.log(character);
+                        charLink.parents('.ddb-campaigns-character-card').after('\
+<div><table id="character-details-' + character.name.replace(/\s/g, '') + '">\
+<thead><tr><th></th><th>Value</th><th>Bonus</th><th>Saving Throw</th></thead>\
+<tbody></tbody>\
+</table></div>');
+                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>Strength</td><td>'+ character.stats.str.value + '</td><td>' + character.stats.str.bonus() + '</td><td>' + character.stats.str.savingThrow(character.proficiency) + '</td></tr>');
+                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>Dexterity</td><td>'+ character.stats.dex.value + '</td><td>' + character.stats.dex.bonus() + '</td><td>' + character.stats.dex.savingThrow(character.proficiency) + '</td></tr>');
+                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>Constitution</td><td>'+ character.stats.con.value + '</td><td>' + character.stats.con.bonus() + '</td><td>' + character.stats.con.savingThrow(character.proficiency) + '</td></tr>');
+                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>Intelligence</td><td>'+ character.stats.int.value + '</td><td>' + character.stats.int.bonus() + '</td><td>' + character.stats.int.savingThrow(character.proficiency) + '</td></tr>');
+                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>Wisdom</td><td>'+ character.stats.wis.value + '</td><td>' + character.stats.wis.bonus() + '</td><td>' + character.stats.wis.savingThrow(character.proficiency) + '</td></tr>');
+                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>Charisma</td><td>'+ character.stats.cha.value + '</td><td>' + character.stats.cha.bonus() + '</td><td>' + character.stats.cha.savingThrow(character.proficiency) + '</td></tr>');
+                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>Proficiency</td><td>+'+ character.proficiency + '</td><td></td><td></td></tr>');
+                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>HP</td><td>'+ character.currentHP + '/' + character.maxHP + '</td><td></td><td></td></tr>');
                     }
-                };
+                 };
                 xmlhttp.open("GET", charString, true);
                 xmlhttp.send();
+
             };
         }
     );
