@@ -10,6 +10,7 @@ This Tampermonkey userscript aims to provide simple DM screen by extracting json
 2. Create new script
 3. Paste content of ddb-dm-screen.js to the window
 4. Save
+5. Open campaign page, wait patiently. To refresh data, refresh page
 
 ## security
 
