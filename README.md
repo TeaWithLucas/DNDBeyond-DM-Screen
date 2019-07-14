@@ -8,8 +8,13 @@ This Tampermonkey userscript aims to provide simple DM screen by extracting json
 
 1. Install tampermonkey
 2. unstall new script from below link: https://github.com/mivalsten/ddb-dm-screen/raw/master/ddb-dm-screen.user.js
-3. It autoupdates, yay
+3. Open your campaign, bask your eyes on this monstrosity
+4. It autoupdates, yay
 
 ## security
 
 Remember to never paste unknown userscripts from some shady github repos to your tampermonkey addon as this can severely compromise your PC. And especially never use autoupdate feature without reviewing contents of the changes added to the script. Generally, write your own userscripts if you can.
+
+## images
+
+![dm screen screenshot](https://i.imgur.com/wcgRlhJ.png)
