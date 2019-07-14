@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddb-dm-screen
-// @namespace    http://tampermonkey.net/
-// @version      1.0
+// @namespace    https://github.com/mivalsten/ddb-dm-screen
+// @version      1.1
 // @description  Poor man's DM screen for DDB campaigns
 // @author       You
 // @match        https://www.dndbeyond.com/campaigns/*
@@ -64,8 +64,8 @@ class Stat {
                         $('#iframeDiv').append('<iframe id="hiddenFrame' + character.name.replace(/\s/g, '') + '" src="'+ charLink.attr('href') +'"></iframe>');
                         $('#hiddenFrame' + character.name.replace(/\s/g, '')).load(function(){
                             setTimeout(function () {
-                                console.log('################### ' + character.name + ' ########################');
-                                console.log($('#hiddenFrame' + character.name.replace(/\s/g, '')).contents());
+                                //console.log('################### ' + character.name + ' ########################');
+                                //console.log($('#hiddenFrame' + character.name.replace(/\s/g, '')).contents());
                                 var acElem = $('#hiddenFrame' + character.name.replace(/\s/g, '')).contents().find(".ct-combat-mobile__extra--ac");
                                 console.log(acElem);
                                 var ac = acElem.find(".ct-combat-mobile__extra-value").text();
