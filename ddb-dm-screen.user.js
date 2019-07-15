@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      1.2.1
+// @version      1.2.2
 // @description  Poor man's DM screen for DDB campaigns
 // @author       You
 // @match        https://www.dndbeyond.com/campaigns/*
@@ -132,7 +132,7 @@ class Stat {
                             };
 
                         };
-                        if (x.overrideHitPoints == null) {character.maxHP = x.baseHitPoints + (character.level * parseInt(character.stats.con.bonus()));}
+                        if (x.overrideHitPoints == null) {character.maxHP = x.baseHitPoints + x.bonusHitPoints + (character.level * parseInt(character.stats.con.bonus()));}
                         else {character.maxHP = x.overrideHitPoints;}
                         character.currentHP = character.maxHP + x.temporaryHitPoints - x.removedHitPoints;
 
