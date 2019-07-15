@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      1.2
+// @version      1.2.1
 // @description  Poor man's DM screen for DDB campaigns
 // @author       You
 // @match        https://www.dndbeyond.com/campaigns/*
@@ -11,29 +11,20 @@
 class Stat {
   // class methods
   constructor(value) {
-      this.value = value;
+      this.value = parseInt(value);
       this.saveProficiency = false;
+      this.saveBonus = 0;
   };
     bonus() {
-      if (this.value == 1) {return -5;}
-      else if (this.value <= 3)  {return '-4';}
-      else if (this.value <= 5)  {return '-3';}
-      else if (this.value <= 7)  {return '-2';}
-      else if (this.value <= 9)  {return '-1';}
-      else if (this.value <= 11) {return '0';}
-      else if (this.value <= 13) {return '+1';}
-      else if (this.value <= 15) {return '+2';}
-      else if (this.value <= 17) {return '+3';}
-      else if (this.value <= 19) {return '+4';}
-      else if (this.value <= 21) {return '+5';}
-      else if (this.value <= 23) {return '+6';}
-      else if (this.value <= 25) {return '+7';}
-      else if (this.value <= 27) {return '+8';}
-      else if (this.value <= 29) {return '+9';}
+        var b = 0;
+        if (this.value <= 1) {b = "-5";}
+        else {b = Math.floor((this.value - 10)/2);}
+        if (b < 0) {return b.toString();}
+        else {return '+' + b;};
     };
     savingThrow(proficiency) {
-        if (this.saveProficiency) {var ret = parseInt(this.bonus()) + proficiency;}
-        else { var ret = parseInt(this.bonus());}
+        var ret = parseInt(this.bonus()) + this.saveBonus;
+        if (this.saveProficiency) {ret += proficiency;}
         if (ret <= 0) {return ret;}
         else {return '+' + ret;}
     };
@@ -131,6 +122,15 @@ class Stat {
                                     case 'charisma-score': character.stats.cha.value = y.value; break;
                                 }
                             };
+                            if (y.id == "classFeature_270_1439") {
+                                character.stats.str.saveBonus = parseInt(character.stats.cha.bonus());
+                                character.stats.dex.saveBonus = parseInt(character.stats.cha.bonus());
+                                character.stats.con.saveBonus = parseInt(character.stats.cha.bonus());
+                                character.stats.int.saveBonus = parseInt(character.stats.cha.bonus());
+                                character.stats.wis.saveBonus = parseInt(character.stats.cha.bonus());
+                                character.stats.cha.saveBonus = parseInt(character.stats.cha.bonus());
+                            };
+
                         };
                         if (x.overrideHitPoints == null) {character.maxHP = x.baseHitPoints + (character.level * parseInt(character.stats.con.bonus()));}
                         else {character.maxHP = x.overrideHitPoints;}
