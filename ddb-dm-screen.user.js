@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      1.2.2
+// @version      1.2.3
 // @description  Poor man's DM screen for DDB campaigns
 // @author       You
 // @match        https://www.dndbeyond.com/campaigns/*
@@ -52,13 +52,14 @@ class Stat {
                         var character = new Object();
                         // assign character data
                         character.name = x.name;
+                        character.bonusHP = 0;
                         $('#iframeDiv').append('<iframe id="hiddenFrame' + character.name.replace(/[^0-9a-zA-Z]+/g, '') + '" src="'+ charLink.attr('href') +'"></iframe>');
                         $('#hiddenFrame' + character.name.replace(/[^0-9a-zA-Z]+/g, '')).load(function(){
                             setTimeout(function () {
                                 //console.log('################### ' + character.name + ' ########################');
                                 //console.log($('#hiddenFrame' + character.name.replace(/[^0-9a-zA-Z]+/g, '')).contents());
                                 var acElem = $('#hiddenFrame' + character.name.replace(/[^0-9a-zA-Z]+/g, '')).contents().find(".ct-combat-mobile__extra--ac");
-                                console.log(acElem);
+                                //console.log(acElem);
                                 var ac = acElem.find(".ct-combat-mobile__extra-value").text();
                                 $('#character-details-'+character.name.replace(/[^0-9a-zA-Z]+/g, '')+' > tbody:last-child').append('<tr><td>AC</td><td>'+ ac + '</td><td></td><td></td></tr>');
                             }, 5000);
@@ -74,6 +75,8 @@ class Stat {
                         character.level = 0;
                         for (var j=0; j < x.classes.length; j++) {
                             character.level += x.classes[j].level;
+                            //ugly hack for draconic bloodline
+                            if (x.classes[j].subclassDefinition.name == "Draconic Bloodline") {character.bonusHP += x.classes[j].level;};
                         };
                         //proficiency bonus
                         if (character.level < 5) {
@@ -130,9 +133,14 @@ class Stat {
                                 character.stats.wis.saveBonus = parseInt(character.stats.cha.bonus());
                                 character.stats.cha.saveBonus = parseInt(character.stats.cha.bonus());
                             };
+                            //racial bonus to HP
+                            if (y.type == 'bonus' && y.subType == 'hit-points-per-level' && y.id.includes('racialTrait')) {character.bonusHP += (character.level * y.value);};
+
+                            //tough and other bonuses to hp from feats
+                            if (y.type == 'bonus' && y.subType == 'hit-points-per-level' && y.id.includes('feat')) {character.bonusHP += character.level * y.value;};
 
                         };
-                        if (x.overrideHitPoints == null) {character.maxHP = x.baseHitPoints + x.bonusHitPoints + (character.level * parseInt(character.stats.con.bonus()));}
+                        if (x.overrideHitPoints == null) {character.maxHP = character.bonusHP + x.baseHitPoints + x.bonusHitPoints + (character.level * parseInt(character.stats.con.bonus()));}
                         else {character.maxHP = x.overrideHitPoints;}
                         character.currentHP = character.maxHP + x.temporaryHitPoints - x.removedHitPoints;
 
