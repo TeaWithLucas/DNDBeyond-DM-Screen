@@ -61,15 +61,15 @@ class Stat {
                         var character = new Object();
                         // assign character data
                         character.name = x.name;
-                        $('#iframeDiv').append('<iframe id="hiddenFrame' + character.name.replace(/\s/g, '') + '" src="'+ charLink.attr('href') +'"></iframe>');
-                        $('#hiddenFrame' + character.name.replace(/\s/g, '')).load(function(){
+                        $('#iframeDiv').append('<iframe id="hiddenFrame' + character.name.replace(/[^0-9a-zA-Z]+/g, '') + '" src="'+ charLink.attr('href') +'"></iframe>');
+                        $('#hiddenFrame' + character.name.replace(/[^0-9a-zA-Z]+/g, '')).load(function(){
                             setTimeout(function () {
                                 //console.log('################### ' + character.name + ' ########################');
-                                //console.log($('#hiddenFrame' + character.name.replace(/\s/g, '')).contents());
-                                var acElem = $('#hiddenFrame' + character.name.replace(/\s/g, '')).contents().find(".ct-combat-mobile__extra--ac");
+                                //console.log($('#hiddenFrame' + character.name.replace(/[^0-9a-zA-Z]+/g, '')).contents());
+                                var acElem = $('#hiddenFrame' + character.name.replace(/[^0-9a-zA-Z]+/g, '')).contents().find(".ct-combat-mobile__extra--ac");
                                 console.log(acElem);
                                 var ac = acElem.find(".ct-combat-mobile__extra-value").text();
-                                $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>AC</td><td>'+ ac + '</td><td></td><td></td></tr>');
+                                $('#character-details-'+character.name.replace(/[^0-9a-zA-Z]+/g, '')+' > tbody:last-child').append('<tr><td>AC</td><td>'+ ac + '</td><td></td><td></td></tr>');
                             }, 5000);
                             });
                         character.stats = new Object();
@@ -140,18 +140,18 @@ class Stat {
                         // debug info
                         //console.log(character);
                         charLink.parents('.ddb-campaigns-character-card').after('\
-<div><table id="character-details-' + character.name.replace(/\s/g, '') + '">\
+<div><table id="character-details-' + character.name.replace(/[^0-9a-zA-Z]+/g, '') + '">\
 <thead><tr><th></th><th>Value</th><th>Bonus</th><th>Saving Throw</th></thead>\
 <tbody></tbody>\
 </table></div>');
-                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>Strength</td><td>'+ character.stats.str.value + '</td><td>' + character.stats.str.bonus() + '</td><td>' + character.stats.str.savingThrow(character.proficiency) + '</td></tr>');
-                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>Dexterity</td><td>'+ character.stats.dex.value + '</td><td>' + character.stats.dex.bonus() + '</td><td>' + character.stats.dex.savingThrow(character.proficiency) + '</td></tr>');
-                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>Constitution</td><td>'+ character.stats.con.value + '</td><td>' + character.stats.con.bonus() + '</td><td>' + character.stats.con.savingThrow(character.proficiency) + '</td></tr>');
-                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>Intelligence</td><td>'+ character.stats.int.value + '</td><td>' + character.stats.int.bonus() + '</td><td>' + character.stats.int.savingThrow(character.proficiency) + '</td></tr>');
-                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>Wisdom</td><td>'+ character.stats.wis.value + '</td><td>' + character.stats.wis.bonus() + '</td><td>' + character.stats.wis.savingThrow(character.proficiency) + '</td></tr>');
-                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>Charisma</td><td>'+ character.stats.cha.value + '</td><td>' + character.stats.cha.bonus() + '</td><td>' + character.stats.cha.savingThrow(character.proficiency) + '</td></tr>');
-                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>Proficiency</td><td>+'+ character.proficiency + '</td><td></td><td></td></tr>');
-                        $('#character-details-'+character.name.replace(/\s/g, '')+' > tbody:last-child').append('<tr><td>HP</td><td>'+ character.currentHP + '/' + character.maxHP + '</td><td></td><td></td></tr>');
+                        $('#character-details-'+character.name.replace(/[^0-9a-zA-Z]+/g, '')+' > tbody:last-child').append('<tr><td>Strength</td><td>'+ character.stats.str.value + '</td><td>' + character.stats.str.bonus() + '</td><td>' + character.stats.str.savingThrow(character.proficiency) + '</td></tr>');
+                        $('#character-details-'+character.name.replace(/[^0-9a-zA-Z]+/g, '')+' > tbody:last-child').append('<tr><td>Dexterity</td><td>'+ character.stats.dex.value + '</td><td>' + character.stats.dex.bonus() + '</td><td>' + character.stats.dex.savingThrow(character.proficiency) + '</td></tr>');
+                        $('#character-details-'+character.name.replace(/[^0-9a-zA-Z]+/g, '')+' > tbody:last-child').append('<tr><td>Constitution</td><td>'+ character.stats.con.value + '</td><td>' + character.stats.con.bonus() + '</td><td>' + character.stats.con.savingThrow(character.proficiency) + '</td></tr>');
+                        $('#character-details-'+character.name.replace(/[^0-9a-zA-Z]+/g, '')+' > tbody:last-child').append('<tr><td>Intelligence</td><td>'+ character.stats.int.value + '</td><td>' + character.stats.int.bonus() + '</td><td>' + character.stats.int.savingThrow(character.proficiency) + '</td></tr>');
+                        $('#character-details-'+character.name.replace(/[^0-9a-zA-Z]+/g, '')+' > tbody:last-child').append('<tr><td>Wisdom</td><td>'+ character.stats.wis.value + '</td><td>' + character.stats.wis.bonus() + '</td><td>' + character.stats.wis.savingThrow(character.proficiency) + '</td></tr>');
+                        $('#character-details-'+character.name.replace(/[^0-9a-zA-Z]+/g, '')+' > tbody:last-child').append('<tr><td>Charisma</td><td>'+ character.stats.cha.value + '</td><td>' + character.stats.cha.bonus() + '</td><td>' + character.stats.cha.savingThrow(character.proficiency) + '</td></tr>');
+                        $('#character-details-'+character.name.replace(/[^0-9a-zA-Z]+/g, '')+' > tbody:last-child').append('<tr><td>Proficiency</td><td>+'+ character.proficiency + '</td><td></td><td></td></tr>');
+                        $('#character-details-'+character.name.replace(/[^0-9a-zA-Z]+/g, '')+' > tbody:last-child').append('<tr><td>HP</td><td>'+ character.currentHP + '/' + character.maxHP + '</td><td></td><td></td></tr>');
                     }
                  };
                 xmlhttp.open("GET", charString, true);
