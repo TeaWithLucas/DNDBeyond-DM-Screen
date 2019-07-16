@@ -15,6 +15,10 @@ Remember to never paste unknown userscripts from some shady github repos to your
 3. Open your campaign, bask your eyes on this monstrosity
 4. It autoupdates, yay
 
+## from author
+
+If you like my work and would like to thank me, please donate to your local cause. Women shelters, Pro-LGBTQ organisations or animal rights activists would please me the most. Thanks a lot and spread the love!
+
 ## images
 
 ![dm screen screenshot](https://i.imgur.com/wcgRlhJ.png)
