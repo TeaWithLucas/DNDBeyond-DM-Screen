@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      1.2.4
+// @version      1.2.5
 // @description  Poor man's DM screen for DDB campaigns
 // @author       You
 // @match        https://www.dndbeyond.com/campaigns/*
@@ -93,8 +93,9 @@ class Stat {
                         // modifiers
                         var mods = x.modifiers.race;
                         mods = mods.concat(x.modifiers.class, x.modifiers.background, x.modifiers.item, x.modifiers.feat);
+                        // calculate current stats first
                         for (j=0; j < mods.length; j++) {
-                            var y = mods[j];
+                            let y = mods[j];
                             if (y.type == "bonus") {
                                 switch(y.subType) {
                                     case 'strength-score': character.stats.str.value += y.value; break;
@@ -104,16 +105,6 @@ class Stat {
                                     case 'wisdom-score': character.stats.wis.value += y.value; break;
                                     case 'charisma-score': character.stats.cha.value += y.value; break;
                                 }
-                            };
-                            if (y.type == "proficiency") {
-                                switch(y.subType) {
-                                    case 'strength-saving-throws': character.stats.str.saveProficiency = 1; break;
-                                    case 'dexterity-saving-throws': character.stats.dex.saveProficiency = true; break;
-                                    case 'constitution-saving-throws': character.stats.con.saveProficiency = true; break;
-                                    case 'intelligence-saving-throws': character.stats.int.saveProficiency = true; break;
-                                    case 'wisdom-saving-throws': character.stats.wis.saveProficiency = true; break;
-                                    case 'charisma-saving-throws': character.stats.cha.saveProficiency = true; break;
-                                };
                             };
                             if (y.type == "set") {
                                 switch(y.subType) {
@@ -125,13 +116,26 @@ class Stat {
                                     case 'charisma-score': character.stats.cha.value = y.value; break;
                                 }
                             };
+                        };
+                        for (j=0; j < mods.length; j++) {
+                            let y = mods[j];
+                            if (y.type == "proficiency") {
+                                switch(y.subType) {
+                                    case 'strength-saving-throws': character.stats.str.saveProficiency = 1; break;
+                                    case 'dexterity-saving-throws': character.stats.dex.saveProficiency = true; break;
+                                    case 'constitution-saving-throws': character.stats.con.saveProficiency = true; break;
+                                    case 'intelligence-saving-throws': character.stats.int.saveProficiency = true; break;
+                                    case 'wisdom-saving-throws': character.stats.wis.saveProficiency = true; break;
+                                    case 'charisma-saving-throws': character.stats.cha.saveProficiency = true; break;
+                                };
+                            };
                             if (y.id == "classFeature_270_1439") {
-                                character.stats.str.saveBonus = parseInt(character.stats.cha.bonus());
-                                character.stats.dex.saveBonus = parseInt(character.stats.cha.bonus());
-                                character.stats.con.saveBonus = parseInt(character.stats.cha.bonus());
-                                character.stats.int.saveBonus = parseInt(character.stats.cha.bonus());
-                                character.stats.wis.saveBonus = parseInt(character.stats.cha.bonus());
-                                character.stats.cha.saveBonus = parseInt(character.stats.cha.bonus());
+                                character.stats.str.saveBonus += parseInt(character.stats.cha.bonus());
+                                character.stats.dex.saveBonus += parseInt(character.stats.cha.bonus());
+                                character.stats.con.saveBonus += parseInt(character.stats.cha.bonus());
+                                character.stats.int.saveBonus += parseInt(character.stats.cha.bonus());
+                                character.stats.wis.saveBonus += parseInt(character.stats.cha.bonus());
+                                character.stats.cha.saveBonus += parseInt(character.stats.cha.bonus());
                             };
                             //racial bonus to HP
                             if (y.type == 'bonus' && y.subType == 'hit-points-per-level' && y.id.includes('racialTrait')) {character.bonusHP += (character.level * y.value);};
