@@ -76,7 +76,7 @@ class Stat {
                         for (var j=0; j < x.classes.length; j++) {
                             character.level += x.classes[j].level;
                             //ugly hack for draconic bloodline
-                            if (x.classes[j].subclassDefinition.name == "Draconic Bloodline") {character.bonusHP += x.classes[j].level;};
+                            if (x.classes[j].subclassDefinition && x.classes[j].subclassDefinition.name == "Draconic Bloodline") {character.bonusHP += x.classes[j].level;};
                         };
                         //proficiency bonus
                         if (character.level < 5) {
@@ -151,7 +151,7 @@ class Stat {
                         //characterData.push(character);
                         // debug info
                         //console.log(character);
-                        charLink.parents('.ddb-campaigns-character-card').after('\<div><table id="character-details-' + character.name.replace(/[^0-9a-zA-Z]+/g, '') + '">\<thead><tr><th></th><th>Value</th><th>Bonus</th><th>Saving Throw</th></thead>\<tbody></tbody>\</table></div>');
+                        charLink.parents('.ddb-campaigns-character-card').after('<div><table id="character-details-' + character.name.replace(/[^0-9a-zA-Z]+/g, '') + '">\<thead><tr><th></th><th>Value</th><th>Bonus</th><th>Saving Throw</th></thead>\<tbody></tbody>\</table></div>');
                         $('#character-details-'+character.name.replace(/[^0-9a-zA-Z]+/g, '')+' > tbody:last-child').append('<tr><td>Strength</td><td>'+ character.stats.str.value + '</td><td>' + character.stats.str.bonus() + '</td><td>' + character.stats.str.savingThrow(character.proficiency) + '</td></tr>');
                         $('#character-details-'+character.name.replace(/[^0-9a-zA-Z]+/g, '')+' > tbody:last-child').append('<tr><td>Dexterity</td><td>'+ character.stats.dex.value + '</td><td>' + character.stats.dex.bonus() + '</td><td>' + character.stats.dex.savingThrow(character.proficiency) + '</td></tr>');
                         $('#character-details-'+character.name.replace(/[^0-9a-zA-Z]+/g, '')+' > tbody:last-child').append('<tr><td>Constitution</td><td>'+ character.stats.con.value + '</td><td>' + character.stats.con.bonus() + '</td><td>' + character.stats.con.savingThrow(character.proficiency) + '</td></tr>');
