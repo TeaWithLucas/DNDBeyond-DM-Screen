@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      1.2.7hf2
+// @version      1.2.7hf3
 // @description  Poor man's DM screen for DDB campaigns
 // @author       You
 // @match        https://www.dndbeyond.com/campaigns/*
@@ -218,7 +218,7 @@ class Skill {
                         };
                         if (typeof(character.skills.perception) === "undefined" ) {character.skills.perception = new Skill('perception', character.proficiency, "none");};
                         if (typeof(character.skills.investigation) === "undefined" ) {character.skills.investigation = new Skill('investigation', character.proficiency, "none");};
-                        if (typeof(character.skills.insight) === "undefined" ) {character.skills.perception = new Skill('insight', character.proficiency, "none");};
+                        if (typeof(character.skills.insight) === "undefined" ) {character.skills.insight = new Skill('insight', character.proficiency, "none");};
                         //console.log(character.skills);
                         if (x.overrideHitPoints == null) {character.maxHP = character.bonusHP + x.baseHitPoints + x.bonusHitPoints + (character.level * parseInt(character.stats.con.bonus()));}
                         else {character.maxHP = x.overrideHitPoints;}
