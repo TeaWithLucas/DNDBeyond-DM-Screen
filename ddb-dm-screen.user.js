@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      1.2.7
+// @version      1.2.7 hf1
 // @description  Poor man's DM screen for DDB campaigns
 // @author       You
 // @match        https://www.dndbeyond.com/campaigns/*
@@ -67,11 +67,16 @@ class Skill {
         };
     };
     getPassive(attrArray) {
-        let passv = 10 + this.passiveBonus + parseInt(attrArray[this.attr].bonus());
-        if (this.proficiency) {passv += this.prof;};
-        if (this.expertise) {passv += this.prof;};
+        let passv = 10 + this.bonus(attrArray);
         return passv;
     };
+    bonus(attrArray) {
+        let bonus = parseInt(attrArray[this.attr].bonus());
+        if (this.proficiency) {bonus += this.prof;};
+        if (this.expertise) {bonus += this.prof;};
+        if (bonus < 0) {return bonus.toString;}
+        else {return '+' + bonus;};
+    }
 };
 
 (function() {
