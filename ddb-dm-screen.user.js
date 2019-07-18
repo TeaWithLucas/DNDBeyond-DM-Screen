@@ -13,42 +13,11 @@ var $ = window.jQuery;
 class Character {
   constructor(json) {
     this.json = json;
-    this.stats = new Object();
-
     this.level = 0;
     for (var i= 0; i < json.classes.length; i++) {
         this.level += json.classes[i].level;
     };
     this.proficiency = Math.ceil(this.level / 4) + 1;
-
-    var stat = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
-    for(var i = 0; i < 6; i++){
-      if (json.overrideStats[i].value == null) {
-        this.stats[stat[i]] = new Stat(json.stats[i].value + json.bonusStats[i].value, this.proficiency);
-      } 
-      else {
-        this.stats[stat[i]] = new Stat(json.overrideStats[i].value, this.proficiency);
-      }
-    }
-
-    // modifiers
-    var mods = json.modifiers; 
-    [mods.race, mods.class, mods.background, mods.item, mods.feat].forEach(function(m){
-      if (m.type == "bonus") {
-        this.stats[m.subType.substr(0,3)].value += m.value;
-      }
-      else if (m.type == "proficiency") {
-        if(m.subType == 'strength-saving-throws') {
-          this.stats.str.saveProficiency = 1;
-        }
-        else {
-          this.stats[m.subType.substr(0,3)].saveProficiency = true;
-        }
-      }
-      else if (m.type == "set") {
-        this.stats[m.subType.substr(0,3)].value = m.value;
-      };
-    });
   };
 
   get name(){
@@ -93,6 +62,33 @@ class Character {
     var selector = ".ct-senses .ct-senses__callout:has(.ct-senses__callout-label:contains(Investigation))";
     return parseInt(this.iframe.find(selector).find(".ct-senses__callout-value").text());
   }
+
+  get stats(){
+    var stats = {}
+    this.iframe.find('.ct-ability-summary').each(function(index){
+      var name = $(this).find('.ct-ability-summary__abbr').text(); 
+      var value = Math.max(
+        parseInt($(this).find('.ct-ability-summary__primary').text()),
+        parseInt($(this).find('.ct-ability-summary__secondary').text())
+      );
+      var modifier = Math.min(
+        parseInt($(this).find('.ct-ability-summary__primary').text()),
+        parseInt($(this).find('.ct-ability-summary__secondary').text())
+      );
+      stats[name] = new Stat(value, modifier);
+    });
+    return stats;
+  }
+
+  get skills(){
+    var skills = {}
+    this.iframe.find('.ct-skills__item').each(function() {
+      var name = $(this).children('.ct-skills__col--skill').text();
+      var value = $(this).children('.ct-skills__col--modifier').text();  
+      skills[name] = value;
+    });
+    return skills;
+  }
 };
 
 class Stat {
@@ -112,6 +108,7 @@ class Stat {
       return this.bonus.toString();
     }
   };
+
   savingThrow() {
     if (this.saveProficiency) {
       var save = this.bonus + this.proficiency
@@ -174,16 +171,23 @@ function render(character, node){
       .replace("save", character.stats[s].savingThrow());
     footer.append(text);
   }
-  footer.append(otherRow.replace("name", "Proficiency").replace("value", `+${character.proficiency}`));
-  footer.append(otherRow.replace("name", "HP").replace("value", `${character.currentHP} / ${character.maxHP}`));
-  footer.append(otherRow.replace("name", "AC").replace("value", character.ac));
-  footer.append(otherRow.replace("name", "Passive Investigation").replace("value", character.passiveInvestigation));
-  footer.append(otherRow.replace("name", "Passive Perception").replace("value", character.passivePerception));
-  footer.append(otherRow.replace("name", "Passive Insight").replace("value", character.passiveInsight));
+
+  otherInfo = {
+    "Proficiency": `+${character.proficiency}`,
+    "HP": `${character.currentHP} / ${character.maxHP}`,
+    "AC": character.ac,
+    "Passive Investigation": character.passiveInvestigation,
+    "Passive Perception": character.passivePerception,
+    "Passive Insight": character.passiveInsight
+  }
+
+  for (name in otherInfo){
+    footer.append(otherRow.replace("name", name).replace("value", otherInfo[name]));
+  }
 }
  
 (function() {
-  $('#site').after('<div id="iframeDiv" style="display: none;"></div>');
+  $('#site').after('<div id="iframeDiv" style="opacity: 0"></div>');
   $('.ddb-campaigns-character-card-footer-links-item-view').each(function(index, value) {
       let node = $(this);
 
@@ -194,7 +198,7 @@ function render(character, node){
             let json = JSON.parse(this.responseText).character;
             let character = new Character(json);
 
-            $('#iframeDiv').append(`<iframe id="frame-${character.id}"  src="${node.attr('href')}"></iframe>`);
+            $('#iframeDiv').append(`<iframe id="frame-${character.id}" seamless="" width="1024" height="768" src="${node.attr('href')}"></iframe>`);
             //let the iframe load, then render..
             setTimeout(function () { render(character, node); }, 5000);
           }
