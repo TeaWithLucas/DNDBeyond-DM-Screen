@@ -61,17 +61,20 @@ class Character {
 
   get stats(){
     var stats = {};
-    this.iframe.find('.ct-ability-summary').each(function(index){
-      var name = $(this).find('.ct-ability-summary__abbr').text(); 
-      var value = Math.max(
-        parseInt($(this).find('.ct-ability-summary__primary').text()),
-        parseInt($(this).find('.ct-ability-summary__secondary').text())
-      );
-      var modifier = Math.min(
-        parseInt($(this).find('.ct-ability-summary__primary').text()),
-        parseInt($(this).find('.ct-ability-summary__secondary').text())
-      );
-      stats[name] = new Stat(value, modifier);
+    var iframe = this.iframe;
+    iframe.find('.ct-ability-summary').each(function(index){
+      let name = $(this).find('.ct-ability-summary__abbr').text(); 
+      stats[name] = { 
+        value: Math.max(
+          parseInt($(this).find('.ct-ability-summary__primary').text()),
+          parseInt($(this).find('.ct-ability-summary__secondary').text())
+        ),
+        modifier: Math.min(
+          parseInt($(this).find('.ct-ability-summary__primary').text()),
+          parseInt($(this).find('.ct-ability-summary__secondary').text())
+        ),
+        savingThrow: iframe.find(`.ct-saving-throws-summary__ability--${name} .ct-signed-number`).text()
+      };
     });
     return stats;
   }
@@ -85,40 +88,6 @@ class Character {
     });
     return skills;
   }
-};
-
-class Stat {
-  // class methods
-  constructor(value, proficiency) {
-      this.value = value;
-      this.saveProficiency = false;
-      this.bonus = Math.floor((value / 2) - 5)
-      this.proficiency = proficiency;
-  };
-
-  modifier(){
-    if(this.bonus > 0){
-      return `+${this.bonus.toString()}`;
-    }
-    else{
-      return this.bonus.toString();
-    }
-  };
-
-  savingThrow() {
-    if (this.saveProficiency) {
-      var save = this.bonus + this.proficiency
-      if(save > 0) {
-        return "+" + save.toString();
-      } 
-      else {
-        return save.toString()
-      }
-    }
-    else {
-      return this.modifier();
-    }
-  };
 };
 
 function render(character, node){
@@ -163,8 +132,8 @@ function render(character, node){
     var text = statRow
       .replace("title", s.toUpperCase())
       .replace("value", character.stats[s].value)
-      .replace("mod", character.stats[s].modifier())
-      .replace("save", character.stats[s].savingThrow());
+      .replace("mod", character.stats[s].modifier)
+      .replace("save", character.stats[s].savingThrow);
     footer.append(text);
   }
 
