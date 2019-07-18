@@ -33,19 +33,15 @@ class Character {
   }
 
   get ac(){
-    var val = this.iframe
-       .find(".ct-combat-mobile__extra--ac")
-       .find(".ct-combat-mobile__extra-value")
-       .text();
-    return parseInt(val);
+    return parseInt(this.iframe.find(".ct-armor-class-box__value").text());
   }
 
   get currentHP(){
-    return parseInt(this.iframe.find(".ct-status-summary-mobile__hp-current").text());
+    return parseInt(this.iframe.find(".ct-health-summary__hp-item:first .ct-health-summary__hp-number").text());
   }
 
   get maxHP(){
-    return parseInt(this.iframe.find(".ct-status-summary-mobile__hp-max").text());
+    return parseInt(this.iframe.find(".ct-health-summary__hp-item:last .ct-health-summary__hp-number").text());
   }
 
   get passivePerception(){
