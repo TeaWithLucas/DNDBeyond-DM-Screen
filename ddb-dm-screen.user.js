@@ -33,19 +33,15 @@ class Character {
   }
 
   get ac(){
-    var val = this.iframe
-       .find(".ct-combat-mobile__extra--ac")
-       .find(".ct-combat-mobile__extra-value")
-       .text();
-    return parseInt(val);
+    return parseInt(this.iframe.find(".ct-armor-class-box__value").text());
   }
 
   get currentHP(){
-    return parseInt(this.iframe.find(".ct-status-summary-mobile__hp-current").text());
+    return parseInt(this.iframe.find(".ct-health-summary__hp-item:first .ct-health-summary__hp-number").text());
   }
 
   get maxHP(){
-    return parseInt(this.iframe.find(".ct-status-summary-mobile__hp-max").text());
+    return parseInt(this.iframe.find(".ct-health-summary__hp-item:last .ct-health-summary__hp-number").text());
   }
 
   get passivePerception(){
@@ -64,7 +60,7 @@ class Character {
   }
 
   get stats(){
-    var stats = {}
+    var stats = {};
     this.iframe.find('.ct-ability-summary').each(function(index){
       var name = $(this).find('.ct-ability-summary__abbr').text(); 
       var value = Math.max(
@@ -81,7 +77,7 @@ class Character {
   }
 
   get skills(){
-    var skills = {}
+    var skills = {};
     this.iframe.find('.ct-skills__item').each(function() {
       var name = $(this).children('.ct-skills__col--skill').text();
       var value = $(this).children('.ct-skills__col--modifier').text();  
@@ -187,7 +183,7 @@ function render(character, node){
 }
  
 (function() {
-  $('#site').after('<div id="iframeDiv" style="opacity: 0"></div>');
+  $('#site').after('<div id="iframeDiv" style="opacity: 0; visibility: hidden; position: absolute;"></div>');
   $('.ddb-campaigns-character-card-footer-links-item-view').each(function(index, value) {
       let node = $(this);
 
@@ -198,7 +194,7 @@ function render(character, node){
             let json = JSON.parse(this.responseText).character;
             let character = new Character(json);
 
-            $('#iframeDiv').append(`<iframe id="frame-${character.id}" seamless="" width="1024" height="768" src="${node.attr('href')}"></iframe>`);
+            $('#iframeDiv').append(`<iframe id="frame-${character.id}" style="position: absolute; visibility: hidden;" seamless="" width="1024" height="768" src="${node.attr('href')}"></iframe>`);
             //let the iframe load, then render..
             setTimeout(function () { render(character, node); }, 5000);
           }
