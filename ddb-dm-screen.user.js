@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      2.0.3
+// @version      2.0.4
 // @description  Poor man's DM screen for DDB campaigns
 // @author       You
 // @match        https://www.dndbeyond.com/campaigns/*
@@ -35,11 +35,11 @@ class Character {
   }
 
   get currentHP(){
-    return parseInt(this.iframe.find(".ct-health-summary__hp-item:first .ct-health-summary__hp-number").text());
+    return parseInt(this.iframe.find(".ct-status-summary-mobile__hp-current").text());
   }
 
   get maxHP(){
-    return parseInt(this.iframe.find(".ct-health-summary__hp-item:last .ct-health-summary__hp-number").text());
+    return parseInt(this.iframe.find(".ct-status-summary-mobile__hp-max").text());
   }
 
   get passivePerception(){
@@ -150,18 +150,23 @@ function render(character, node){
 }
 
 (function() {
-  $('#site').after('<div id="iframeDiv" style="opacity: 0; visibility: hidden; position: absolute;"></div>');
-  $('.ddb-campaigns-character-card-footer-links-item-view').each(function(index, value) {
+  $('#site').after('<div id="iframeDiv" style="opacity: 0; position: absolute;"></div>'); //visibility: hidden;
+  let chars = $('.ddb-campaigns-detail-body-listing-active').find('.ddb-campaigns-character-card-footer-links-item-view');
+  chars.each(function(index, value) {
       let node = $(this);
-
-      if (!node.parents().hasClass('ddb-campaigns-detail-body-listing-inactive')) {
-          let name = node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header-upper-character-info-primary').text();
-          let character = new Character(name);
-
-          $('#iframeDiv').append(`<iframe id="frame-${character.id}" style="position: absolute; visibility: hidden;" seamless="" width="1024" height="768" src="${node.attr('href')}"></iframe>`);
-          //let the iframe load, then render..
-          setTimeout(function () { render(character, node); }, 20000);
-      }
+      let name = node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header-upper-character-info-primary').text();
+      let character = new Character(name);
+      let newIframe = document.createElement('iframe');
+      //after loading iframe, wait for a second to let JS create content.
+      newIframe.onload = function(){setTimeout(function() {render(character, node);}, chars.length * 1500);}; // before setting 'src'
+      newIframe.id = `frame-${character.id}`;
+      newIframe.style = "position: absolute;"; //visibility: hidden;
+      newIframe.width = 1000;
+      newIframe.height = 1;
+      newIframe.seamless = "";
+      newIframe.src = node.attr('href');
+      document.body.appendChild(newIframe);
+      $('#iframeDiv').append(newIframe);
     }
   );
 })();
