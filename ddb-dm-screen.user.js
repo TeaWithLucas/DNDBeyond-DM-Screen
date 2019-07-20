@@ -3,9 +3,10 @@
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
 // @version      2.0.5
 // @description  Poor man's DM screen for DDB campaigns
-// @author       You
+// @author       Mivalsten
 // @match        https://www.dndbeyond.com/campaigns/*
 // @grant        none
+// @license      MIT; https://github.com/mivalsten/ddb-dm-screen/blob/master/LICENSE
 // ==/UserScript==
 //
 var $ = window.jQuery;
