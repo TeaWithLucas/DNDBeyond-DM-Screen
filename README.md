@@ -2,7 +2,7 @@
 
 ## description
 
-This Tampermonkey userscript aims to provide simple DM screen by extracting json-formatted character data. For it to work, user must be a DM owning the campaign, otherwise no access to character's JSON data is possible.
+This Tampermonkey userscript aims to provide simple DM screen by scraping character sheet for relevant values. It works on campaign screen and shows stats, HP, AC and passives.
 
 ## security
 
