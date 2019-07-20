@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      2.0.2
+// @version      2.0.5
 // @description  Poor man's DM screen for DDB campaigns
 // @author       You
 // @match        https://www.dndbeyond.com/campaigns/*
@@ -11,21 +11,19 @@
 var $ = window.jQuery;
 
 class Character {
-  constructor(json) {
-    this.json = json;
-    this.level = 0;
-    for (var i= 0; i < json.classes.length; i++) {
-        this.level += json.classes[i].level;
-    };
-    this.proficiency = Math.ceil(this.level / 4) + 1;
+  constructor(name) {
+    this.name = name;
   };
-
-  get name(){
-    return this.json.name;
+  get level() {
+    var classes = this.iframe.find('.ct-character-tidbits__classes').text().split('/').map(function(i){return parseInt(i.replace(/[^0-9]+/g, ''))});
+    return classes.reduce((a, b) => a + b, 0);
+  }
+  get proficiency() {
+    return Math.ceil(this.level / 4) + 1;
   }
 
   get id(){
-    return this.json.name.replace(/[^0-9a-zA-Z]+/g, '');
+    return this.name.replace(/[^0-9a-zA-Z]+/g, '');
   }
 
   get iframe(){
@@ -37,11 +35,11 @@ class Character {
   }
 
   get currentHP(){
-    return parseInt(this.iframe.find(".ct-health-summary__hp-item:first .ct-health-summary__hp-number").text());
+    return parseInt(this.iframe.find(".ct-status-summary-mobile__hp-current").text());
   }
 
   get maxHP(){
-    return parseInt(this.iframe.find(".ct-health-summary__hp-item:last .ct-health-summary__hp-number").text());
+    return parseInt(this.iframe.find(".ct-status-summary-mobile__hp-max").text());
   }
 
   get passivePerception(){
@@ -63,8 +61,8 @@ class Character {
     var stats = {};
     var iframe = this.iframe;
     iframe.find('.ct-ability-summary').each(function(index){
-      let name = $(this).find('.ct-ability-summary__abbr').text(); 
-      stats[name] = { 
+      let name = $(this).find('.ct-ability-summary__abbr').text();
+      stats[name] = {
         value: Math.max(
           parseInt($(this).find('.ct-ability-summary__primary').text()),
           parseInt($(this).find('.ct-ability-summary__secondary').text())
@@ -83,7 +81,7 @@ class Character {
     var skills = {};
     this.iframe.find('.ct-skills__item').each(function() {
       var name = $(this).children('.ct-skills__col--skill').text();
-      var value = $(this).children('.ct-skills__col--modifier').text();  
+      var value = $(this).children('.ct-skills__col--modifier').text();
       skills[name] = value;
     });
     return skills;
@@ -150,27 +148,33 @@ function render(character, node){
     footer.append(otherRow.replace("name", name).replace("value", otherInfo[name]));
   }
 }
- 
+
+function prerender(character, node, times) {
+    if (!isNaN(character.ac)) {render(character, node);}
+    else {
+        times += 1;
+        if (times < 80) {setTimeout(function() {prerender(character, node, times);}, 500);};
+    }
+}
+
 (function() {
-  $('#site').after('<div id="iframeDiv" style="opacity: 0; visibility: hidden; position: absolute;"></div>');
-  $('.ddb-campaigns-character-card-footer-links-item-view').each(function(index, value) {
+  $('#site').after('<div id="iframeDiv" style="opacity: 0; position: absolute;"></div>'); //visibility: hidden;
+  let chars = $('.ddb-campaigns-detail-body-listing-active').find('.ddb-campaigns-character-card-footer-links-item-view');
+  chars.each(function(index, value) {
       let node = $(this);
-
-      if (!node.parents().hasClass('ddb-campaigns-detail-body-listing-inactive')) {
-        var request = new XMLHttpRequest();
-        request.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            let json = JSON.parse(this.responseText).character;
-            let character = new Character(json);
-
-            $('#iframeDiv').append(`<iframe id="frame-${character.id}" style="position: absolute; visibility: hidden;" seamless="" width="1024" height="768" src="${node.attr('href')}"></iframe>`);
-            //let the iframe load, then render..
-            setTimeout(function () { render(character, node); }, 5000);
-          }
-        }
-        request.open("GET", `${node.attr('href')}/json`, true);
-        request.send();
-      }
+      let name = node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header-upper-character-info-primary').text();
+      let character = new Character(name);
+      let newIframe = document.createElement('iframe');
+      //after loading iframe, wait for a second to let JS create content.
+      newIframe.onload = function(){prerender(character, node, 0)};
+      newIframe.id = `frame-${character.id}`;
+      newIframe.style = "position: absolute;"; //visibility: hidden;
+      newIframe.width = 1000;
+      newIframe.height = 1;
+      newIframe.seamless = "";
+      newIframe.src = node.attr('href');
+      document.body.appendChild(newIframe);
+      $('#iframeDiv').append(newIframe);
     }
   );
 })();
