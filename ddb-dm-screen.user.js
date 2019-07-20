@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      2.0.4
+// @version      2.0.5
 // @description  Poor man's DM screen for DDB campaigns
 // @author       You
 // @match        https://www.dndbeyond.com/campaigns/*
@@ -149,6 +149,14 @@ function render(character, node){
   }
 }
 
+function prerender(character, node, times) {
+    if (!isNaN(character.ac)) {render(character, node);}
+    else {
+        times += 1;
+        if (times < 80) {setTimeout(function() {prerender(character, node, times);}, 500);};
+    }
+}
+
 (function() {
   $('#site').after('<div id="iframeDiv" style="opacity: 0; position: absolute;"></div>'); //visibility: hidden;
   let chars = $('.ddb-campaigns-detail-body-listing-active').find('.ddb-campaigns-character-card-footer-links-item-view');
@@ -158,7 +166,7 @@ function render(character, node){
       let character = new Character(name);
       let newIframe = document.createElement('iframe');
       //after loading iframe, wait for a second to let JS create content.
-      newIframe.onload = function(){setTimeout(function() {render(character, node);}, chars.length * 1500);}; // before setting 'src'
+      newIframe.onload = function(){prerender(character, node, 0)};
       newIframe.id = `frame-${character.id}`;
       newIframe.style = "position: absolute;"; //visibility: hidden;
       newIframe.width = 1000;
