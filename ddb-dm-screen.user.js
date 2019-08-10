@@ -101,26 +101,45 @@ function render(character, node){
   <div class="genStats">
     <div class="genStats__container">
       <div class="genStats__module genStats__module--savedc">
-        <div class="genStats__heading"></div>
+        <div class="genStats__heading">
+          <div class="genStats__label">Save</div>
+        </div>
         <div class="genStats__value">15</div>
         <div class="genStats__footer">
-          <div class="genStats__label">Save DC</div>
+          <div class="genStats__label">DC</div>
         </div>
       </div>
       <div class="genStats__module genStats__module--speed">
-        <div class="genStats__heading"></div>
-        <div class="genStats__value"></div>
-        <div class="genStats__footer"></div>
+        <div class="genStats__heading">
+          <div class="genStats__label">walking</div>
+        </div>
+        <div class="genStats__value">
+          <div class="genStats__distance">
+            <div class="genStats__distance--number">30</div>
+            <div class="genStats__distance--label">ft.</div>
+          </div>
+        </div>
+        <div class="genStats__footer">
+          <div class="genStats__label">Speed</div>
+        </div>
       </div>
       <div class="genStats__module genStats__module--init">
-        <div class="genStats__heading"></div>
-        <div class="genStats__value"></div>
+        <div class="genStats__value">
+          <div class="genStats__number genStats__number--large">
+            <div class="genStats__number--sign">+</div>
+            <div class="genStats__number--number">3</div>
+          </div>
+        </div>
         <div class="genStats__footer"></div>
       </div>
       <div class="genStats__module genStats__module--armorClass">
-        <div class="genStats__heading"></div>
-        <div class="genStats__value"></div>
-        <div class="genStats__footer"></div>
+        <div class="genStats__heading">
+          <div class="genStats__label">armor</div>
+        </div>
+        <div class="genStats__value">20</div>
+        <div class="genStats__footer">
+          <div class="genStats__label">Class</div>
+        </div>
       </div>
       <div class="genStats__module genStats__module--health">
 
