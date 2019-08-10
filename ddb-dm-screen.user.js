@@ -110,7 +110,7 @@ function render(character, node){
   `
 
   var genStats = `
-  <div class=".genStats"></div>
+  <div class="genStats"></div>
   `;
 
   var div = `
@@ -202,5 +202,5 @@ function prerender(character, node, times) {
       $('#iframeDiv').append(newIframe);
     }
   );
-  $('head').append('<link rel="stylesheet" href="./style.css" type="text/css" />')
+  $('head').append('<link rel="stylesheet" href="https://raw.githack.com/lothsun/ddb-dm-screen/master/style.css" type="text/css" />')
 })();
