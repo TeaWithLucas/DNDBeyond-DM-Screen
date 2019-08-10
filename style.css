@@ -6,3 +6,9 @@
     width: 100%;
     height: 71px;
 }
+.genStats__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 5px;
+}

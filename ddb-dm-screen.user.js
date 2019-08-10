@@ -110,7 +110,11 @@ function render(character, node){
   `
 
   var genStats = `
-  <div class="genStats"></div>
+  <div class="genStats">
+    <div class="genStats__container">
+      <div></div>
+    </div>
+  </div>
   `;
 
   var div = `
