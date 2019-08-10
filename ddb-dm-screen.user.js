@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         ddb-dm-screen
-// @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      2.0.5
+// @namespace    https://github.com/lothsun/ddb-dm-screen/
+// @version      2.1.0
 // @description  Poor man's DM screen for DDB campaigns
-// @author       Mivalsten
+// @author       Mivalsten Lothsun
 // @match        https://www.dndbeyond.com/campaigns/*
 // @grant        none
-// @license      MIT; https://github.com/mivalsten/ddb-dm-screen/blob/master/LICENSE
+// @license      MIT; https://github.com/lothsun/ddb-dm-screen/blob/master/LICENSE
 // ==/UserScript==
 //
 var $ = window.jQuery;
@@ -87,10 +87,31 @@ class Character {
     });
     return skills;
   }
+
+  get init(){
+    var init =  this.iframe.find(".ct-initiative-box__value > .ct-signed-number.ct-signed-number--large > .ct-signed-number__sign").text() + parseInt(this.iframe.find(".ct-initiative-box__value > .ct-signed-number.ct-signed-number--large > .ct-signed-number__number").text());
+    return init;
+  }
 };
 
 function render(character, node){
   var tableId = `character-details-${character.id}`;
+
+  var style = `
+    .genStats {
+      border-top: 1px solid #838383;
+      border-bottom: 2px solid #c53131;
+      background-color: #404040;
+      color: #fff;
+      width: 100%;
+      height: 15%;
+    }
+
+  `
+
+  var genStats = `
+  <div class=".genStats"></div>
+  `;
 
   var div = `
     <div>
@@ -142,12 +163,15 @@ function render(character, node){
     "AC": character.ac,
     "Passive Investigation": character.passiveInvestigation,
     "Passive Perception": character.passivePerception,
-    "Passive Insight": character.passiveInsight
+    "Passive Insight": character.passiveInsight,
+    "Initiative": character.init
   }
 
   for (name in otherInfo){
     footer.append(otherRow.replace("name", name).replace("value", otherInfo[name]));
   }
+  node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header').after(genStats);
+  console.log(character);
 }
 
 function prerender(character, node, times) {
@@ -178,4 +202,5 @@ function prerender(character, node, times) {
       $('#iframeDiv').append(newIframe);
     }
   );
+  $('head').append('<link rel="stylesheet" href="./style.css" type="text/css" />')
 })();
