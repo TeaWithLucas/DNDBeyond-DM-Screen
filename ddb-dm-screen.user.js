@@ -114,10 +114,10 @@ function render(character, node){
           <div class="genStats__label">walking</div>
         </div>
         <div class="genStats__value">
-          <div class="genStats__distance">
-            <div class="genStats__distance--number">30</div>
-            <div class="genStats__distance--label">ft.</div>
-          </div>
+          <span class="genStats__distance">
+            <span class="genStats__distance--number">30</span>
+            <span class="genStats__distance--label">ft.</span>
+          </span>
         </div>
         <div class="genStats__footer">
           <div class="genStats__label">Speed</div>
@@ -125,12 +125,14 @@ function render(character, node){
       </div>
       <div class="genStats__module genStats__module--init">
         <div class="genStats__value">
-          <div class="genStats__number genStats__number--large">
-            <div class="genStats__number--sign">+</div>
-            <div class="genStats__number--number">3</div>
-          </div>
+          <span class="genStats__number genStats__number--large">
+            <span class="genStats__number--sign">+</span>
+            <span class="genStats__number--number">3</span>
+          </span>
         </div>
-        <div class="genStats__footer"></div>
+        <div class="genStats__footer">
+          <div class="genStats__label">initiative</div>
+        </div>
       </div>
       <div class="genStats__module genStats__module--armorClass">
         <div class="genStats__heading">
@@ -142,7 +144,14 @@ function render(character, node){
         </div>
       </div>
       <div class="genStats__module genStats__module--health">
-
+        <div class="genStats__health--container">
+          <div class="genStats__health--label">Hit Points</div>
+          <div class="genStats__health--container">
+            <span class=".genStats__health--hp-current">27</span>
+            <span class=".genStats__health--hp-sep">/</span>
+            <span class=".genStats__health--hp-max">40</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>

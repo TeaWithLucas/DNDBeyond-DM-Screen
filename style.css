@@ -11,6 +11,8 @@
     justify-content: space-between;
     align-items: flex-end;
     padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 .genStats__module {
     position: relative;
@@ -69,4 +71,31 @@
 }
 .genStats__number--number {
 
+}
+
+.genStats__health--container {
+    position: relative;
+    border: 1px solid #c53131;
+    border-radius: 2px;
+    padding: 4px;
+    text-align: center;
+}
+.genStats__health--label {
+    font-size: 7px;
+    text-transform: uppercase;
+}
+.genStats__health--hp-container {
+    font-size: 20px;
+    letter-spacing: -1px;
+    line-height: 1;
+    color: #fff;
+}
+.genStats__health--hp-current {
+
+}
+.genStats__health--hp-sep {
+    padding: 0 3px;
+}
+.genStats__health--hp-max {
+    
 }
