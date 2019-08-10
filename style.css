@@ -12,3 +12,33 @@
     align-items: flex-end;
     padding: 5px;
 }
+.genStats__module {
+    position: relative;
+    cursor: pointer;
+    text-align: center;
+    margin-right: 10px;
+}
+.genStats__heading {
+    font-size: 12px;
+}
+.genStats__value {
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 27px;
+}
+.genStats__footer {
+    font-size: 13px;
+}
+.genStats__label {
+    text-transform: uppercase;
+    font-family: Roboto Condensed,Roboto,Helvetica,sans-serif;
+    font-weight: 700;
+}
+.genStats__number {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: top;
+}
+.genStats__number--large {
+    position: relative;
+}

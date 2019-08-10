@@ -97,22 +97,34 @@ class Character {
 function render(character, node){
   var tableId = `character-details-${character.id}`;
 
-  var style = `
-    .genStats {
-      border-top: 1px solid #838383;
-      border-bottom: 2px solid #c53131;
-      background-color: #404040;
-      color: #fff;
-      width: 100%;
-      height: 15%;
-    }
-
-  `
-
   var genStats = `
   <div class="genStats">
     <div class="genStats__container">
-      <div></div>
+      <div class="genStats__module genStats__module--savedc">
+        <div class="genStats__heading"></div>
+        <div class="genStats__value">15</div>
+        <div class="genStats__footer">
+          <div class="genStats__label">Save DC</div>
+        </div>
+      </div>
+      <div class="genStats__module genStats__module--speed">
+        <div class="genStats__heading"></div>
+        <div class="genStats__value"></div>
+        <div class="genStats__footer"></div>
+      </div>
+      <div class="genStats__module genStats__module--init">
+        <div class="genStats__heading"></div>
+        <div class="genStats__value"></div>
+        <div class="genStats__footer"></div>
+      </div>
+      <div class="genStats__module genStats__module--armorClass">
+        <div class="genStats__heading"></div>
+        <div class="genStats__value"></div>
+        <div class="genStats__footer"></div>
+      </div>
+      <div class="genStats__module genStats__module--health">
+
+      </div>
     </div>
   </div>
   `;
