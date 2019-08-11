@@ -8,7 +8,7 @@
 // @grant        none
 // @license      MIT; https://github.com/lothsun/ddb-dm-screen/blob/master/LICENSE
 // ==/UserScript==
-//
+
 var $ = window.jQuery;
 
 class Character {
@@ -95,19 +95,22 @@ class Character {
       "number" : initNumber,
       "mod" : initMod
     }
+    console.log(init)
     return init;
     
   }
 
   get speed(){
+    // console.log(parseInt(this.iframe.find(".ct-distance-number__number").text()));
     return parseInt(this.iframe.find(".ct-distance-number__number").text());
-
+    
   }
 
   get saveDc(){
-    this.iframe.find(".ct-quick-nav__toggle").trigger("click").delay(500);
-    this.iframe.find(".ct-quick-nav__menu-item--spells").children().first().trigger("click").delay(500);
+    this.iframe.find(".ct-quick-nav__toggle").trigger("click");
+    this.iframe.find(".ct-quick-nav__menu-item--spells").children().first().trigger("click");
     var selector = ".ct-spells__casting .ct-spells-level-casting__info-group:has(.ct-spells-level-casting__info-label:contains(Save))";
+    console.log(this.iframe.find(selector).find(".ct-spells-level-casting__info-item").text());
     return parseInt(this.iframe.find(selector).find(".ct-spells-level-casting__info-item").text());
 
   }
@@ -128,7 +131,7 @@ function render(character, node){
     <div class="genStats__heading">
       <div class="genStats__label">Save</div>
     </div>
-    <div class="genStats__value">saveDc</div>
+    <div class="genStats__value">saveNumber</div>
     <div class="genStats__footer">
       <div class="genStats__label">DC</div>
     </div>
@@ -181,80 +184,80 @@ function render(character, node){
   var healthModule =`
   <div class="genStats__module genStats__module--health">
     <div class="genStats__value">
-      <span class=".genStats__health--hp-current">27</span>
+      <span class=".genStats__health--hp-current">currentHP</span>
       <span class=".genStats__health--hp-sep">/</span>
-      <span class=".genStats__health--hp-max">40</span>
+      <span class=".genStats__health--hp-max">maxHP</span>
     </div>
       <div class="genStats__label">Hit Points</div>
     </div>
   </div>
   `;
 
-  var div = `
-    <div>
-      <table id="${tableId}">
-        <thead>
-          <tr>
-            <th></th>
-            <th align="center">Value</th>
-            <th align="center">Modifier</th>
-            <th align="center">Saving throw</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  `;
+  // var div = `
+  //   <div>
+  //     <table id="${tableId}">
+  //       <thead>
+  //         <tr>
+  //           <th></th>
+  //           <th align="center">Value</th>
+  //           <th align="center">Modifier</th>
+  //           <th align="center">Saving throw</th>
+  //         </tr>
+  //       </thead>
+  //       <tbody></tbody>
+  //     </table>
+  //   </div>
+  // `;
 
-  var statRow = `
-    <tr>
-      <th>title</th>
-      <td align="center">value</td>
-      <td align="center">mod</td>
-      <td align="center">save</td>
-    </tr>
-  `;
+  // var statRow = `
+  //   <tr>
+  //     <th>title</th>
+  //     <td align="center">value</td>
+  //     <td align="center">mod</td>
+  //     <td align="center">save</td>
+  //   </tr>
+  // `;
 
-  var otherRow = `
-    <tr>
-      <th>name</th>
-      <td align="center">value</td>
-      <td></td><td></td>
-    </tr>
-  `;
+  // var otherRow = `
+  //   <tr>
+  //     <th>name</th>
+  //     <td align="center">value</td>
+  //     <td></td><td></td>
+  //   </tr>
+  // `;
 
-  node.parents('.ddb-campaigns-character-card').after(div);
-  var footer = $(`#${tableId} > tbody:last-child`);
-  for(var s in character.stats){
-    var text = statRow
-      .replace("title", s.toUpperCase())
-      .replace("value", character.stats[s].value)
-      .replace("mod", character.stats[s].modifier)
-      .replace("save", character.stats[s].savingThrow);
-    footer.append(text);
-  }
+  // node.parents('.ddb-campaigns-character-card').after(div);
+  // var footer = $(`#${tableId} > tbody:last-child`);
+  // for(var s in character.stats){
+  //   var text = statRow
+  //     .replace("title", s.toUpperCase())
+  //     .replace("value", character.stats[s].value)
+  //     .replace("mod", character.stats[s].modifier)
+  //     .replace("save", character.stats[s].savingThrow);
+  //   footer.append(text);
+  // }
 
-  otherInfo = {
-    "Proficiency": `+${character.proficiency}`,
-    "HP": `${character.currentHP} / ${character.maxHP}`,
-    "AC": character.ac,
-    "Passive Investigation": character.passiveInvestigation,
-    "Passive Perception": character.passivePerception,
-    "Passive Insight": character.passiveInsight,
-    "Initiative": character.init.mod + character.init.number,
-    "Save DC": character.saveDc,
-    "Speed": character.speed
-  }
+  // otherInfo = {
+  //   "Proficiency": `+${character.proficiency}`,
+  //   "HP": `${character.currentHP} / ${character.maxHP}`,
+  //   "AC": character.ac,
+  //   "Passive Investigation": character.passiveInvestigation,
+  //   "Passive Perception": character.passivePerception,
+  //   "Passive Insight": character.passiveInsight,
+  //   "Initiative": character.init.mod + character.init.number,
+  //   "Speed": character.speed,
+  //   "Save DC": character.saveDc,
+  // }
 
-  for (name in otherInfo){
-    footer.append(otherRow.replace("name", name).replace("value", otherInfo[name]));
-  }
-  node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header').after(genStats);
-  node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(saveDcModule.replace("saveDc", character.saveDc));
-  node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(speedModule.replace("speedNumber", character.speed));
-  node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(initModule.replace("initNumber", character.init.number).replace("initMod", character.init.mod));
-  
-  console.log(character);
+  // for (name in otherInfo){
+  //   footer.append(otherRow.replace("name", name).replace("value", otherInfo[name]));
+  // }
+  node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header').after(genStats); // add general stats to the player card
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(speedModule.replace("speedNumber", character.speed)); //add player walking speed to general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(initModule.replace("initNumber", character.init.number).replace("initMod", character.init.mod)); //add player initiative mod to general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(armorClassModule.replace("ac", character.ac)); //add player armor class to general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(healthModule.replace("currentHP", character.currentHP).replace("maxHP", character.maxHP)); //add player current and max hp to general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container').prepend(saveDcModule.replace("saveNumber", character.saveDc)); //add player Save DC to front of general stats div
 
   
 }
