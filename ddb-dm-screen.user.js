@@ -193,65 +193,59 @@ function render(character, node){
   </div>
   `;
 
-  // var div = `
-  //   <div>
-  //     <table id="${tableId}">
-  //       <thead>
-  //         <tr>
-  //           <th></th>
-  //           <th align="center">Value</th>
-  //           <th align="center">Modifier</th>
-  //           <th align="center">Saving throw</th>
-  //         </tr>
-  //       </thead>
-  //       <tbody></tbody>
-  //     </table>
-  //   </div>
-  // `;
+  var div = `
+    <div>
+      <table id="${tableId}">
+        <thead>
+          <tr>
+            <th></th>
+            <th align="center">Value</th>
+            <th align="center">Modifier</th>
+            <th align="center">Saving throw</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  `;
 
-  // var statRow = `
-  //   <tr>
-  //     <th>title</th>
-  //     <td align="center">value</td>
-  //     <td align="center">mod</td>
-  //     <td align="center">save</td>
-  //   </tr>
-  // `;
+  var statRow = `
+    <tr>
+      <th>title</th>
+      <td align="center">value</td>
+      <td align="center">mod</td>
+      <td align="center">save</td>
+    </tr>
+  `;
 
-  // var otherRow = `
-  //   <tr>
-  //     <th>name</th>
-  //     <td align="center">value</td>
-  //     <td></td><td></td>
-  //   </tr>
-  // `;
+  var otherRow = `
+    <tr>
+      <th>name</th>
+      <td align="center">value</td>
+      <td></td><td></td>
+    </tr>
+  `;
 
-  // node.parents('.ddb-campaigns-character-card').after(div);
-  // var footer = $(`#${tableId} > tbody:last-child`);
-  // for(var s in character.stats){
-  //   var text = statRow
-  //     .replace("title", s.toUpperCase())
-  //     .replace("value", character.stats[s].value)
-  //     .replace("mod", character.stats[s].modifier)
-  //     .replace("save", character.stats[s].savingThrow);
-  //   footer.append(text);
-  // }
+  node.parents('.ddb-campaigns-character-card').after(div);
+  var footer = $(`#${tableId} > tbody:last-child`);
+  for(var s in character.stats){
+    var text = statRow
+      .replace("title", s.toUpperCase())
+      .replace("value", character.stats[s].value)
+      .replace("mod", character.stats[s].modifier)
+      .replace("save", character.stats[s].savingThrow);
+    footer.append(text);
+  }
 
-  // otherInfo = {
-  //   "Proficiency": `+${character.proficiency}`,
-  //   "HP": `${character.currentHP} / ${character.maxHP}`,
-  //   "AC": character.ac,
-  //   "Passive Investigation": character.passiveInvestigation,
-  //   "Passive Perception": character.passivePerception,
-  //   "Passive Insight": character.passiveInsight,
-  //   "Initiative": character.init.mod + character.init.number,
-  //   "Speed": character.speed,
-  //   "Save DC": character.saveDc,
-  // }
+  otherInfo = {
+    "Passive Investigation": character.passiveInvestigation,
+    "Passive Perception": character.passivePerception,
+    "Passive Insight": character.passiveInsight,
+  }
 
-  // for (name in otherInfo){
-  //   footer.append(otherRow.replace("name", name).replace("value", otherInfo[name]));
-  // }
+  for (name in otherInfo){
+    footer.append(otherRow.replace("name", name).replace("value", otherInfo[name]));
+  }
   node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header').after(genStats); // add general stats to the player card
   node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(speedModule.replace("speedNumber", character.speed)); //add player walking speed to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(initModule.replace("initNumber", character.init.number).replace("initMod", character.init.mod)); //add player initiative mod to general stats div
