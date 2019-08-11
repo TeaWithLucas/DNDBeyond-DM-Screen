@@ -89,8 +89,27 @@ class Character {
   }
 
   get init(){
-    var init =  this.iframe.find(".ct-initiative-box__value > .ct-signed-number.ct-signed-number--large > .ct-signed-number__sign").text() + parseInt(this.iframe.find(".ct-initiative-box__value > .ct-signed-number.ct-signed-number--large > .ct-signed-number__number").text());
+    var initNumber = parseInt(this.iframe.find(".ct-initiative-box__value > .ct-signed-number.ct-signed-number--large > .ct-signed-number__number").text());
+    var initMod = this.iframe.find(".ct-initiative-box__value > .ct-signed-number.ct-signed-number--large > .ct-signed-number__sign").text();
+    var init = {
+      "number" : initNumber,
+      "mod" : initMod
+    }
     return init;
+    
+  }
+
+  get speed(){
+    return parseInt(this.iframe.find(".ct-distance-number__number").text());
+
+  }
+
+  get saveDc(){
+    this.iframe.find(".ct-quick-nav__toggle").trigger("click").delay(500);
+    this.iframe.find(".ct-quick-nav__menu-item--spells").children().first().trigger("click").delay(500);
+    var selector = ".ct-spells__casting .ct-spells-level-casting__info-group:has(.ct-spells-level-casting__info-label:contains(Save))";
+    return parseInt(this.iframe.find(selector).find(".ct-spells-level-casting__info-item").text());
+
   }
 };
 
@@ -100,59 +119,73 @@ function render(character, node){
   var genStats = `
   <div class="genStats">
     <div class="genStats__container">
-      <div class="genStats__module genStats__module--savedc">
-        <div class="genStats__heading">
-          <div class="genStats__label">Save</div>
-        </div>
-        <div class="genStats__value">15</div>
-        <div class="genStats__footer">
-          <div class="genStats__label">DC</div>
-        </div>
+    </div>
+  </div>
+  `;
+
+  var saveDcModule =`
+  <div class="genStats__module genStats__module--savedc">
+    <div class="genStats__heading">
+      <div class="genStats__label">Save</div>
+    </div>
+    <div class="genStats__value">saveDc</div>
+    <div class="genStats__footer">
+      <div class="genStats__label">DC</div>
+    </div>
+  </div>
+  `;
+
+  var speedModule =`
+    <div class="genStats__module genStats__module--speed">
+      <div class="genStats__heading">
+        <div class="genStats__label">walking</div>
       </div>
-      <div class="genStats__module genStats__module--speed">
-        <div class="genStats__heading">
-          <div class="genStats__label">walking</div>
-        </div>
-        <div class="genStats__value">
-          <span class="genStats__distance">
-            <span class="genStats__distance--number">30</span>
-            <span class="genStats__distance--label">ft.</span>
-          </span>
-        </div>
-        <div class="genStats__footer">
-          <div class="genStats__label">Speed</div>
-        </div>
+      <div class="genStats__value">
+        <span class="genStats__distance">
+          <span class="genStats__distance--number">speedNumber</span>
+          <span class="genStats__distance--label">ft.</span>
+        </span>
       </div>
-      <div class="genStats__module genStats__module--init">
-        <div class="genStats__value">
-          <span class="genStats__number genStats__number--large">
-            <span class="genStats__number--sign">+</span>
-            <span class="genStats__number--number">3</span>
-          </span>
-        </div>
-        <div class="genStats__footer">
-          <div class="genStats__label">initiative</div>
-        </div>
+      <div class="genStats__footer">
+        <div class="genStats__label">Speed</div>
       </div>
-      <div class="genStats__module genStats__module--armorClass">
-        <div class="genStats__heading">
-          <div class="genStats__label">armor</div>
-        </div>
-        <div class="genStats__value">20</div>
-        <div class="genStats__footer">
-          <div class="genStats__label">Class</div>
-        </div>
+    </div>
+  `;
+
+  var initModule =`
+    <div class="genStats__module genStats__module--init">
+      <div class="genStats__value">
+        <span class="genStats__number genStats__number--large">
+          <span class="genStats__number--sign">initMod</span>
+          <span class="genStats__number--number">initNumber</span>
+        </span>
       </div>
-      <div class="genStats__module genStats__module--health">
-        <div class="genStats__health--container">
-          <div class="genStats__health--label">Hit Points</div>
-          <div class="genStats__health--container">
-            <span class=".genStats__health--hp-current">27</span>
-            <span class=".genStats__health--hp-sep">/</span>
-            <span class=".genStats__health--hp-max">40</span>
-          </div>
-        </div>
+      <div class="genStats__footer">
+        <div class="genStats__label">initiative</div>
       </div>
+    </div>
+  `;
+
+  var armorClassModule =`
+  <div class="genStats__module genStats__module--armorClass">
+    <div class="genStats__heading">
+      <div class="genStats__label">armor</div>
+    </div>
+    <div class="genStats__value">ac</div>
+    <div class="genStats__footer">
+      <div class="genStats__label">Class</div>
+    </div>
+  </div>
+  `;
+
+  var healthModule =`
+  <div class="genStats__module genStats__module--health">
+    <div class="genStats__value">
+      <span class=".genStats__health--hp-current">27</span>
+      <span class=".genStats__health--hp-sep">/</span>
+      <span class=".genStats__health--hp-max">40</span>
+    </div>
+      <div class="genStats__label">Hit Points</div>
     </div>
   </div>
   `;
@@ -208,14 +241,22 @@ function render(character, node){
     "Passive Investigation": character.passiveInvestigation,
     "Passive Perception": character.passivePerception,
     "Passive Insight": character.passiveInsight,
-    "Initiative": character.init
+    "Initiative": character.init.mod + character.init.number,
+    "Save DC": character.saveDc,
+    "Speed": character.speed
   }
 
   for (name in otherInfo){
     footer.append(otherRow.replace("name", name).replace("value", otherInfo[name]));
   }
   node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header').after(genStats);
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(saveDcModule.replace("saveDc", character.saveDc));
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(speedModule.replace("speedNumber", character.speed));
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(initModule.replace("initNumber", character.init.number).replace("initMod", character.init.mod));
+  
   console.log(character);
+
+  
 }
 
 function prerender(character, node, times) {
