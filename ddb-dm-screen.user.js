@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      2.0.5
+// @version      2.0.6
 // @description  Poor man's DM screen for DDB campaigns
 // @author       Mivalsten
 // @match        https://www.dndbeyond.com/campaigns/*
