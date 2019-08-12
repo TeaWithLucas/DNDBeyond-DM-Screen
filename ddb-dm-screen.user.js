@@ -87,6 +87,40 @@ class Character {
     });
     return skills;
   }
+
+    get initiative() {
+        return this.iframe.find(".ct-initiative-box__value").text();
+    }
+
+    get conditions() {
+        var conds = new Array();
+        this.iframe.find(".ct-combat-tablet__cta-button").trigger("click");
+        this.iframe.find(".ct-collapsible__header-content").each(function(i,v){
+            if ($(this).find(".ct-toggle-field").hasClass("ct-toggle-field--enabled")) {
+                conds.push($(this).find(".ct-condition-manage-pane__condition-name").text());
+            }
+        })
+        this.iframe.find(".ct-quick-nav__edge-toggle").trigger("click");
+        return conds;
+    }
+
+    get spellSaveDC() {
+        var spellSaveDCs = {};
+        this.iframe.find(".ct-quick-nav__toggle").trigger("click");
+        this.iframe.find(".ct-quick-nav__menu-item--spells").children(".ct-quick-nav__button").trigger("click");
+        var selector = ".ct-spells__casting .ct-spells-level-casting__info-group:has(.ct-spells-level-casting__info-label:contains(Save))";
+        this.iframe.find(selector).find("span").each(function(i,v) {
+            spellSaveDCs[$(this).attr("data-original-title")] = $(this).text();
+        })
+        this.iframe.find(".ct-quick-nav__toggle").trigger("click");
+        this.iframe.find(".ct-quick-nav__menu-item--main").children(".ct-quick-nav__button").trigger("click");
+        return spellSaveDCs;
+    }
+
+    get speed(){
+    return this.iframe.find(".ct-distance-number__number").text();
+  }
+
 };
 
 function render(character, node){
@@ -148,6 +182,11 @@ function render(character, node){
   for (name in otherInfo){
     footer.append(otherRow.replace("name", name).replace("value", otherInfo[name]));
   }
+  console.log(character.initiative);
+  console.log(character.conditions);
+  console.log(character.spellSaveDC);
+  console.log(character.speed);
+
 }
 
 function prerender(character, node, times) {
@@ -171,7 +210,7 @@ function prerender(character, node, times) {
       newIframe.id = `frame-${character.id}`;
       newIframe.style = "position: absolute;"; //visibility: hidden;
       newIframe.width = 1000;
-      newIframe.height = 1;
+      newIframe.height = 200;
       newIframe.seamless = "";
       newIframe.src = node.attr('href');
       document.body.appendChild(newIframe);
