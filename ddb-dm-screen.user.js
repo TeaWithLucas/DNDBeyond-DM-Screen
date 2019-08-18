@@ -117,15 +117,19 @@ class Character {
 };
 
 function render(character, node){
+
   var tableId = `character-details-${character.id}`;
 
+//base html that the code gets added to
   var genStats = `
   <div class="genStats">
-    <div class="genStats__container">
+    <div class="genStats__container genStats__container--1">
+    </div>
+    <div class="genStats__container genStats__container--2">
     </div>
   </div>
   `;
-
+// Html for the save dc module
   var saveDcModule =`
   <div class="genStats__module genStats__module--savedc">
     <div class="genStats__heading">
@@ -137,7 +141,7 @@ function render(character, node){
     </div>
   </div>
   `;
-
+// Html for the speed module
   var speedModule =`
     <div class="genStats__module genStats__module--speed">
       <div class="genStats__heading">
@@ -154,7 +158,7 @@ function render(character, node){
       </div>
     </div>
   `;
-
+// Html for the initiative module
   var initModule =`
     <div class="genStats__module genStats__module--init">
       <div class="genStats__value">
@@ -168,7 +172,7 @@ function render(character, node){
       </div>
     </div>
   `;
-
+// Html for the armor class module
   var armorClassModule =`
   <div class="genStats__module genStats__module--armorClass">
     <div class="genStats__heading">
@@ -180,8 +184,8 @@ function render(character, node){
     </div>
   </div>
   `;
-
-  var healthModule =`
+// Html for the Health module
+  var healthModule =` 
   <div class="genStats__module genStats__module--health">
     <div class="genStats__value">
       <span class=".genStats__health--hp-current">currentHP</span>
@@ -246,12 +250,13 @@ function render(character, node){
   for (name in otherInfo){
     footer.append(otherRow.replace("name", name).replace("value", otherInfo[name]));
   }
+
   node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header').after(genStats); // add general stats to the player card
-  node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(speedModule.replace("speedNumber", character.speed)); //add player walking speed to general stats div
-  node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(initModule.replace("initNumber", character.init.number).replace("initMod", character.init.mod)); //add player initiative mod to general stats div
-  node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(armorClassModule.replace("ac", character.ac)); //add player armor class to general stats div
-  node.parents('.ddb-campaigns-character-card').find('.genStats__container').append(healthModule.replace("currentHP", character.currentHP).replace("maxHP", character.maxHP)); //add player current and max hp to general stats div
-  node.parents('.ddb-campaigns-character-card').find('.genStats__container').prepend(saveDcModule.replace("saveNumber", character.saveDc)); //add player Save DC to front of general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(speedModule.replace("speedNumber", character.speed)); //add player walking speed to general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(initModule.replace("initNumber", character.init.number).replace("initMod", character.init.mod)); //add player initiative mod to general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(armorClassModule.replace("ac", character.ac)); //add player armor class to general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(healthModule.replace("currentHP", character.currentHP).replace("maxHP", character.maxHP)); //add player current and max hp to general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(saveDcModule.replace("saveNumber", character.saveDc)); //add player Save DC to front of general stats div
 
   
 }
@@ -264,7 +269,7 @@ function prerender(character, node, times) {
     }
 }
 
-(function() {
+(function() { //iFrame Logic - Needs to be commented further
   $('#site').after('<div id="iframeDiv" style="opacity: 0; position: absolute;"></div>'); //visibility: hidden;
   let chars = $('.ddb-campaigns-detail-body-listing-active').find('.ddb-campaigns-character-card-footer-links-item-view');
   chars.each(function(index, value) {
