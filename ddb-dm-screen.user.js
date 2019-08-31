@@ -88,14 +88,14 @@ class Character {
     return skills;
   }
 
-  get init(){
+  get initiative(){
     var initNumber = parseInt(this.iframe.find(".ct-initiative-box__value > .ct-signed-number.ct-signed-number--large > .ct-signed-number__number").text());
     var initMod = this.iframe.find(".ct-initiative-box__value > .ct-signed-number.ct-signed-number--large > .ct-signed-number__sign").text();
     var init = {
       "number" : initNumber,
       "mod" : initMod
     }
-    console.log(init)
+    console.log(init)    
     return init;
     
   }
@@ -114,11 +114,36 @@ class Character {
     return parseInt(this.iframe.find(selector).find(".ct-spells-level-casting__info-item").text());
 
   }
+
+  get conditions() {
+    var conds = new Array();
+    this.iframe.find(".ct-combat-tablet__cta-button").trigger("click");
+    this.iframe.find(".ct-collapsible__header-content").each(function(i,v){
+        if ($(this).find(".ct-toggle-field").hasClass("ct-toggle-field--enabled")) {
+            conds.push($(this).find(".ct-condition-manage-pane__condition-name").text());
+        }
+    })
+    this.iframe.find(".ct-quick-nav__edge-toggle").trigger("click");
+    return conds;
+  }
+
+  get spellSaveDC() {
+    var spellSaveDCs = {};
+    this.iframe.find(".ct-quick-nav__toggle").trigger("click");
+    this.iframe.find(".ct-quick-nav__menu-item--spells").children(".ct-quick-nav__button").trigger("click");
+    var selector = ".ct-spells__casting .ct-spells-level-casting__info-group:has(.ct-spells-level-casting__info-label:contains(Save))";
+    this.iframe.find(selector).find("span").each(function(i,v) {
+        spellSaveDCs[$(this).attr("data-original-title")] = $(this).text();
+    })
+    this.iframe.find(".ct-quick-nav__toggle").trigger("click");
+    this.iframe.find(".ct-quick-nav__menu-item--main").children(".ct-quick-nav__button").trigger("click");
+    return spellSaveDCs;
+  }
 };
 
-function render(character, node){
+function render(character, node){ // function that builds the scraped data and renders it on the page. 
 
-  var tableId = `character-details-${character.id}`;
+  var tableId = `character-details-${character.id}`; //variable fot table ID. Will be removed in upcoming release. 
 
 //base html that the code gets added to
   var genStats = `
@@ -133,11 +158,21 @@ function render(character, node){
   var saveDcModule =`
   <div class="genStats__module genStats__module--savedc">
     <div class="genStats__heading">
-      <div class="genStats__label">Save</div>
+      <div class="genStats__label">Save DC</div>
     </div>
-    <div class="genStats__value">saveNumber</div>
-    <div class="genStats__footer">
-      <div class="genStats__label">DC</div>
+    <div class="genStats__inlineGroup genStats__saveGroup">
+      <div class="genStats__inlineGroup--item genStats__saveItem">
+        <div class="genStats__value">saveNumber</div>
+        <div class="genStats__footer">
+          <div class="genStats__label">DC</div>
+        </div>
+      </div>
+      <div class="genStats__inlineGroup--item genStats__saveItem">
+        <div class="genStats__value">20</div>
+        <div class="genStats__footer">
+          <div class="genStats__label">Bard</div>
+        </div>
+      </div>
     </div>
   </div>
   `;
@@ -197,7 +232,8 @@ function render(character, node){
   </div>
   `;
 
-  var div = `
+  //div module for the table under the character cards. Will be removed in future release
+  var div = ` 
     <div>
       <table id="${tableId}">
         <thead>
@@ -212,7 +248,7 @@ function render(character, node){
       </table>
     </div>
   `;
-
+//stat row module for the table under the character cards. Will be removed in future release
   var statRow = `
     <tr>
       <th>title</th>
@@ -221,7 +257,7 @@ function render(character, node){
       <td align="center">save</td>
     </tr>
   `;
-
+//other row module for the table under the character cards. Will be removed in future release
   var otherRow = `
     <tr>
       <th>name</th>
@@ -230,9 +266,9 @@ function render(character, node){
     </tr>
   `;
 
-  node.parents('.ddb-campaigns-character-card').after(div);
-  var footer = $(`#${tableId} > tbody:last-child`);
-  for(var s in character.stats){
+  node.parents('.ddb-campaigns-character-card').after(div);//inserts div module into the page. Will be removed in the future
+  var footer = $(`#${tableId} > tbody:last-child`);//adds class to table. Will be removed in the future
+  for(var s in character.stats){ //adds each stat to the table. Will be removed in the future
     var text = statRow
       .replace("title", s.toUpperCase())
       .replace("value", character.stats[s].value)
@@ -241,19 +277,19 @@ function render(character, node){
     footer.append(text);
   }
 
-  otherInfo = {
+  otherInfo = { //builds object from passive skills. Will be removed in the future
     "Passive Investigation": character.passiveInvestigation,
     "Passive Perception": character.passivePerception,
     "Passive Insight": character.passiveInsight,
   }
 
-  for (name in otherInfo){
+  for (name in otherInfo){ //adds other info object to the table. Will be removed in the future
     footer.append(otherRow.replace("name", name).replace("value", otherInfo[name]));
   }
 
   node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header').after(genStats); // add general stats to the player card
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(speedModule.replace("speedNumber", character.speed)); //add player walking speed to general stats div
-  node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(initModule.replace("initNumber", character.init.number).replace("initMod", character.init.mod)); //add player initiative mod to general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(initModule.replace("initNumber", character.initiative.number).replace("initMod", character.initiative.mod)); //add player initiative mod to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(armorClassModule.replace("ac", character.ac)); //add player armor class to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(healthModule.replace("currentHP", character.currentHP).replace("maxHP", character.maxHP)); //add player current and max hp to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(saveDcModule.replace("saveNumber", character.saveDc)); //add player Save DC to front of general stats div
@@ -261,7 +297,7 @@ function render(character, node){
   
 }
 
-function prerender(character, node, times) {
+function prerender(character, node, times) { //Prerender logic - needs to be commented further
     if (!isNaN(character.ac)) {render(character, node);}
     else {
         times += 1;

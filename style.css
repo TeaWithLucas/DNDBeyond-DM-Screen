@@ -80,3 +80,10 @@
 .genStats__health--hp-max {
 
 }
+
+.genStats__inlineGroup{
+    display: inline-flex;
+}
+.genStats__inlineGroup--item {
+    margin-right: 10px;
+}
