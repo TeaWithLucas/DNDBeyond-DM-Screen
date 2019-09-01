@@ -9,9 +9,10 @@
     display: flex;
     justify-content: space-evenly;
     align-items: flex-end;
-    padding: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 5px 10px;
+}
+.genStats__container--2 {
+    padding: 10px 10px 5px 10px;
 }
 .genStats__module {
     position: relative;
