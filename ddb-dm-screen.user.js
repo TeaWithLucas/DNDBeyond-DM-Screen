@@ -152,35 +152,33 @@ function render(character, node){ // function that builds the scraped data and r
     </div>
     <div class="genStats__container genStats__container--2">
     </div>
-  </div>
-  `;
+  </div> `
+  ;
 // Html for the save dc module
-  var saveDcModule =`
+  var saveDcModule = `
   <div class="genStats__module genStats__module--savedc">
     <div class="genStats__heading">
       <div class="genStats__label">Save DC</div>
     </div>
-    <div class="genStats__inlineGroup genStats__saveGroup">
-      <div class="genStats__inlineGroup--item genStats__saveItem">
-        <div class="genStats__value">saveNumber</div>
-        <div class="genStats__footer">
-          <div class="genStats__label">DC</div>
-        </div>
-      </div>
-      <div class="genStats__inlineGroup--item genStats__saveItem">
-        <div class="genStats__value">20</div>
-        <div class="genStats__footer">
-          <div class="genStats__label">Bard</div>
-        </div>
-      </div>
-    </div>
+    <div class="genStats__inlineGroup genStats__saveGroup"></div>
   </div>
   `;
+// Html for the saveDC item
+
+var saveDcItemModule =`
+    <div class="genStats__inlineGroup--item genStats__saveItem">
+      <div class="genStats__value">saveNumber</div>
+      <div class="genStats__footer">
+        <div class="genStats__label">saveClass</div>
+      </div>
+    </div>
+  `;
+
 // Html for the speed module
   var speedModule =`
     <div class="genStats__module genStats__module--speed">
       <div class="genStats__heading">
-        <div class="genStats__label">walking</div>
+        <div class="genStats__label">Speed</div>
       </div>
       <div class="genStats__value">
         <span class="genStats__distance">
@@ -189,10 +187,27 @@ function render(character, node){ // function that builds the scraped data and r
         </span>
       </div>
       <div class="genStats__footer">
-        <div class="genStats__label">Speed</div>
+        <div class="genStats__label">Walking</div>
       </div>
     </div>
   `;
+
+// Html for the speed item
+
+  var speedItemModule =`
+    <div class="genStats__inlineGroup--item genStats__speedItem">
+      <div class="genStats__value">
+        <span class="genStats__distance">
+          <span class="genStats__distance--number">speedNumber</span>
+          <span class="genStats__distance--label">ft.</span>
+        </span>
+      </div>
+      <div class="genStats__footer">
+        <div class="genStats__label">speedType</div>
+      </div>
+    </div>
+  `;
+
 // Html for the initiative module
   var initModule =`
     <div class="genStats__module genStats__module--init">
@@ -267,7 +282,7 @@ function render(character, node){ // function that builds the scraped data and r
   `;
 
   node.parents('.ddb-campaigns-character-card').after(div);//inserts div module into the page. Will be removed in the future
-  var footer = $(`#${tableId} > tbody:last-child`);//adds class to table. Will be removed in the future
+  var footer = $(`#${tableId} > tbody:last-child`);//adds id to table. Will be removed in the future
   for(var s in character.stats){ //adds each stat to the table. Will be removed in the future
     var text = statRow
       .replace("title", s.toUpperCase())
@@ -287,13 +302,28 @@ function render(character, node){ // function that builds the scraped data and r
     footer.append(otherRow.replace("name", name).replace("value", otherInfo[name]));
   }
 
+  var saveDcPath = ".genStats__saveGroup"
+
   node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header').after(genStats); // add general stats to the player card
-  node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(speedModule.replace("speedNumber", character.speed)); //add player walking speed to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(initModule.replace("initNumber", character.initiative.number).replace("initMod", character.initiative.mod)); //add player initiative mod to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(armorClassModule.replace("ac", character.ac)); //add player armor class to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(healthModule.replace("currentHP", character.currentHP).replace("maxHP", character.maxHP)); //add player current and max hp to general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(speedModule.replace("speedNumber", character.speed)); //add player walking speed to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(saveDcModule.replace("saveNumber", character.saveDc)); //add player Save DC to front of general stats div
-
+  
+  Object.keys(character.spellSaveDC).forEach(function (item) {
+    var saveItem = saveDcItemModule
+      .replace("saveNumber", character.spellSaveDC[item])
+      .replace("saveClass", item)
+    node.parents('.ddb-campaigns-character-card').find('.genStats__saveGroup').append(saveItem)
+  })
+  // for(var save in character.spellSaveDC){
+  //   var saveItem = saveDcItemModule
+  //     .replace("saveNumber", save[name])
+  //     .replace("saveClass", name)
+  //   console.log(saveItem)
+  //   // node.parents('.genStats__container--2').find('.genStats__saveGroup').append(saveItem)
+  // }
   
 }
 

@@ -85,5 +85,5 @@
     display: inline-flex;
 }
 .genStats__inlineGroup--item {
-    margin-right: 10px;
+    margin: 0 5px;
 }
