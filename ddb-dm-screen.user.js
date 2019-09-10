@@ -95,14 +95,15 @@ class Character {
       "number" : initNumber,
       "mod" : initMod
     }
-    console.log(init)    
     return init;
     
   }
 
   get speed(){
-    // console.log(parseInt(this.iframe.find(".ct-distance-number__number").text()));
-    return parseInt(this.iframe.find(".ct-distance-number__number").text());
+    //this.iframe.find(".ct-speed-box").trigger("click");
+    var selector = ""
+    var speed = this.iframe.find(".ct-speed-manage-pane__speeds").children
+    // return parseInt(this.iframe.find(".ct-distance-number__number").text());
     
   }
 
@@ -110,7 +111,7 @@ class Character {
     this.iframe.find(".ct-quick-nav__toggle").trigger("click");
     this.iframe.find(".ct-quick-nav__menu-item--spells").children().first().trigger("click");
     var selector = ".ct-spells__casting .ct-spells-level-casting__info-group:has(.ct-spells-level-casting__info-label:contains(Save))";
-    console.log(this.iframe.find(selector).find(".ct-spells-level-casting__info-item").text());
+    //console.log(this.iframe.find(selector).find(".ct-spells-level-casting__info-item").text());
     return parseInt(this.iframe.find(selector).find(".ct-spells-level-casting__info-item").text());
 
   }
@@ -311,12 +312,20 @@ var saveDcItemModule =`
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(speedModule.replace("speedNumber", character.speed)); //add player walking speed to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(saveDcModule.replace("saveNumber", character.saveDc)); //add player Save DC to front of general stats div
   
-  Object.keys(character.spellSaveDC).forEach(function (item) {
+  // These next few lines checks if the character has a spell save DC. If it doesn't it replaces the number with a 0 and changes the class to no save. 
+  if (Object.keys(character.spellSaveDC).length !== 0 && character.spellSaveDC.constructor === Object) {
+    Object.keys(character.spellSaveDC).forEach(function (item) { // iterates through each item in the object and adds it to the spell save module
+      var saveItem = saveDcItemModule
+        .replace("saveNumber", character.spellSaveDC[item]) //adds the save dc number
+        .replace("saveClass", item) //Adds the spell save class
+      node.parents('.ddb-campaigns-character-card').find('.genStats__saveGroup').append(saveItem) // adds item to the character card
+    })
+  } else {
     var saveItem = saveDcItemModule
-      .replace("saveNumber", character.spellSaveDC[item])
-      .replace("saveClass", item)
+        .replace("saveNumber", "0")
+        .replace("saveClass", "No Save")
     node.parents('.ddb-campaigns-character-card').find('.genStats__saveGroup').append(saveItem)
-  })
+  }
   // for(var save in character.spellSaveDC){
   //   var saveItem = saveDcItemModule
   //     .replace("saveNumber", save[name])
