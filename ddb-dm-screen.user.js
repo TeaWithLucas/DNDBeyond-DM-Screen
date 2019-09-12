@@ -100,20 +100,16 @@ class Character {
   }
 
   get speed(){
-    //this.iframe.find(".ct-speed-box").trigger("click");
-    var selector = ""
-    var speed = this.iframe.find(".ct-speed-manage-pane__speeds").children
-    // return parseInt(this.iframe.find(".ct-distance-number__number").text());
-    
-  }
-
-  get saveDc(){
-    this.iframe.find(".ct-quick-nav__toggle").trigger("click");
-    this.iframe.find(".ct-quick-nav__menu-item--spells").children().first().trigger("click");
-    var selector = ".ct-spells__casting .ct-spells-level-casting__info-group:has(.ct-spells-level-casting__info-label:contains(Save))";
-    //console.log(this.iframe.find(selector).find(".ct-spells-level-casting__info-item").text());
-    return parseInt(this.iframe.find(selector).find(".ct-spells-level-casting__info-item").text());
-
+    this.iframe.find(".ct-speed-box").trigger("click");
+    var speeds = {}
+    var selector = this.iframe.find(".ct-speed-manage-pane__speeds")
+    selector.children().each(function () {
+      var label = $(this).find(".ct-speed-manage-pane__speed-label").text();
+      var amount = $(this).find(".ct-speed-manage-pane__speed-amount").find('.ct-distance-number__number').text();
+      speeds [label] = amount;
+    });
+    this.iframe.find(".ct-quick-nav__edge-toggle").trigger("click");
+    return speeds;
   }
 
   get conditions() {
@@ -167,30 +163,22 @@ function render(character, node){ // function that builds the scraped data and r
 // Html for the saveDC item
 
 var saveDcItemModule =`
-    <div class="genStats__inlineGroup--item genStats__saveItem">
-      <div class="genStats__value">saveNumber</div>
-      <div class="genStats__footer">
-        <div class="genStats__label">saveClass</div>
-      </div>
+  <div class="genStats__inlineGroup--item genStats__saveItem">
+    <div class="genStats__value">saveNumber</div>
+    <div class="genStats__footer">
+      <div class="genStats__label">saveClass</div>
     </div>
+  </div>
   `;
 
 // Html for the speed module
   var speedModule =`
-    <div class="genStats__module genStats__module--speed">
-      <div class="genStats__heading">
-        <div class="genStats__label">Speed</div>
-      </div>
-      <div class="genStats__value">
-        <span class="genStats__distance">
-          <span class="genStats__distance--number">speedNumber</span>
-          <span class="genStats__distance--label">ft.</span>
-        </span>
-      </div>
-      <div class="genStats__footer">
-        <div class="genStats__label">Walking</div>
-      </div>
+  <div class="genStats__module genStats__module--speed">
+    <div class="genStats__heading">
+      <div class="genStats__label">Speed</div>
     </div>
+    <div class="genStats__inlineGroup genStats__speedGroup"></div>
+  </div>
   `;
 
 // Html for the speed item
@@ -204,7 +192,7 @@ var saveDcItemModule =`
         </span>
       </div>
       <div class="genStats__footer">
-        <div class="genStats__label">speedType</div>
+        <div class="genStats__label">speedLabel</div>
       </div>
     </div>
   `;
@@ -309,8 +297,8 @@ var saveDcItemModule =`
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(initModule.replace("initNumber", character.initiative.number).replace("initMod", character.initiative.mod)); //add player initiative mod to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(armorClassModule.replace("ac", character.ac)); //add player armor class to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(healthModule.replace("currentHP", character.currentHP).replace("maxHP", character.maxHP)); //add player current and max hp to general stats div
-  node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(speedModule.replace("speedNumber", character.speed)); //add player walking speed to general stats div
-  node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(saveDcModule.replace("saveNumber", character.saveDc)); //add player Save DC to front of general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(speedModule); //add player walking speed to general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(saveDcModule); //add player Save DC to front of general stats div
   
   // These next few lines checks if the character has a spell save DC. If it doesn't it replaces the number with a 0 and changes the class to no save. 
   if (Object.keys(character.spellSaveDC).length !== 0 && character.spellSaveDC.constructor === Object) {
@@ -326,14 +314,16 @@ var saveDcItemModule =`
         .replace("saveClass", "No Save")
     node.parents('.ddb-campaigns-character-card').find('.genStats__saveGroup').append(saveItem)
   }
-  // for(var save in character.spellSaveDC){
-  //   var saveItem = saveDcItemModule
-  //     .replace("saveNumber", save[name])
-  //     .replace("saveClass", name)
-  //   console.log(saveItem)
-  //   // node.parents('.genStats__container--2').find('.genStats__saveGroup').append(saveItem)
-  // }
-  
+
+  //Adds character speeds to the speed module
+
+  Object.keys(character.speed).forEach(function (item) {
+    var speedItem = speedItemModule
+      .replace("speedLabel", item)
+      .replace("speedNumber", character.speed[item])
+    node.parents('.ddb-campaigns-character-card').find('.genStats__speedGroup').append(speedItem)
+  })
+
 }
 
 function prerender(character, node, times) { //Prerender logic - needs to be commented further
