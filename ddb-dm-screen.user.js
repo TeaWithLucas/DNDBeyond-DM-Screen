@@ -11,6 +11,11 @@
 
 var $ = window.jQuery;
 
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//        Start Character Class
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 class Character {
   constructor(name) {
     this.name = name;
@@ -41,6 +46,19 @@ class Character {
 
   get maxHP(){
     return parseInt(this.iframe.find(".ct-status-summary-mobile__hp-max").text());
+  }
+
+  get savingThrows(){
+    var savingThrows = {}
+    var selector = this.iframe.find('.ct-saving-throws-summary')
+    selector.children().each(function (){
+      var saveStat = $(this).find(".ct-saving-throws-summary__ability-name").text();
+      var saveNumber = $(this).find(".ct-signed-number__number").text();
+      var saveSign = $(this).find(".ct-signed-number__sign").text();
+      var saveFullNumber = {"sign": saveSign, "number" : saveNumber}
+      savingThrows[saveStat] = saveFullNumber
+    });
+    return savingThrows
   }
 
   get passivePerception(){
@@ -138,50 +156,58 @@ class Character {
   }
 };
 
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//        Start Render Function
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 function render(character, node){ // function that builds the scraped data and renders it on the page. 
 
   var tableId = `character-details-${character.id}`; //variable fot table ID. Will be removed in upcoming release. 
 
-//base html that the code gets added to
+  //base html that the code gets added to
   var genStats = `
-  <div class="genStats">
-    <div class="genStats__container genStats__container--1">
-    </div>
-    <div class="genStats__container genStats__container--2">
-    </div>
-  </div> `
-  ;
-// Html for the save dc module
+    <div class="genStats">
+      <div class="genStats__container genStats__container--1">
+      </div>
+      <div class="genStats__container genStats__container--2">
+      </div>
+      <div class="genStats__container genStats__container--3">
+      </div>
+    </div> 
+  `;
+  // Html for the save dc module
   var saveDcModule = `
-  <div class="genStats__module genStats__module--savedc">
-    <div class="genStats__heading">
-      <div class="genStats__label">Save DC</div>
+    <div class="genStats__module genStats__module--savedc">
+      <div class="genStats__heading">
+        <div class="genStats__label">Save DC</div>
+      </div>
+      <div class="genStats__inlineGroup genStats__saveGroup"></div>
     </div>
-    <div class="genStats__inlineGroup genStats__saveGroup"></div>
-  </div>
   `;
-// Html for the saveDC item
+  // Html for the saveDC item
 
-var saveDcItemModule =`
-  <div class="genStats__inlineGroup--item genStats__saveItem">
-    <div class="genStats__value">saveNumber</div>
-    <div class="genStats__footer">
-      <div class="genStats__label">saveClass</div>
+  var saveDcItemModule =`
+    <div class="genStats__inlineGroup--item genStats__saveItem">
+      <div class="genStats__value">saveNumber</div>
+      <div class="genStats__footer">
+        <div class="genStats__label">saveClass</div>
+      </div>
     </div>
-  </div>
   `;
 
-// Html for the speed module
+  // Html for the speed module
   var speedModule =`
-  <div class="genStats__module genStats__module--speed">
-    <div class="genStats__heading">
-      <div class="genStats__label">Speed</div>
+    <div class="genStats__module genStats__module--speed">
+      <div class="genStats__heading">
+        <div class="genStats__label">Speed</div>
+      </div>
+      <div class="genStats__inlineGroup genStats__speedGroup"></div>
     </div>
-    <div class="genStats__inlineGroup genStats__speedGroup"></div>
-  </div>
   `;
 
-// Html for the speed item
+  // Html for the speed item
 
   var speedItemModule =`
     <div class="genStats__inlineGroup--item genStats__speedItem">
@@ -197,7 +223,7 @@ var saveDcItemModule =`
     </div>
   `;
 
-// Html for the initiative module
+  // Html for the initiative module
   var initModule =`
     <div class="genStats__module genStats__module--init">
       <div class="genStats__value">
@@ -211,31 +237,61 @@ var saveDcItemModule =`
       </div>
     </div>
   `;
-// Html for the armor class module
+  // Html for the armor class module
   var armorClassModule =`
-  <div class="genStats__module genStats__module--armorClass">
-    <div class="genStats__heading">
-      <div class="genStats__label">armor</div>
+    <div class="genStats__module genStats__module--armorClass">
+      <div class="genStats__heading">
+        <div class="genStats__label">armor</div>
+      </div>
+      <div class="genStats__value">ac</div>
+      <div class="genStats__footer">
+        <div class="genStats__label">Class</div>
+      </div>
     </div>
-    <div class="genStats__value">ac</div>
-    <div class="genStats__footer">
-      <div class="genStats__label">Class</div>
-    </div>
-  </div>
   `;
-// Html for the Health module
+  // Html for the Health module
   var healthModule =` 
-  <div class="genStats__module genStats__module--health">
-    <div class="genStats__value">
-      <span class=".genStats__health--hp-current">currentHP</span>
-      <span class=".genStats__health--hp-sep">/</span>
-      <span class=".genStats__health--hp-max">maxHP</span>
+    <div class="genStats__module genStats__module--health">
+      <div class="genStats__value">
+        <span class=".genStats__health--hp-current">currentHP</span>
+        <span class=".genStats__health--hp-sep">/</span>
+        <span class=".genStats__health--hp-max">maxHP</span>
+      </div>
+        <div class="genStats__label">Hit Points</div>
+      </div>
     </div>
-      <div class="genStats__label">Hit Points</div>
-    </div>
-  </div>
   `;
 
+  // Html for the saving throw module
+  var savingThrowsModule = `
+    <div class="genStats__module genStats__module--savingThrow">
+      <div class="genStats__heading">
+        <div class="genStats__label">Saving Throws</div>
+      </div>
+      <div class="genStats__inlineGroup genStats__savingThrowsGroup"></div>
+    </div>
+  `;
+  // Html for the saving throw item
+
+  var savingThrowsItemModule =`
+    <div class="genStats__inlineGroup--item genStats__savingThrowsItem">
+      <div class="genStats__value">
+        <span class="genStats__number genStats__number--large">
+          <span class="genStats__number--sign">throwSign</span>
+          <span class="genStats__number--number">throwNumber</span>
+        </span>      
+      </div>
+      <div class="genStats__footer">
+        <div class="genStats__label">throwLabel</div>
+      </div>
+    </div>
+  `;
+
+
+
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //        Below will be removed
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   //div module for the table under the character cards. Will be removed in future release
   var div = ` 
     <div>
@@ -290,16 +346,33 @@ var saveDcItemModule =`
   for (name in otherInfo){ //adds other info object to the table. Will be removed in the future
     footer.append(otherRow.replace("name", name).replace("value", otherInfo[name]));
   }
-
-  var saveDcPath = ".genStats__saveGroup"
-
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //        Above will be removed
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //        Start adding elements to page
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
   node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header').after(genStats); // add general stats to the player card
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(initModule.replace("initNumber", character.initiative.number).replace("initMod", character.initiative.mod)); //add player initiative mod to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(armorClassModule.replace("ac", character.ac)); //add player armor class to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(healthModule.replace("currentHP", character.currentHP).replace("maxHP", character.maxHP)); //add player current and max hp to general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container--3').append(savingThrowsModule); //add player walking speed to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(speedModule); //add player walking speed to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(saveDcModule); //add player Save DC to front of general stats div
-  
+
+  //adds saving throws to page
+
+  Object.keys(character.savingThrows).forEach(function (savingThrow) {
+    var stat = savingThrow
+    var savingThrowItem = savingThrowsItemModule
+      .replace("throwLabel", [savingThrow])
+      .replace("throwSign", character.savingThrows[stat].sign)
+      .replace("throwNumber", character.savingThrows[stat].number)
+    node.parents('.ddb-campaigns-character-card').find('.genStats__savingThrowsGroup').append(savingThrowItem)    
+  })
+
   // These next few lines checks if the character has a spell save DC. If it doesn't it replaces the number with a 0 and changes the class to no save. 
   if (Object.keys(character.spellSaveDC).length !== 0 && character.spellSaveDC.constructor === Object) {
     Object.keys(character.spellSaveDC).forEach(function (item) { // iterates through each item in the object and adds it to the spell save module
@@ -314,7 +387,6 @@ var saveDcItemModule =`
         .replace("saveClass", "No Save")
     node.parents('.ddb-campaigns-character-card').find('.genStats__saveGroup').append(saveItem)
   }
-
   //Adds character speeds to the speed module
 
   Object.keys(character.speed).forEach(function (item) {
@@ -326,6 +398,11 @@ var saveDcItemModule =`
 
 }
 
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//        Start PreRender Function
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 function prerender(character, node, times) { //Prerender logic - needs to be commented further
     if (!isNaN(character.ac)) {render(character, node);}
     else {
@@ -333,6 +410,9 @@ function prerender(character, node, times) { //Prerender logic - needs to be com
         if (times < 80) {setTimeout(function() {prerender(character, node, times);}, 500);};
     }
 }
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//        Start iFrame Logic
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 (function() { //iFrame Logic - Needs to be commented further
   $('#site').after('<div id="iframeDiv" style="opacity: 0; position: absolute;"></div>'); //visibility: hidden;

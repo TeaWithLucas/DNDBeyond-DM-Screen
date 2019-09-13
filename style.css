@@ -88,3 +88,7 @@
 .genStats__inlineGroup--item {
     margin: 0 5px;
 }
+
+.genStats__savingThrowsItem {
+    padding: 0 5px;
+}
