@@ -20,6 +20,8 @@ class Character {
   constructor(name) {
     this.name = name;
   };
+  
+  // Do we need Level and Proficency anymore? They aren't used anywhere in the render function. 
   get level() {
     var classes = this.iframe.find('.ct-character-tidbits__classes').text().split('/').map(function(i){return parseInt(i.replace(/[^0-9]+/g, ''))});
     return classes.reduce((a, b) => a + b, 0);
@@ -61,6 +63,29 @@ class Character {
     return savingThrows
   }
 
+  get passiveSkills(){
+    var passiveStats = {}
+    var selector = this.iframe.find('.ct-senses__callouts')
+    selector.children().each(function (){
+      var number = $(this).find(".ct-senses__callout-value").text();
+      var skill = ""
+      if($(this).is(':contains("Perception")')){
+        skill = "Perception"
+      } else if($(this).is(':contains("Investigation")')){
+        skill = "Investigation"
+      } else if($(this).is(':contains("Insight")')){
+        skill = "Insight"
+      }
+      passiveStats[skill] = number
+    });
+    console.log(passiveStats)
+    return passiveStats
+  }
+
+  
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //        Below will be removed
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   get passivePerception(){
     var selector = ".ct-senses .ct-senses__callout:has(.ct-senses__callout-label:contains(Perception))";
     return parseInt(this.iframe.find(selector).find(".ct-senses__callout-value").text());
@@ -95,7 +120,10 @@ class Character {
     });
     return stats;
   }
-
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //        Above will be removed
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
   get skills(){
     var skills = {};
     this.iframe.find('.ct-skills__item').each(function() {
@@ -174,6 +202,8 @@ function render(character, node){ // function that builds the scraped data and r
       <div class="genStats__container genStats__container--2">
       </div>
       <div class="genStats__container genStats__container--3">
+      </div>
+      <div class="genStats__container genStats__container--4">
       </div>
     </div> 
   `;
@@ -271,7 +301,7 @@ function render(character, node){ // function that builds the scraped data and r
       <div class="genStats__inlineGroup genStats__savingThrowsGroup"></div>
     </div>
   `;
-  // Html for the saving throw item
+  // Html for the saving throw item module
 
   var savingThrowsItemModule =`
     <div class="genStats__inlineGroup--item genStats__savingThrowsItem">
@@ -286,6 +316,26 @@ function render(character, node){ // function that builds the scraped data and r
       </div>
     </div>
   `;
+
+  // Html for the Passive Skills module
+  var passiveSkillsModule = `
+    <div class="genStats__module genStats__module--passiveSkills">
+      <div class="genStats__heading">
+        <div class="genStats__label">Passive Skills</div>
+      </div>
+      <div class="genStats__inlineGroup genStats__passiveSkillsGroup"></div>
+    </div>
+  `;
+  // Html for the passive skills item module
+
+  var passiveSkillsItemModule =`
+    <div class="genStats__inlineGroup--item genStats__passiveSkillsItem">
+    <div class="genStats__value">passiveNumber</div>
+    <div class="genStats__footer">
+      <div class="genStats__label">passiveStat</div>
+    </div>
+    </div>
+  `;  
 
 
 
@@ -328,14 +378,6 @@ function render(character, node){ // function that builds the scraped data and r
 
   node.parents('.ddb-campaigns-character-card').after(div);//inserts div module into the page. Will be removed in the future
   var footer = $(`#${tableId} > tbody:last-child`);//adds id to table. Will be removed in the future
-  for(var s in character.stats){ //adds each stat to the table. Will be removed in the future
-    var text = statRow
-      .replace("title", s.toUpperCase())
-      .replace("value", character.stats[s].value)
-      .replace("mod", character.stats[s].modifier)
-      .replace("save", character.stats[s].savingThrow);
-    footer.append(text);
-  }
 
   otherInfo = { //builds object from passive skills. Will be removed in the future
     "Passive Investigation": character.passiveInvestigation,
@@ -345,6 +387,9 @@ function render(character, node){ // function that builds the scraped data and r
 
   for (name in otherInfo){ //adds other info object to the table. Will be removed in the future
     footer.append(otherRow.replace("name", name).replace("value", otherInfo[name]));
+  }
+  for (skill in character.passiveSkills){
+    footer.append(otherRow.replace("name", skill).replace("value", character.passiveSkills[skill]));
   }
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   //        Above will be removed
@@ -359,9 +404,10 @@ function render(character, node){ // function that builds the scraped data and r
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(armorClassModule.replace("ac", character.ac)); //add player armor class to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(healthModule.replace("currentHP", character.currentHP).replace("maxHP", character.maxHP)); //add player current and max hp to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--3').append(savingThrowsModule); //add player walking speed to general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container--4').append(passiveSkillsModule); //add player walking speed to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(speedModule); //add player walking speed to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(saveDcModule); //add player Save DC to front of general stats div
-
+ 
   //adds saving throws to page
 
   Object.keys(character.savingThrows).forEach(function (savingThrow) {
@@ -396,6 +442,15 @@ function render(character, node){ // function that builds the scraped data and r
     node.parents('.ddb-campaigns-character-card').find('.genStats__speedGroup').append(speedItem)
   })
 
+  Object.keys(character.passiveSkills).forEach(function (skill) {
+    var stat = skill
+    var passiveItem = passiveSkillsItemModule
+      .replace("passiveStat", stat)
+      .replace("passiveNumber", character.passiveSkills[skill])
+    node.parents('.ddb-campaigns-character-card').find('.genStats__passiveSkillsGroup').append(passiveItem)
+  })
+  
+  
 }
 
 
