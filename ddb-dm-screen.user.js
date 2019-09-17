@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         ddb-dm-screen
-// @namespace    https://github.com/lothsun/ddb-dm-screen/
+// @namespace    https://github.com/mivalsten/ddb-dm-screen
 // @version      2.1.0
 // @description  Poor man's DM screen for DDB campaigns
 // @author       Mivalsten Lothsun
@@ -153,7 +153,7 @@ class Character {
     });
     return skills;
   }
-
+  
   get initiative(){
     var initNumber = parseInt(this.iframe.find(".ct-initiative-box__value > .ct-signed-number.ct-signed-number--large > .ct-signed-number__number").text());
     var initMod = this.iframe.find(".ct-initiative-box__value > .ct-signed-number.ct-signed-number--large > .ct-signed-number__sign").text();
@@ -162,7 +162,6 @@ class Character {
       "mod" : initMod
     }
     return init;
-    
   }
 
   get speed(){
@@ -470,8 +469,6 @@ function render(character, node){ // function that builds the scraped data and r
       .replace("passiveNumber", character.passiveSkills[skill])
     node.parents('.ddb-campaigns-character-card').find('.genStats__passiveSkillsGroup').append(passiveItem)
   })
-  
-  
 }
 
 
@@ -503,7 +500,7 @@ function prerender(character, node, times) { //Prerender logic - needs to be com
       newIframe.id = `frame-${character.id}`;
       newIframe.style = "position: absolute;"; //visibility: hidden;
       newIframe.width = 1000;
-      newIframe.height = 1;
+      newIframe.height = 200;
       newIframe.seamless = "";
       newIframe.src = node.attr('href');
       document.body.appendChild(newIframe);
