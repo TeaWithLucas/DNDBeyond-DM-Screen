@@ -1,0 +1,94 @@
+.genStats {
+    border-top: 1px solid #838383;
+    border-bottom: 2px solid #c53131;
+    background-color: #404040;
+    color: #fff;
+    width: 100%;
+}
+.genStats__container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    padding: 5px 10px;
+}
+.genStats__container--2 {
+    padding: 10px 10px 5px 10px;
+}
+.genStats__module {
+    position: relative;
+    cursor: pointer;
+    text-align: center;
+    margin-right: 10px;
+}
+.genStats__heading {
+    font-size: 12px;
+}
+.genStats__subheading {
+    color: #838383;
+    font-size: 10px;
+}
+.genStats__value {
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 27px;
+}
+.genStats__footer {
+    font-size: 13px;
+}
+.genStats__label, .genStats__subheading{
+    text-transform: uppercase;
+    font-family: Roboto Condensed,Roboto,Helvetica,sans-serif;
+    font-weight: 700;
+}
+.genStats__number {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: top;
+}
+.genStats__number--large {
+    position: relative;
+}
+.genStats__distance {
+    position: relative;
+    font-size: 26px;
+    font-weight: 500;
+}
+.genStats__distance--label {
+    font-size: 16px;
+    position: absolute;
+    bottom: 2px;
+    color: #838383;
+    margin-left: 3px;
+}
+.genStats__number--large .genStats__number--sign {
+    font-size: 20px;
+    position: absolute;
+    right: 100%;
+}
+.genStats__number--sign {
+    color: #838383;
+    margin-right: 1px;
+}
+.genStats__number--number {
+
+}
+.genStats__health--hp-current {
+
+}
+.genStats__health--hp-sep {
+    padding: 0 3px;
+}
+.genStats__health--hp-max {
+
+}
+
+.genStats__inlineGroup{
+    display: inline-flex;
+}
+.genStats__inlineGroup--item {
+    margin: 0 5px;
+}
+
+.genStats__savingThrowsItem {
+    padding: 0 5px;
+}
