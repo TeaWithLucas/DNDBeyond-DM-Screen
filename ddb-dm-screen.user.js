@@ -510,5 +510,6 @@ function prerender(character, node, times) { //Prerender logic - needs to be com
       $('#iframeDiv').append(newIframe);
     }
   );
-  $('head').append('<link rel="stylesheet" href="https://raw.githack.com/lothsun/ddb-dm-screen/master/style.css" type="text/css" />')
+  //$('head').append('<link rel="stylesheet" href="https://raw.githack.com/lothsun/ddb-dm-screen/master/style.css" type="text/css" />')//development css sheet
+  $('head').append('<link rel="stylesheet" href="https://rawcdn.githack.com/lothsun/ddb-dm-screen/742360e72e74c4e74fa132bb921370545b17de25/style.css" type="text/css" />') //production css sheet
 })();
