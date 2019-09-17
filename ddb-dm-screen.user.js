@@ -63,6 +63,22 @@ class Character {
     return savingThrows
   }
 
+  get savingThrowMods(){
+    // var modifiers = []
+    // this.iframe.find(".ct-saving-throws-box__modifiers").children().each(function() {
+    //   modifiers.push($(this).text())
+    // })
+    // console.log(modifiers.length)
+    //if(modifiers.length)
+    var modifiers = this.iframe.find("div.ct-saving-throws-box__modifiers").html()
+    return modifiers
+  }
+
+  get savingThrowsCSS(){
+    var css = this.iframe.css()
+    return css
+  }
+  
   get passiveSkills(){
     var passiveStats = {}
     var selector = this.iframe.find('.ct-senses__callouts')
@@ -78,8 +94,12 @@ class Character {
       }
       passiveStats[skill] = number
     });
-    console.log(passiveStats)
     return passiveStats
+  }
+
+  get senses(){
+    var senses = this.iframe.find('.ct-senses__summary').text()
+    return senses
   }
 
   
@@ -299,6 +319,7 @@ function render(character, node){ // function that builds the scraped data and r
         <div class="genStats__label">Saving Throws</div>
       </div>
       <div class="genStats__inlineGroup genStats__savingThrowsGroup"></div>
+      <!--<div class="genStats__savingThrowMods">saveMods</div>-->
     </div>
   `;
   // Html for the saving throw item module
@@ -324,6 +345,7 @@ function render(character, node){ // function that builds the scraped data and r
         <div class="genStats__label">Passive Skills</div>
       </div>
       <div class="genStats__inlineGroup genStats__passiveSkillsGroup"></div>
+      <div class="genStats__senses">sensesText</div>
     </div>
   `;
   // Html for the passive skills item module
@@ -403,13 +425,12 @@ function render(character, node){ // function that builds the scraped data and r
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(initModule.replace("initNumber", character.initiative.number).replace("initMod", character.initiative.mod)); //add player initiative mod to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(armorClassModule.replace("ac", character.ac)); //add player armor class to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(healthModule.replace("currentHP", character.currentHP).replace("maxHP", character.maxHP)); //add player current and max hp to general stats div
-  node.parents('.ddb-campaigns-character-card').find('.genStats__container--3').append(savingThrowsModule); //add player walking speed to general stats div
-  node.parents('.ddb-campaigns-character-card').find('.genStats__container--4').append(passiveSkillsModule); //add player walking speed to general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container--3').append(savingThrowsModule/*.replace("saveMods", character.savingThrowMods)*/); //add player saving throws to general stats div
+  node.parents('.ddb-campaigns-character-card').find('.genStats__container--4').append(passiveSkillsModule.replace("sensesText", character.senses)); //add player senses to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(speedModule); //add player walking speed to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(saveDcModule); //add player Save DC to front of general stats div
  
   //adds saving throws to page
-
   Object.keys(character.savingThrows).forEach(function (savingThrow) {
     var stat = savingThrow
     var savingThrowItem = savingThrowsItemModule
