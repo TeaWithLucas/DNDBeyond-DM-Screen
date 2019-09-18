@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      2.1.0
+// @version      2.1.1
 // @description  Poor man's DM screen for DDB campaigns
 // @author       Mivalsten Lothsun
 // @match        https://www.dndbeyond.com/campaigns/*
@@ -20,8 +20,8 @@ class Character {
   constructor(name) {
     this.name = name;
   };
-  
-  // Do we need Level and Proficency anymore? They aren't used anywhere in the render function. 
+
+  // Do we need Level and Proficency anymore? They aren't used anywhere in the render function.
   get level() {
     var classes = this.iframe.find('.ct-character-tidbits__classes').text().split('/').map(function(i){return parseInt(i.replace(/[^0-9]+/g, ''))});
     return classes.reduce((a, b) => a + b, 0);
@@ -78,7 +78,7 @@ class Character {
     var css = this.iframe.css()
     return css
   }
-  
+
   get passiveSkills(){
     var passiveStats = {}
     var selector = this.iframe.find('.ct-senses__callouts')
@@ -102,25 +102,6 @@ class Character {
     return senses
   }
 
-  
-  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  //        Below will be removed
-  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  get passivePerception(){
-    var selector = ".ct-senses .ct-senses__callout:has(.ct-senses__callout-label:contains(Perception))";
-    return parseInt(this.iframe.find(selector).find(".ct-senses__callout-value").text());
-  }
-
-  get passiveInsight(){
-    var selector = ".ct-senses .ct-senses__callout:has(.ct-senses__callout-label:contains(Insight))";
-    return parseInt(this.iframe.find(selector).find(".ct-senses__callout-value").text());
-  }
-
-  get passiveInvestigation(){
-    var selector = ".ct-senses .ct-senses__callout:has(.ct-senses__callout-label:contains(Investigation))";
-    return parseInt(this.iframe.find(selector).find(".ct-senses__callout-value").text());
-  }
-
   get stats(){
     var stats = {};
     var iframe = this.iframe;
@@ -140,10 +121,7 @@ class Character {
     });
     return stats;
   }
-  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  //        Above will be removed
-  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  
+
   get skills(){
     var skills = {};
     this.iframe.find('.ct-skills__item').each(function() {
@@ -153,7 +131,7 @@ class Character {
     });
     return skills;
   }
-  
+
   get initiative(){
     var initNumber = parseInt(this.iframe.find(".ct-initiative-box__value > .ct-signed-number.ct-signed-number--large > .ct-signed-number__number").text());
     var initMod = this.iframe.find(".ct-initiative-box__value > .ct-signed-number.ct-signed-number--large > .ct-signed-number__sign").text();
@@ -209,9 +187,9 @@ class Character {
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-function render(character, node){ // function that builds the scraped data and renders it on the page. 
+function render(character, node){ // function that builds the scraped data and renders it on the page.
 
-  var tableId = `character-details-${character.id}`; //variable fot table ID. Will be removed in upcoming release. 
+  var tableId = `character-details-${character.id}`; //variable fot table ID. Will be removed in upcoming release.
 
   //base html that the code gets added to
   var genStats = `
@@ -224,7 +202,7 @@ function render(character, node){ // function that builds the scraped data and r
       </div>
       <div class="genStats__container genStats__container--4">
       </div>
-    </div> 
+    </div>
   `;
   // Html for the save dc module
   var saveDcModule = `
@@ -299,7 +277,7 @@ function render(character, node){ // function that builds the scraped data and r
     </div>
   `;
   // Html for the Health module
-  var healthModule =` 
+  var healthModule =`
     <div class="genStats__module genStats__module--health">
       <div class="genStats__value">
         <span class=".genStats__health--hp-current">currentHP</span>
@@ -329,7 +307,7 @@ function render(character, node){ // function that builds the scraped data and r
         <span class="genStats__number genStats__number--large">
           <span class="genStats__number--sign">throwSign</span>
           <span class="genStats__number--number">throwNumber</span>
-        </span>      
+        </span>
       </div>
       <div class="genStats__footer">
         <div class="genStats__label">throwLabel</div>
@@ -356,70 +334,12 @@ function render(character, node){ // function that builds the scraped data and r
       <div class="genStats__label">passiveStat</div>
     </div>
     </div>
-  `;  
-
-
-
-  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  //        Below will be removed
-  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  //div module for the table under the character cards. Will be removed in future release
-  var div = ` 
-    <div>
-      <table id="${tableId}">
-        <thead>
-          <tr>
-            <th></th>
-            <th align="center">Value</th>
-            <th align="center">Modifier</th>
-            <th align="center">Saving throw</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  `;
-//stat row module for the table under the character cards. Will be removed in future release
-  var statRow = `
-    <tr>
-      <th>title</th>
-      <td align="center">value</td>
-      <td align="center">mod</td>
-      <td align="center">save</td>
-    </tr>
-  `;
-//other row module for the table under the character cards. Will be removed in future release
-  var otherRow = `
-    <tr>
-      <th>name</th>
-      <td align="center">value</td>
-      <td></td><td></td>
-    </tr>
   `;
 
-  node.parents('.ddb-campaigns-character-card').after(div);//inserts div module into the page. Will be removed in the future
-  var footer = $(`#${tableId} > tbody:last-child`);//adds id to table. Will be removed in the future
-
-  otherInfo = { //builds object from passive skills. Will be removed in the future
-    "Passive Investigation": character.passiveInvestigation,
-    "Passive Perception": character.passivePerception,
-    "Passive Insight": character.passiveInsight,
-  }
-
-  for (name in otherInfo){ //adds other info object to the table. Will be removed in the future
-    footer.append(otherRow.replace("name", name).replace("value", otherInfo[name]));
-  }
-  for (skill in character.passiveSkills){
-    footer.append(otherRow.replace("name", skill).replace("value", character.passiveSkills[skill]));
-  }
-  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  //        Above will be removed
-  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   //        Start adding elements to page
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  
+
   node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header').after(genStats); // add general stats to the player card
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(initModule.replace("initNumber", character.initiative.number).replace("initMod", character.initiative.mod)); //add player initiative mod to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(armorClassModule.replace("ac", character.ac)); //add player armor class to general stats div
@@ -428,7 +348,7 @@ function render(character, node){ // function that builds the scraped data and r
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--4').append(passiveSkillsModule.replace("sensesText", character.senses)); //add player senses to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(speedModule); //add player walking speed to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--2').append(saveDcModule); //add player Save DC to front of general stats div
- 
+
   //adds saving throws to page
   Object.keys(character.savingThrows).forEach(function (savingThrow) {
     var stat = savingThrow
@@ -436,10 +356,10 @@ function render(character, node){ // function that builds the scraped data and r
       .replace("throwLabel", [savingThrow])
       .replace("throwSign", character.savingThrows[stat].sign)
       .replace("throwNumber", character.savingThrows[stat].number)
-    node.parents('.ddb-campaigns-character-card').find('.genStats__savingThrowsGroup').append(savingThrowItem)    
+    node.parents('.ddb-campaigns-character-card').find('.genStats__savingThrowsGroup').append(savingThrowItem)
   })
 
-  // These next few lines checks if the character has a spell save DC. If it doesn't it replaces the number with a 0 and changes the class to no save. 
+  // These next few lines checks if the character has a spell save DC. If it doesn't it replaces the number with a 0 and changes the class to no save.
   if (Object.keys(character.spellSaveDC).length !== 0 && character.spellSaveDC.constructor === Object) {
     Object.keys(character.spellSaveDC).forEach(function (item) { // iterates through each item in the object and adds it to the spell save module
       var saveItem = saveDcItemModule
