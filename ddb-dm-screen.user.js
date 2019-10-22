@@ -1,10 +1,12 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      2.1.1
+// @version      2.1.2
 // @description  Poor man's DM screen for DDB campaigns
 // @author       Mivalsten Lothsun
 // @match        https://www.dndbeyond.com/campaigns/*
+// @updateURL    https://github.com/mivalsten/ddb-dm-screen/raw/master/ddb-dm-screen.user.js
+// @require https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js 
 // @grant        none
 // @license      MIT; https://github.com/lothsun/ddb-dm-screen/blob/master/LICENSE
 // ==/UserScript==
