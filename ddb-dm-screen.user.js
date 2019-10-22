@@ -5,7 +5,7 @@
 // @description  Poor man's DM screen for DDB campaigns
 // @author       Mivalsten Lothsun
 // @match        https://www.dndbeyond.com/campaigns/*
-// @update       https://github.com/mivalsten/ddb-dm-screen/raw/master/ddb-dm-screen.user.js
+// @updateURL    https://github.com/mivalsten/ddb-dm-screen/raw/master/ddb-dm-screen.user.js
 // @grant        none
 // @license      MIT; https://github.com/lothsun/ddb-dm-screen/blob/master/LICENSE
 // ==/UserScript==
