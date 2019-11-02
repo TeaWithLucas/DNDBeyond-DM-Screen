@@ -21,4 +21,4 @@ If you like my work and would like to thank me, please donate to your local caus
 
 ## images
 
-![dm screen screenshot](https://i.imgur.com/wcgRlhJ.png)
+![dm screen screenshot](https://i.imgur.com/iy6zJ7Z.png)
