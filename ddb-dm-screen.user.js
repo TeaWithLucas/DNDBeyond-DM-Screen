@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      2.1.2
+// @version      2.2.0
 // @description  Poor man's DM screen for DDB campaigns
 // @author       Mivalsten Lothsun
 // @match        https://www.dndbeyond.com/campaigns/*
@@ -25,7 +25,7 @@ class Character {
 
   // Do we need Level and Proficency anymore? They aren't used anywhere in the render function.
   get level() {
-    var classes = this.iframe.find('.ct-character-tidbits__classes').text().split('/').map(function(i){return parseInt(i.replace(/[^0-9]+/g, ''))});
+    var classes = this.iframe.find('.ddbc-character-tidbits__classes').text().split('/').map(function(i){return parseInt(i.replace(/[^0-9]+/g, ''))});
     return classes.reduce((a, b) => a + b, 0);
   }
   get proficiency() {
@@ -41,7 +41,7 @@ class Character {
   }
 
   get ac(){
-    return parseInt(this.iframe.find(".ct-armor-class-box__value").text());
+    return parseInt(this.iframe.find(".ddbc-armor-class-box__value").text());
   }
 
   get currentHP(){
@@ -54,11 +54,11 @@ class Character {
 
   get savingThrows(){
     var savingThrows = {}
-    var selector = this.iframe.find('.ct-saving-throws-summary')
+    var selector = this.iframe.find('.ddbc-saving-throws-summary')
     selector.children().each(function (){
-      var saveStat = $(this).find(".ct-saving-throws-summary__ability-name").text();
-      var saveNumber = $(this).find(".ct-signed-number__number").text();
-      var saveSign = $(this).find(".ct-signed-number__sign").text();
+      var saveStat = $(this).find(".ddbc-saving-throws-summary__ability-name").text();
+      var saveNumber = $(this).find(".ddbc-signed-number__number").text();
+      var saveSign = $(this).find(".ddbc-signed-number__sign").text();
       var saveFullNumber = {"sign": saveSign, "number" : saveNumber}
       savingThrows[saveStat] = saveFullNumber
     });
@@ -135,8 +135,8 @@ class Character {
   }
 
   get initiative(){
-    var initNumber = parseInt(this.iframe.find(".ct-initiative-box__value > .ct-signed-number.ct-signed-number--large > .ct-signed-number__number").text());
-    var initMod = this.iframe.find(".ct-initiative-box__value > .ct-signed-number.ct-signed-number--large > .ct-signed-number__sign").text();
+    var initNumber = parseInt(this.iframe.find(".ct-initiative-box__value").find(".ddbc-signed-number__number").text());
+    var initMod = this.iframe.find(".ct-initiative-box__value").find(".ddbc-signed-number__sign").text();
     var init = {
       "number" : initNumber,
       "mod" : initMod
@@ -150,7 +150,7 @@ class Character {
     var selector = this.iframe.find(".ct-speed-manage-pane__speeds")
     selector.children().each(function () {
       var label = $(this).find(".ct-speed-manage-pane__speed-label").text();
-      var amount = $(this).find(".ct-speed-manage-pane__speed-amount").find('.ct-distance-number__number').text();
+      var amount = $(this).find(".ct-speed-manage-pane__speed-amount").find('.ddbc-distance-number__number').text();
       speeds [label] = amount;
     });
     this.iframe.find(".ct-quick-nav__edge-toggle").trigger("click");
@@ -192,7 +192,7 @@ class Character {
 function render(character, node){ // function that builds the scraped data and renders it on the page.
 
   var tableId = `character-details-${character.id}`; //variable fot table ID. Will be removed in upcoming release.
-
+  console.log(character);
   //base html that the code gets added to
   var genStats = `
     <div class="genStats">
@@ -401,8 +401,10 @@ function render(character, node){ // function that builds the scraped data and r
 function prerender(character, node, times) { //Prerender logic - needs to be commented further
     if (!isNaN(character.ac)) {render(character, node);}
     else {
+        console.log(times);
         times += 1;
-        if (times < 80) {setTimeout(function() {prerender(character, node, times);}, 500);};
+        if (times < 80) {setTimeout(function() {prerender(character, node, times);}, 500);}
+        else {console.log(character);};
     }
 }
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
