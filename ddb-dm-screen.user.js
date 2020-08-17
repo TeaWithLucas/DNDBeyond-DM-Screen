@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      2.3.0
+// @version      2.3.1
 // @description  Poor man's DM screen for DDB campaigns
 // @author       Mivalsten Lothsun
 // @match        https://www.dndbeyond.com/campaigns/*
@@ -391,10 +391,15 @@ function render(character, node){ // function that builds the scraped data and r
       .replace("passiveNumber", character.passiveSkills[skill])
     node.parents('.ddb-campaigns-character-card').find('.genStats__passiveSkillsGroup').append(passiveItem)
   })
+    //get timeout value
+        let refreshTime=parseInt($("#update-seconds").val())*1000;
     setTimeout(function () {
-        document.getElementById(`frame-${character.id}`).contentDocument.location.reload(true);
+        //only refresh when checkbox is checked
+        if($("#autoupdate").is(':checked')) {
+          document.getElementById(`frame-${character.id}`).contentDocument.location.reload(true);
+        }
         prerender(character, node, 0);
-    }, 30000);
+    }, refreshTime);
 }
 
 
@@ -413,11 +418,22 @@ function prerender(character, node, times) { //Prerender logic - needs to be com
     }
 }
 
+function addGUI() {
+    $(".ddb-campaigns-detail-body-listing-header-primary").after(`
+            <div id="dm-screen-config">
+<input type="checkbox" id="autoupdate">
+    <label for="autoupdate">autoupdate</label>
+<input type="number" id="update-seconds" value="30">
+    <label for="update-seconds">update period</label></div>
+`)
+}
+
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //        Start iFrame Logic
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 (function() { //iFrame Logic - Needs to be commented further
+  addGUI();
   $('#site').after('<div id="iframeDiv" style="opacity: 0; position: absolute;"></div>'); //visibility: hidden;
   let chars = $('.ddb-campaigns-detail-body-listing-active').find('.ddb-campaigns-character-card-footer-links-item-view');
   chars.each(function(index, value) {
