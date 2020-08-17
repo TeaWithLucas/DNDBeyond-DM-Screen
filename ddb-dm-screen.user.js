@@ -6,7 +6,7 @@
 // @author       Mivalsten Lothsun
 // @match        https://www.dndbeyond.com/campaigns/*
 // @updateURL    https://github.com/mivalsten/ddb-dm-screen/raw/master/ddb-dm-screen.user.js
-// @require https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js 
+// @require https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @grant        none
 // @license      MIT; https://github.com/lothsun/ddb-dm-screen/blob/master/LICENSE
 // ==/UserScript==
@@ -193,7 +193,6 @@ class Character {
 function render(character, node){ // function that builds the scraped data and renders it on the page.
 
   var tableId = `character-details-${character.id}`; //variable fot table ID. Will be removed in upcoming release.
-  console.log(character);
   //base html that the code gets added to
   var genStats = `
     <div class="genStats">
@@ -342,7 +341,7 @@ function render(character, node){ // function that builds the scraped data and r
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   //        Start adding elements to page
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+  node.parents('.ddb-campaigns-character-card').find(".genStats").remove();
   node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header').after(genStats); // add general stats to the player card
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(initModule.replace("initNumber", character.initiative.number).replace("initMod", character.initiative.mod)); //add player initiative mod to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(armorClassModule.replace("ac", character.ac)); //add player armor class to general stats div
@@ -392,6 +391,10 @@ function render(character, node){ // function that builds the scraped data and r
       .replace("passiveNumber", character.passiveSkills[skill])
     node.parents('.ddb-campaigns-character-card').find('.genStats__passiveSkillsGroup').append(passiveItem)
   })
+    setTimeout(function () {
+        document.getElementById(`frame-${character.id}`).contentDocument.location.reload(true);
+        prerender(character, node, 0);
+    }, 30000);
 }
 
 
@@ -400,14 +403,16 @@ function render(character, node){ // function that builds the scraped data and r
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function prerender(character, node, times) { //Prerender logic - needs to be commented further
-    if (!isNaN(character.ac)) {render(character, node);}
+    if (!isNaN(character.ac)) {
+        render(character, node);
+    }
     else {
-        console.log(times);
         times += 1;
         if (times < 80) {setTimeout(function() {prerender(character, node, times);}, 500);}
         else {console.log(character);};
     }
 }
+
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //        Start iFrame Logic
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -417,6 +422,7 @@ function prerender(character, node, times) { //Prerender logic - needs to be com
   let chars = $('.ddb-campaigns-detail-body-listing-active').find('.ddb-campaigns-character-card-footer-links-item-view');
   chars.each(function(index, value) {
       let node = $(this);
+      console.log(node);
       let name = node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header-upper-character-info-primary').text();
       let character = new Character(name);
       let newIframe = document.createElement('iframe');
