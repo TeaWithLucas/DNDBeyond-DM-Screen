@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      2.3.1
+// @version      2.3.2
 // @description  Poor man's DM screen for DDB campaigns
 // @author       Mivalsten Lothsun
 // @match        https://www.dndbeyond.com/campaigns/*
 // @updateURL    https://github.com/mivalsten/ddb-dm-screen/raw/master/ddb-dm-screen.user.js
-// @require https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
-// @grant        none
+// @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
+// @grant        GM_setValue
+// @grant        GM_getValue
 // @license      MIT; https://github.com/lothsun/ddb-dm-screen/blob/master/LICENSE
 // ==/UserScript==
 
@@ -423,9 +424,13 @@ function addGUI() {
             <div id="dm-screen-config">
 <input type="checkbox" id="autoupdate">
     <label for="autoupdate">autoupdate</label>
-<input type="number" id="update-seconds" value="30">
+<input type="number" id="update-seconds" value="` + GM_getValue("ddbDmScreen-updateSeconds", 30) + `">
     <label for="update-seconds">update period</label></div>
 `)
+    $("#autoupdate").prop('checked', GM_getValue("ddbDmScreen-autoupdate", false));
+    $("#autoupdate").change(function(){GM_setValue("ddbDmScreen-autoupdate", $(this).prop("checked"));});
+    $("#update-seconds").change(function(){GM_setValue("ddbDmScreen-updateSeconds", $(this).val());});
+    //value updater functions
 }
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
