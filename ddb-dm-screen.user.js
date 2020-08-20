@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         ddb-dm-screen
 // @namespace    https://github.com/mivalsten/ddb-dm-screen
-// @version      2.2.0
+// @version      2.3.2
 // @description  Poor man's DM screen for DDB campaigns
 // @author       Mivalsten Lothsun
 // @match        https://www.dndbeyond.com/campaigns/*
 // @updateURL    https://github.com/mivalsten/ddb-dm-screen/raw/master/ddb-dm-screen.user.js
-// @require https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js 
-// @grant        none
+// @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
+// @grant        GM_setValue
+// @grant        GM_getValue
 // @license      MIT; https://github.com/lothsun/ddb-dm-screen/blob/master/LICENSE
 // ==/UserScript==
 
@@ -193,7 +194,6 @@ class Character {
 function render(character, node){ // function that builds the scraped data and renders it on the page.
 
   var tableId = `character-details-${character.id}`; //variable fot table ID. Will be removed in upcoming release.
-  console.log(character);
   //base html that the code gets added to
   var genStats = `
     <div class="genStats">
@@ -342,7 +342,7 @@ function render(character, node){ // function that builds the scraped data and r
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   //        Start adding elements to page
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+  node.parents('.ddb-campaigns-character-card').find(".genStats").remove();
   node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header').after(genStats); // add general stats to the player card
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(initModule.replace("initNumber", character.initiative.number).replace("initMod", character.initiative.mod)); //add player initiative mod to general stats div
   node.parents('.ddb-campaigns-character-card').find('.genStats__container--1').append(armorClassModule.replace("ac", character.ac)); //add player armor class to general stats div
@@ -392,6 +392,15 @@ function render(character, node){ // function that builds the scraped data and r
       .replace("passiveNumber", character.passiveSkills[skill])
     node.parents('.ddb-campaigns-character-card').find('.genStats__passiveSkillsGroup').append(passiveItem)
   })
+    //get timeout value
+        let refreshTime=parseInt($("#update-seconds").val())*1000;
+    setTimeout(function () {
+        //only refresh when checkbox is checked
+        if($("#autoupdate").is(':checked')) {
+          document.getElementById(`frame-${character.id}`).contentDocument.location.reload(true);
+        }
+        prerender(character, node, 0);
+    }, refreshTime);
 }
 
 
@@ -400,23 +409,41 @@ function render(character, node){ // function that builds the scraped data and r
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function prerender(character, node, times) { //Prerender logic - needs to be commented further
-    if (!isNaN(character.ac)) {render(character, node);}
+    if (!isNaN(character.ac)) {
+        render(character, node);
+    }
     else {
-        console.log(times);
         times += 1;
         if (times < 80) {setTimeout(function() {prerender(character, node, times);}, 500);}
         else {console.log(character);};
     }
 }
+
+function addGUI() {
+    $(".ddb-campaigns-detail-body-listing-header-primary").after(`
+            <div id="dm-screen-config">
+<input type="checkbox" id="autoupdate">
+    <label for="autoupdate">autoupdate</label>
+<input type="number" id="update-seconds" value="` + GM_getValue("ddbDmScreen-updateSeconds", 30) + `">
+    <label for="update-seconds">update period</label></div>
+`)
+    $("#autoupdate").prop('checked', GM_getValue("ddbDmScreen-autoupdate", false));
+    $("#autoupdate").change(function(){GM_setValue("ddbDmScreen-autoupdate", $(this).prop("checked"));});
+    $("#update-seconds").change(function(){GM_setValue("ddbDmScreen-updateSeconds", $(this).val());});
+    //value updater functions
+}
+
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //        Start iFrame Logic
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 (function() { //iFrame Logic - Needs to be commented further
+  addGUI();
   $('#site').after('<div id="iframeDiv" style="opacity: 0; position: absolute;"></div>'); //visibility: hidden;
   let chars = $('.ddb-campaigns-detail-body-listing-active').find('.ddb-campaigns-character-card-footer-links-item-view');
   chars.each(function(index, value) {
       let node = $(this);
+      console.log(node);
       let name = node.parents('.ddb-campaigns-character-card').find('.ddb-campaigns-character-card-header-upper-character-info-primary').text();
       let character = new Character(name);
       let newIframe = document.createElement('iframe');
