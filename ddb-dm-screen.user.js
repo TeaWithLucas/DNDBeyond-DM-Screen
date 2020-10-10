@@ -1,14 +1,13 @@
 // ==UserScript==
-// @name         D&DBeyond DM Screen
-// @namespace    https://github.com/TeaWithLucas/ddb-dm-screen/tree/Test
-// @version      2.3.1
-// @description  Advanced DM screen for D&DBeyond campaigns
-// @author       TeaWithLucas
-// @match        https://www.dndbeyond.com/campaigns/*
-// @updateURL    https://github.com/TeaWithLucas/ddb-dm-screen/raw/Test/ddb-dm-screen.user.js
-// @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
-// @grant    		 GM_addStyle
-// @license      MIT; https://github.com/TeaWithLucas/ddb-dm-screen/blob/Test/LICENSE
+// @name			D&DBeyond DM Screen
+// @namespace		https://github.com/TeaWithLucas/ddb-dm-screen/
+// @version			2.3.1
+// @description		Advanced DM screen for D&DBeyond campaigns
+// @author			TeaWithLucas
+// @match			https://www.dndbeyond.com/campaigns/*
+// @updateURL		https://github.com/TeaWithLucas/ddb-dm-screen/raw/master/ddb-dm-screen.user.js
+// @require			https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
+// @license			MIT; https://github.com/TeaWithLucas/ddb-dm-screen/blob/master/LICENSE
 // ==/UserScript==
 
 var $ = window.jQuery;
@@ -27,6 +26,18 @@ var containerBoxSVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 281 
 var groupsBoxSVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 278 338" class="ddbc-svg "><polygon fill="#FEFEFE" points="8 336 271 336 271 2 8 2 8 336"></polygon><path fill="#972e2e" d="M278,6.39V4.47h-6.14V0h-2.68s-1.06,1.54-3.91,1.54H12.73C9.88,1.54,8.82,0,8.82,0H6.14V4.47H0V6.39c2.53,0,2.67,4.14,2.67,4.14V324.91S2.53,329,0,329V331H6.14v7H8.82V3.31H269.18V334.69H8.82V338s1.06-1.54,3.91-1.54H265.27c2.84,0,3.9,1.52,3.91,1.54h2.68v-7H278V329c-2.53,0-2.67-4.13-2.67-4.13V10.53s.14-4.14,2.67-4.14ZM6.27,324.91H4.14V12.12H6.27Zm267.79.48h-2.12V12.61h2.12Z"></path></svg>';
 var otherBoxSVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 89" class="ddbc-svg "><path fill="#FEFEFE" d="M87.54,9.45a42.28,42.28,0,0,1-3-3A42.91,42.91,0,0,0,74.21,1H18.36a11,11,0,0,0-1.53.59A4.9,4.9,0,0,1,15.36,2.7,21.09,21.09,0,0,0,6,12.28a5.14,5.14,0,0,1,.12,1.59,5.15,5.15,0,0,1,.24,1.18c1,12.72.57,25.84.4,38.59-.09,6.5,0,13-.05,19.48,0,2-.11,4.08-.22,6.12a17.93,17.93,0,0,0,2.78,2.94A73.22,73.22,0,0,0,16.51,87H78l.07-.06a32.31,32.31,0,0,0,9.31-8.5c.13-6,.65-12,.36-18s.2-11.89.36-17.9c.16-6.53,0-13.11-.17-19.64C87.84,18.57,88.07,13.86,87.54,9.45Z"></path><path fill="#972e2e" d="M85,0H9L0,9.05V80l9,9H85l9-9V9.05Zm6.55,10.08v7a29.26,29.26,0,0,0-3.24-6.78v-.13h-.08a20.45,20.45,0,0,0-9.13-7.69H84ZM75.6,86.52H18.36a19,19,0,0,1-11.3-7.73V10.25A19.27,19.27,0,0,1,18.4,2.48H75.64a18.94,18.94,0,0,1,11.3,7.73V78.75A19.27,19.27,0,0,1,75.6,86.52ZM2.47,21.18a31.7,31.7,0,0,1,3.24-8.8V76.64c-.3-.53-.62-1-.89-1.62a32.92,32.92,0,0,1-2.35-7.11Zm85.82-8.82c.3.53.62,1,.89,1.62a32.92,32.92,0,0,1,2.35,7.11V67.81a31.64,31.64,0,0,1-3.24,8.81ZM10.05,2.48h4.87a20.45,20.45,0,0,0-9.13,7.69H5.71v.13a29.26,29.26,0,0,0-3.24,6.78v-7ZM2.47,78.92v-7A29.45,29.45,0,0,0,5.71,78.7v.13h.08a20.45,20.45,0,0,0,9.13,7.69H10.05ZM84,86.52H79.08a20.45,20.45,0,0,0,9.13-7.69h.08V78.7a29.45,29.45,0,0,0,3.24-6.78v7Z"></path></svg>';
 var expandArrowSVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="ddbc-svg ddbc-svg--light"><path fill="#fff" d="M11,2.48,5,8l6,5.52a1.3,1.3,0,0,1-.21,2.12h0a2.25,2.25,0,0,1-2.68-.17L0,8,8.11.53A2.25,2.25,0,0,1,10.79.36h0A1.3,1.3,0,0,1,11,2.48Z"></path><polygon fill="#fff" points="6.92 8 16 0 16 16 6.92 8"></polygon></svg>';
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//        Add Custom CSS
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+console.debug('Start: Adding CSS Stylesheet');
+var link = document.createElement('link');
+link.rel = "stylesheet";
+link.type = "text/css";
+link.href = "https://cdn.jsdelivr.net/gh/TeaWithLucas/ddb-dm-screen/dm-screen.css"; //new css sheet
+document.head.appendChild(link);
+console.debug('Done: Adding CSS Stylesheet');
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //        Start Character Class
@@ -357,9 +368,10 @@ function render(character, node){ // function that builds the scraped data and r
 	// AC
 	var acContainer = quickStats.children('.gs-ac-container');
 	acContainer
-		.append($('<div/>',	{class: "gs-ac-box gs-sheild-bg gs-flex-items"}));
+    .append($('<div/>', { class: "gs-ac-box gs-flex-items" })); //removed gs-sheild-bg
 	var acBox = acContainer.children('.gs-ac-box');
-	acBox
+  acBox
+    .append($('<div/>', { class: "gs-box-background", html: armorClassBoxSVG }))
 		.append($('<div/>',	{class: "gs-ac-label",		html: "Armor"}))
 		.append($('<div/>',	{class: "gs-ac-value",		html: character.ac}))
 		.append($('<div/>',	{class: "gs-ac-label",		html: "Class"}));
@@ -470,10 +482,10 @@ function render(character, node){ // function that builds the scraped data and r
   })
 }
 
-
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //        Start PreRender Function
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 function prerender(character, node, times) { //Prerender logic - needs to be commented further
     if (!isNaN(character.ac)) {render(character, node);}
@@ -509,195 +521,4 @@ function prerender(character, node, times) { //Prerender logic - needs to be com
       $('#iframeDiv').append(newIframe);
     }
   );
-  //$('head').append('<link rel="stylesheet" href="https://raw.githack.com/lothsun/ddb-dm-screen/master/style.css" type="text/css" />')//development css sheet
-  $('head').append('<link rel="stylesheet" href="https://rawcdn.githack.com/lothsun/ddb-dm-screen/742360e72e74c4e74fa132bb921370545b17de25/style.css" type="text/css" />') //production css sheet
 })();
-
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//        CSS Style Editing
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-GM_addStyle ( `
-    .ddb-campaigns-character-card-header {
-        padding: 5px;
-		flex-grow: 1;
-    }
-	.ddb-campaigns-character-card-wrapper {
-		width: unset;
-		max-width: unset;
-		display: flex;
-	}
-	.rpgcharacter-listing {
-		flex-direction: column;
-	}
-	.ddb-campaigns-character-card {
-		display: flex;
-		flex-direction: column;
-		min-width: 230px;
-		width: 30%;
-	}
-	.gs-flex-values {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		align-content: center;
-	}
-	.gs-flex-items {
-		display: flex;
-		flex-direction: column;
-		justify-content: center
-	}
-	.gs-sheild-bg {
-		width: 79px;
-		height: 90px;
-		background: 50% transparent url(https://www.dndbeyond.com/Content/Skins/Waterdeep/images/character-sheet/content-frames/ac.svg) no-repeat;
-		background-size: auto;
-		background-size: contain;
-	}
-	.gs-diamond-bg {
-		width: 70px;
-		height: 45px;
-		background: 50% transparent url(https://www.dndbeyond.com/Content/Skins/Waterdeep/images/character-sheet/content-frames/initiative.svg) no-repeat;
-		background-size: auto;
-		background-size: contain;
-
-	}
-	.gs-box{
-		margin: 2px;
-	}
-	.gs-quickStats {
-		display:flex;
-		justify-content: space-around;
-		position: relative;
-		z-index: 1;
-	}
-	.gs-hp-container {
-		line-height: 1.2;
-		text-align: center;
-		text-transform: uppercase;
-		color: #000;
-		display: flex;
-	}
-
-	.gs-hp-value {
-		font-size: 18px;
-		font-weight: 200;
-		letter-spacing: -0.75px;
-	}
-	.gs-hp-sep {
-		padding: 0 0.5px
-		color: #d8d8d8;
-	}
-	.gs-hp-label {
-		font-family: Roboto Condensed,Roboto,Helvetica,sans-serif;
-		font-weight: 700;
-		/*position: absolute;
-		left: 50%;
-		transform: translateX(-50%);
-		bottom: 6px;*/
-		color: #fff;
-		margin-bottom: 3px;
-	}
-	.gs-ac-container {
-		font-weight: 700;
-		text-align: center;
-		text-transform: uppercase;
-		line-height: 1;
-		color: #000;
-	}
-	.gs-ac-label {
-		color: #838383;
-		font-size: 10px;
-	}
-	.gs-ac-value {
-		font-size: 26px;
-		letter-spacing: -1px;
-	}
-	.gs-intv-container {
-		line-height: 1.2;
-		text-align: center;
-		text-transform: uppercase;
-		color: #000;
-		display: flex;
-	}
-
-	.gs-intv-value {
-		font-size: 26px;
-		font-weight: 700;
-		text-align: center;
-		text-transform: uppercase;
-		letter-spacing: -1px;
-	}
-	.gs-intv-sign {
-		font-size: 20px;
-		position: absolute;
-		right: 100%;
-		font-size: 12px;
-		color: #838383;
-		margin-right: 1px;
-	}
-	.gs-intv-label {
-		font-family: Roboto Condensed,Roboto,Helvetica,sans-serif;
-		font-weight: 700;
-		/*position: absolute;
-		left: 50%;
-		transform: translateX(-50%);
-		bottom: 6px;*/
-		color: #fff;
-		margin-bottom: 3px;
-	}
-	.gs-able-container .gs-able-label::before, .gs-saves-container .gs-saves-label::before{
-		content: '';
-		background-size: cover;
-		background-position: center center;
-		display: inline-block;
-		margin-right: 5px;
-		height: 16px;
-		width: 16px;
-		margin-bottom: -2px;
-	}
-	.gs-str-label::before {
-		background-image: url(../Content/1-0-638-0/Skins/Waterdeep/images/icons/abilities/strength.svg);
-	}
-	.gs-dex-label::before {
-		background-image: url(../Content/1-0-638-0/Skins/Waterdeep/images/icons/abilities/dexterity.svg);
-	}
-	.gs-con-label::before {
-		background-image: url(../Content/1-0-638-0/Skins/Waterdeep/images/icons/abilities/constitution.svg);
-	}
-	.gs-int-label::before {
-		background-image: url(../Content/1-0-638-0/Skins/Waterdeep/images/icons/abilities/intelligence.svg);
-	}
-	.gs-wis-label::before {
-		background-image: url(../Content/1-0-638-0/Skins/Waterdeep/images/icons/abilities/wisdom.svg);
-	}
-	.gs-cha-label::before {
-		background-image: url(../Content/1-0-638-0/Skins/Waterdeep/images/icons/abilities/charisma.svg);
-	}
-	.gs-main-able {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-around;
-		align-items: baseline;
-	}
-	.gs-line-container {
-		background: #fff;
-		color: #000;
-		border-bottom: #bc0f0f solid 3px;
-		padding: 5px 2px;
-	}
-	.gs-line-container {
-		font-size: 18px;
-	}
-	.gs-main-saves {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-around;
-		align-items: baseline;
-	}
-	#genStats-container-3{
-		display:flex;
-		justify-content: space-evenly;
-	}
-` );
