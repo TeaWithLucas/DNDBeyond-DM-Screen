@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			D&DBeyond DM Screen
 // @namespace		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/
-// @version			2.4.1
+// @version			2.4.2
 // @description		Advanced DM screen for D&DBeyond campaigns
 // @author			TeaWithLucas
 // @match			https://www.dndbeyond.com/campaigns/*
@@ -366,10 +366,12 @@ function render(character, node){ // function that builds the scraped data and r
       <div class="gs-label gs-speed-label"></div>
     </div>
   `;
-
+  
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   //        Adding quickInfo elements to page
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  node.find('.gs-quick-info').remove();
+  
   node.find('.ddb-campaigns-character-card-header').append(quickInfoHTML); // add general stats to the player card
   var quickInfoContainer = node.find('.gs-quick-info-container');
   quickInfoContainer.find('.gs-hp-cur').html(character.currentHP);
@@ -382,6 +384,8 @@ function render(character, node){ // function that builds the scraped data and r
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   //        Adding main abilities elements to page
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+  node.find('.genStats').remove();
   
   node.append(mainInfoHTML); // add general stats to the player card
   
