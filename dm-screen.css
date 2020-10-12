@@ -38,26 +38,13 @@
 	justify-content: center;
 	align-content: center;
 }
+
 .gs-flex-items {
 	display: flex;
 	flex-direction: column;
 	justify-content: center
 }
-.gs-sheild-bg {
-	width: 79px;
-	height: 90px;
-	background: 50% transparent url(https://www.dndbeyond.com/Content/Skins/Waterdeep/images/character-sheet/content-frames/ac.svg) no-repeat;
-	background-size: auto;
-	background-size: contain;
-}
-.gs-diamond-bg {
-	width: 70px;
-	height: 45px;
-	background: 50% transparent url(https://www.dndbeyond.com/Content/Skins/Waterdeep/images/character-sheet/content-frames/initiative.svg) no-repeat;
-	background-size: auto;
-	background-size: contain;
 
-}
 .gs-box{
 	margin: 2px;
 }
@@ -107,6 +94,10 @@
 
 .gs-hp-cur {
 	font-size: 22px;
+	font-weight: 700;
+	text-transform: uppercase;
+	line-height: 1;
+	color: #000;
 }
 
 .gs-hp-max {

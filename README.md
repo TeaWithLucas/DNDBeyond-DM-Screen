@@ -5,7 +5,7 @@ This Tampermonkey or Greecemonkey userscript aims to provide simple DM screen by
 ## Usage
 
 1. Install Tampermonkey or Greecemonkey, addon for managing userscripts. Get [Tampermonkey here](https://www.tampermonkey.net/) or Get [Greecemonkey here](https://wiki.greasespot.net/) 
-2. Install new script from below link: https://github.com/TeaWithLucas/ddb-dm-screen/raw/master/ddb-dm-screen.user.js
+2. Install new script from below link: https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/raw/master/ddb-dm-screen.user.js
 3. Open your campaign, can be found here https://dndbeyond.com/my-campaigns, bask in the glory
 4. It autoupdates, yay
 

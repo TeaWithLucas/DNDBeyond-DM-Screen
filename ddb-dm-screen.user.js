@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name			D&DBeyond DM Screen
-// @namespace		https://github.com/TeaWithLucas/ddb-dm-screen/
+// @namespace		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/
 // @version			2.3.1
 // @description		Advanced DM screen for D&DBeyond campaigns
 // @author			TeaWithLucas
 // @match			https://www.dndbeyond.com/campaigns/*
-// @updateURL		https://github.com/TeaWithLucas/ddb-dm-screen/raw/master/ddb-dm-screen.user.js
+// @updateURL		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/raw/master/ddb-dm-screen.user.js
 // @require			https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
-// @license			MIT; https://github.com/TeaWithLucas/ddb-dm-screen/blob/master/LICENSE
+// @license			MIT; https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/blob/master/LICENSE
 // ==/UserScript==
 
 var $ = window.jQuery;
@@ -35,7 +35,7 @@ console.debug('Start: Adding CSS Stylesheet');
 var link = document.createElement('link');
 link.rel = "stylesheet";
 link.type = "text/css";
-link.href = "https://cdn.jsdelivr.net/gh/TeaWithLucas/ddb-dm-screen/dm-screen.css"; //new css sheet
+link.href = "https://raw.githack.com/TeaWithLucas/DNDBeyond-DM-Screen/master/dm-screen.css"; //new css sheet
 document.head.appendChild(link);
 console.debug('Done: Adding CSS Stylesheet');
 
