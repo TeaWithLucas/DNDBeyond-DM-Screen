@@ -32,6 +32,37 @@
 
 /** New CSS **/
 
+.gs-label, .gs-header .gs-subheader{
+    text-transform: uppercase;
+    font-family: Roboto Condensed,Roboto,Helvetica,sans-serif;
+    font-weight: 700;
+}
+
+.gs-header {
+    font-size: 12px;
+}
+
+.gs-subheader {
+    color: #838383;
+    font-size: 10px;
+}
+
+.gs-value {
+    font-size: 26px;
+    line-height: 1;
+}
+
+.gs-number {
+		font-weight: 500;
+}
+
+.gs-sign{
+  font-size: 12px;
+  color: #838383;
+  margin-right: -5px;
+	vertical-align: middle;
+}
+
 .gs-flex-values {
 	display: flex;
 	align-items: center;
@@ -64,7 +95,8 @@
 	position: relative;
 	z-index: 1;
 }
-.gs-hp-container {
+
+.gs-container .gs-hp {
 	line-height: 1.2;
 	text-align: center;
 	text-transform: uppercase;
@@ -96,12 +128,13 @@
 	font-size: 22px;
 	font-weight: 700;
 	text-transform: uppercase;
-	line-height: 1;
+	line-height: 1.2;
 	color: #000;
 }
 
 .gs-hp-max {
 	font-size: 12px;
+	line-height: 1.1;
 }
 
 .gs-hp-sep {
@@ -118,7 +151,7 @@
 	color: #fff;
 	margin-bottom: 3px;
 }
-.gs-ac-container {
+.gs-container .gs-ac {
 	font-weight: 700;
 	text-align: center;
 	text-transform: uppercase;
@@ -141,7 +174,8 @@
 	font-size: 26px;
 	letter-spacing: -1px;
 }
-.gs-intv-container {
+
+.gs-container .gs-intv {
 	line-height: 1.2;
 	text-align: center;
 	text-transform: uppercase;
@@ -167,7 +201,6 @@
 	letter-spacing: -1px;
 }
 .gs-intv-sign {
-	font-size: 20px;
 	position: absolute;
 	right: 120%;
 	font-size: 12px;
@@ -233,6 +266,27 @@
 	justify-content: space-around;
 	align-items: baseline;
 }
+
+.gs-box-callout{
+	position:relative;
+	flex-direction: row;
+	width: 130px;
+}
+
+.gs-passives-number{
+	display: inline;
+	margin-left:5px;
+	margin-right:2px;
+	font-size: 11px;
+	vertical-align: middle;
+}
+
+.gs-passives-label{
+	display: inline;
+	margin-left:6px;
+	margin-right:12px;
+}
+
 #genStats-container-3{
 	display:flex;
 	justify-content: space-evenly;
