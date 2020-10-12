@@ -32,6 +32,42 @@
 
 /** New CSS **/
 
+.gs-row-container, .gs-col-container{
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.gs-row-container{
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: baseline;
+}
+
+.gs-row-container > div {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.gs-col-container{
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: baseline;
+}
+
+
+.gs-col-container > div {
+	margin-top: 2px;
+	margin-bottom: : 2px;
+}
+
+.gs-container-spaces{
+	margin-top:4px;
+	margin-bottom:2px;
+	margin-left: 5px;
+	margin-right: 5px;
+	
+}
+
 .gs-label, .gs-header .gs-subheader{
     text-transform: uppercase;
     font-family: Roboto Condensed,Roboto,Helvetica,sans-serif;
@@ -45,6 +81,9 @@
 .gs-subheader {
     color: #838383;
     font-size: 10px;
+
+	  text-transform: uppercase;
+	  font-weight: 700;
 }
 
 .gs-value {
@@ -245,22 +284,20 @@
 .gs-cha-label::before {
 	background-image: url(../Content/1-0-638-0/Skins/Waterdeep/images/icons/abilities/charisma.svg);
 }
-.gs-main-able {
+.gs-main-able > .gs-container {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-around;
 	align-items: baseline;
 }
-.gs-line-container {
+.gs-container-line {
 	background: #fff;
 	color: #000;
 	border-bottom: #bc0f0f solid 3px;
 	padding: 5px 2px;
 }
-.gs-line-container {
-	font-size: 18px;
-}
-.gs-main-saves {
+
+.gs-main-saves > .gs-container {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-around;
@@ -274,17 +311,53 @@
 }
 
 .gs-passives-number{
-	display: inline;
-	margin-left:5px;
-	margin-right:2px;
+	display: inline-block;
+	width: 22px;
 	font-size: 11px;
 	vertical-align: middle;
+	text-align: center;
 }
 
 .gs-passives-label{
-	display: inline;
-	margin-left:6px;
-	margin-right:12px;
+	display: inline-block;
+	padding-left:2px;
+	padding-right:6px;
+	padding-bottom: 1px;
+	text-align: left;
+	vertical-align: middle;	
+
+}
+
+.gs-speed {
+    text-align: center;
+}
+
+.gs-speed-value {
+    position: relative;
+    font-size: 26px;
+    font-weight: 500;
+}
+.gs-speed-affix {
+    font-size: 16px;
+    position: absolute;
+    top: 2px;
+    color: #838383;
+    margin-left: 3px;
+}
+
+.gs-class  {
+	text-align: center;
+}
+
+.gs-class-label{
+	font-size: 10px;
+}
+
+.gs-savedc-number {
+    position: relative;
+	  line-height: 1.1;
+    font-size: 20px;
+    font-weight: 500;
 }
 
 #genStats-container-3{
@@ -326,18 +399,7 @@
     font-family: Roboto Condensed,Roboto,Helvetica,sans-serif;
     font-weight: 700;
 }
-.genStats__distance {
-    position: relative;
-    font-size: 26px;
-    font-weight: 500;
-}
-.genStats__distance--label {
-    font-size: 16px;
-    position: absolute;
-    bottom: 2px;
-    color: #838383;
-    margin-left: 3px;
-}
+
 
 .genStats__inlineGroup{
     display: inline-flex;

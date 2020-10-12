@@ -241,26 +241,42 @@ function render(character, node){ // function that builds the scraped data and r
   var tableId = `character-details-${character.id}`; //variable fot table ID. Will be removed in upcoming release.
 
   //base html that the code gets added to
-  var genStats = `
-    <div id="genStats1" class="genStats genStats-wrapper genStats-infobox">
+  var mainInfoHTML = `
+    <div class="genStats genStats-wrapper genStats-infobox">
       <div id="genStats-container-1" class="genStats-container">
-	    <div class="gs-main-able gs-line-container"></div>
+	    <div class="gs-main-able gs-container-line">
+		  <div class="gs-container gs-row-container gs-container-spaces"></div>
+		</div>
       </div>
       <div id="genStats-container-2" class="genStats-container">
-	    <div class="gs-main-saves gs-line-container"></div>
+	    <div class="gs-main-saves gs-container-line">
+		  <div class="gs-container gs-row-container gs-container-spaces"></div>
+		</div>
       </div>
       <div id="genStats-container-3" class="genStats-container">
-		<div class="gs-senses gs-col-container">
-		  <div class="gs-senses gs-col-container">
-		    <div class="gs-header gs-header-senses">Senses</div>
-			<div class="gs-passives gs-row-container">
-			  <div class="gs-subheader gs-header-passives">Passives</div>
-			</div>
-			<div class="gs-additonal-senses gs-row-container">
-			  <div class="gs-subheader gs-header-additonal-senses">Additional Senses</div>
+		<div class="gs-senses gs-col-container gs-container-spaces">
+		  <div class="gs-header gs-header-senses">Senses</div>
+		  <div class="gs-passives">
+		    <div class="gs-subheader gs-header-passives">Passives</div>
+			<div class="gs-container gs-col-container"></div>
+		  </div>
+		  <div class="gs-additonal-senses">
+		    <div class="gs-subheader gs-header-additonal-senses">Additional Senses</div>
+			<div class="gs-container gs-col-container">
 			  <div class="gs-text gs-text-additonal-senses"></div>
 			</div>
 		  </div>
+		</div>
+		<div class="gs-miscellaneous gs-col-container gs-container-spaces">
+		  <div class="gs-header gs-header-miscellaneous">Miscellaneous</div>
+		  <div class="gs-speeds">
+		    <div class="gs-subheader gs-header-speeds">Speed</div>
+			<div class="gs-container gs-row-container"></div>
+		  </div>
+		  <div class="gs-classes">
+		    <div class="gs-subheader gs-header-classes">Classes</div>
+			<div class="gs-container gs-row-container"></div>
+	      </div>
 		</div>
       </div>
     </div>
@@ -268,7 +284,7 @@ function render(character, node){ // function that builds the scraped data and r
   
 
   //quick reference that included hitpoints, armor class and initiative bonus
-  var quickInfo = `
+  var quickInfoHTML = `
     <div class="gs-wrapper gs-expanded gs-quick-info">
       <div class="gs-container gs-quickStats gs-quick-info-container">
         <div class="gs-container gs-hp gs-flex-items">
@@ -329,80 +345,32 @@ function render(character, node){ // function that builds the scraped data and r
       <div class="gs-number gs-passives-number"></div>
       <div class="gs-label gs-passives-label"></div>
     </div>
-  `; //removed gs-flex-values
-
-  // Html for the save dc module
-  var saveDcModule = `
-    <div class="genStats__module genStats__module--savedc">
-      <div class="genStats__heading">
-        <div class="genStats__label">Save DC</div>
-      </div>
-      <div class="genStats__inlineGroup genStats__saveGroup"></div>
-    </div>
   `;
-  // Html for the saveDC item
-
-  var saveDcItemModule =`
-    <div class="genStats__inlineGroup--item genStats__saveItem">
-      <div class="genStats__value">saveNumber</div>
-      <div class="genStats__footer">
-        <div class="genStats__label">saveClass</div>
-      </div>
+  
+  var classHTML = `
+    <div class="gs-class gs-container">
+	  <div class="gs-label gs-class-label"></div>
+	  <div class="gs-savedc gs-container">
+        <div class="gs-number gs-savedc-number"></div>
+        <div class="gs-label gs-savedc-label">Save DC</div>
+	  </div>
     </div>
   `;
   
-
-  // Html for the speed module
-  var speedModule =`
-    <div class="genStats__module genStats__module--speed">
-      <div class="genStats__heading">
-        <div class="genStats__label">Speed</div>
-      </div>
-      <div class="genStats__inlineGroup genStats__speedGroup"></div>
-    </div>
-  `;
-
-  // Html for the speed item
-
-  var speedItemModule =`
-    <div class="genStats__inlineGroup--item genStats__speedItem">
-      <div class="genStats__value">
-        <span class="genStats__distance">
-          <span class="genStats__distance--number">speedNumber</span>
-          <span class="genStats__distance--label">ft.</span>
-        </span>
-      </div>
-      <div class="genStats__footer">
-        <div class="genStats__label">speedLabel</div>
-      </div>
-    </div>
-  `;
-
-  // Html for the Passive Skills module
-  var passiveSkillsModule = `
-    <div class="genStats__module genStats__module--passiveSkills">
-      <div class="genStats__heading">
-        <div class="genStats__label">Passive Skills</div>
-      </div>
-      <div class="genStats__inlineGroup genStats__passiveSkillsGroup"></div>
-      <div class="genStats__senses">sensesText</div>
-    </div>
-  `;
-  // Html for the passive skills item module
-
-  var passiveSkillsItemModule =`
-    <div class="genStats__inlineGroup--item genStats__passiveSkillsItem">
-    <div class="genStats__value">passiveNumber</div>
-    <div class="genStats__footer">
-      <div class="genStats__label">passiveStat</div>
-    </div>
+  var speedHTML = `
+    <div class="gs-speed gs-container">
+      <div class="gs-value gs-speed-value">
+	    <span class="gs-number gs-speed-number"></span>
+		<span class="gs-affix gs-speed-affix">ft</span>
+	  </div>
+      <div class="gs-label gs-speed-label"></div>
     </div>
   `;
 
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   //        Adding quickInfo elements to page
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  node.find('.ddb-campaigns-character-card-header').append(quickInfo); // add general stats to the player card
+  node.find('.ddb-campaigns-character-card-header').append(quickInfoHTML); // add general stats to the player card
   var quickInfoContainer = node.find('.gs-quick-info-container');
   quickInfoContainer.find('.gs-hp-cur').html(character.currentHP);
   quickInfoContainer.find('.gs-hp-max').html(character.maxHP);
@@ -415,9 +383,9 @@ function render(character, node){ // function that builds the scraped data and r
   //        Adding main abilities elements to page
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   
-  node.append(genStats); // add general stats to the player card
+  node.append(mainInfoHTML); // add general stats to the player card
   
-  var mainAble = node.find('.gs-main-able');
+  var mainAble = node.find('.gs-main-able > .gs-container');
   Object.keys(character.abilities).forEach(function (abbr) {
 	//console.log(character.abilities[abbr]);
 	mainAble.append(abilityHTML);
@@ -434,7 +402,7 @@ function render(character, node){ // function that builds the scraped data and r
   //        Adding saving throw elements to page
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
-  var mainSave = node.find('.gs-main-saves');
+  var mainSave = node.find('.gs-main-saves > .gs-container');
   Object.keys(character.savingThrows).forEach(function (abbr) {
     //console.log(character.savingThrows[label]);
 	mainSave.append(savingThrowsHTML);
@@ -447,55 +415,65 @@ function render(character, node){ // function that builds the scraped data and r
   })
 
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  //        Start adding elements to page
+  //        Adding sense elements to page
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-  //node.find('#genStats-container-3').append(passiveSkillsModule.replace("sensesText", character.senses)); //add player senses to general stats div
-  node.find('#genStats-container-3').append(speedModule); //add player walking speed to general stats div
-  node.find('#genStats-container-3').append(saveDcModule); //add player Save DC to front of general stats div
-
-
+  
   // add passive senses data
-  var passives = node.find('.gs-passives');
-  Object.keys(character.passiveSkills).forEach(function (skill) {
+  var passives = node.find('.gs-passives > .gs-container');
+  Object.keys(character.passiveSkills).forEach(function (passive) {
 	passives.append(passivesHTML);
 	let curPass = passives.children().last();
 	//console.log(curPass);
-	curPass.addClass('gs-passives-'+skill);
-	curPass.find('.gs-passives-number').html(character.passiveSkills[skill]);
-	curPass.find('.gs-passives-label').html(skill);
+	curPass.addClass('gs-passives-'+passive);
+	curPass.find('.gs-passives-number').html(character.passiveSkills[passive]);
+	curPass.find('.gs-passives-label').html(passive);
   })
   
   // add additional senses data
   node.find('.gs-text-additonal-senses').html(character.senses);
   
+  
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //        Adding speed elements to page
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
+  //Adds character speeds to the speed module
+  var speeds = node.find('.gs-speeds > .gs-container');
+  Object.keys(character.speed).forEach(function (speed) {
+	speeds.append(speedHTML);
+	let curSpeed = speeds.children().last();
+	//console.log(curSpeed);
+	curSpeed.addClass('gs-speed-'+speed);
+	curSpeed.find('.gs-speed-number').html(character.speed[speed]);
+	curSpeed.find('.gs-speed-label').html(speed);
+  })
+  
+  
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //        Adding class elements to page
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+  var classes = node.find('.gs-classes > .gs-container');
+  
   // These next few lines checks if the character has a spell save DC. If it doesn't it replaces the number with a 0 and changes the class to no save.
   if (Object.keys(character.spellSaveDC).length !== 0 && character.spellSaveDC.constructor === Object) {
-    Object.keys(character.spellSaveDC).forEach(function (item) { // iterates through each item in the object and adds it to the spell save module
-      var saveItem = saveDcItemModule
-        .replace("saveNumber", character.spellSaveDC[item]) //adds the save dc number
-        .replace("saveClass", item) //Adds the spell save class
-      node.find('.genStats__saveGroup').append(saveItem) // adds item to the character card
+    Object.keys(character.spellSaveDC).forEach(function (className) { // iterates through each item in the object and adds it to the spell save module
+	  classes.append(classHTML);
+	  let curClass = classes.children().last();
+	  //console.log(curClass);
+	  curClass.addClass('gs-class-'+className);
+	  curClass.find('.gs-class-label').html(className);
+	  curClass.find('.gs-savedc-number').html(character.spellSaveDC[className]);
+	  curClass.find('.gs-savedc-label').html("Save DC");
     })
   } else {
-    var saveItem = saveDcItemModule
-        .replace("saveNumber", "0")
-        .replace("saveClass", "No Save")
-    node.find('.genStats__saveGroup').append(saveItem)
+	  
   }
-  //Adds character speeds to the speed module
-
-  Object.keys(character.speed).forEach(function (item) {
-    var speedItem = speedItemModule
-      .replace("speedLabel", item)
-      .replace("speedNumber", character.speed[item])
-    node.find('.genStats__speedGroup').append(speedItem)
-  })
 
   
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //        Update timeout
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   
   //get timeout value
