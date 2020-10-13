@@ -54,13 +54,13 @@ var abilitySVGs = {
 	    <ul class="flat-list">
 		  <li class="gs-field gs-field-checkbox">
 		    <div class="form-field  form-field-checkbox">
-			  <label for="gs-auto-update"><span>Auto Update (s)</span></label>
+			  <label for="gs-auto-update"><span>Auto Update</span></label>
 			  <input type="checkbox" name="gs-auto-update" id="gs-auto-update" value="false">
 			</div>
 		  </li>
 		  <li class="gs-field gs-field-number">
 		    <div class="form-field  form-field-number">
-			  <label for="gs-auto-duration"><span>Auto Update (s)</span></label>
+			  <label for="gs-auto-duration"><span>Duration (s)</span></label>
 			  <input type="number" name="auto-duration" id="auto-duration" value="60" placeholder="Duration (secs)">
 			</div>
 		  </li>
