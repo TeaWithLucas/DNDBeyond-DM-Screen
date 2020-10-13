@@ -1,4 +1,4 @@
-/* Version 2.4.7 CSS */
+/* Version 2.4.9 CSS */
 
 /** Overriding Existing CSS **/
 
@@ -52,6 +52,89 @@
   font-family: "Roboto Condensed",Roboto,Helvetica,sans-serif;
 }
 
+.ddb-campaigns-detail-header-secondary-sharing .sharing-header {
+	display: inline-block;
+	padding: unset;
+}
+
+a.ddb-campaigns-detail-body-listing-campaign-link, a#content-management-link, .ddb-campaigns-invite-wrapper {
+	padding: 6px 10px;
+}
+
+.flat-list {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding-bottom: 40px;
+    z-index: 1;
+	padding-bottom: 20px;
+    position: relative;
+	width: 100%;
+    margin: 0 auto;
+}
+
+.flat-list .gs-field {
+    width: 20% !important;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 1%;
+}
+
+.gs-controls {
+    border-color: #bc0f0f;
+    border-top: 3px solid #1b9af0;
+    border-bottom-color: rgb(27, 154, 240);
+    padding-bottom: 8px;
+    padding-top: 16px;
+}
+
+.gs-controls {
+	width: 100%;
+	position: relative;
+	background: rgba(0,0,0,0.04);
+	padding: 15px;
+	border-radius: 3px;
+}
+
+.form-field input[type=number] {
+	padding: 0 10px;
+	border-radius: 0;
+	height: 50px;
+	background-color: white;
+	box-shadow: inset 0 0 4px 0 rgba(138,177,198,0.48);
+	border: solid 1px #d8dde3;
+	box-sizing: border-box;
+	font-size: 15px !important;
+	margin: 0 auto;
+	-webkit-transition: .2s linear border,0.2s linear box-shadow;
+  -moz-transition: .2s linear border,0.2s linear box-shadow;
+  transition: .2s linear border,0.2s linear box-shadow;
+}
+
+.form-field input[type=checkbox] {
+	padding: 0 10px;
+	border-radius: 0;
+	height: 10px;
+	background-color: white;
+	box-shadow: inset 0 0 4px 0 rgba(138,177,198,0.48);
+	border: solid 1px #d8dde3;
+	box-sizing: border-box;
+	font-size: 15px !important;
+	margin: 0 auto;
+	-webkit-transition: .2s linear border,0.2s linear box-shadow;
+  -moz-transition: .2s linear border,0.2s linear box-shadow;
+  transition: .2s linear border,0.2s linear box-shadow;
+}
+
+
+
 /** New CSS **/
 
 .gs-row-container, .gs-col-container{
@@ -72,8 +155,8 @@
 
 .gs-col-container{
 	flex-direction: column;
-	justify-content: space-around;
-	align-items: baseline;
+	justify-content: flex-start;
+	align-items: stretch;
 }
 
 
@@ -83,10 +166,10 @@
 }
 
 .gs-container-spaces{
-	margin-top:4px;
-	margin-bottom:2px;
-	margin-left: 5px;
-	margin-right: 5px;
+	padding-top:4px;
+	padding-bottom:2px;
+	padding-left: 5px;
+	padding-right: 5px;
 	
 }
 
@@ -102,22 +185,20 @@
 	justify-content: stretch;
 }
 
-.gs-label, .gs-header .gs-subheader{
+.gs-label, .gs-header, .gs-subheader{
     text-transform: uppercase;
     font-family: Roboto Condensed,Roboto,Helvetica,sans-serif;
     font-weight: 700;
 }
 
 .gs-header {
-    font-size: 12px;
+	font-size: 14px;
 }
 
 .gs-subheader {
     color: #838383;
     font-size: 10px;
-
-	  text-transform: uppercase;
-	  font-weight: 700;
+    text-align: center;
 }
 
 .gs-value {
@@ -136,6 +217,10 @@
 	vertical-align: middle;
 }
 
+.gs-text {
+	font-size: 12px;
+}
+
 .gs-prefix {
 	position: relative;
   display: inline-block;
@@ -146,10 +231,9 @@
 
 .gs-affix {
     font-size: 16px;
-    position: absolute;
-    top: 2px;
     color: #838383;
-    margin-left: 3px;
+    padding-left: 3px;
+	vertical-align: super;
 }
 
 
@@ -181,8 +265,8 @@
 	
 }
 
-.gs-infobox-item{
-	max-width: 260px;
+.gs-infobox{
+	max-width: 400px;
 }
 
 .gs-infobox-item.gs-col-container{
@@ -329,45 +413,15 @@
 	color: #fff;
 	margin-bottom: 3px;
 }
-.gs-main-able .gs-able-value::before, .gs-main-saves .gs-saves-value::before{
-	/*! content: ''; */
-	background-size: cover;
-	background-position: center center;
-	display: inline-block;
-	margin-right: 5px;
-	height: 16px;
-	width: 16px;
-	margin-bottom: -2px;
-}
-
-
-.gs-saves-str .gs-value::before, .gs-able-str .gs-value::before {
-	background-image: url(https://www.dndbeyond.com/Content/Skins/Waterdeep/images/icons/abilities/strength.svg);
-}
-.gs-saves-dex .gs-value::before, .gs-able-dex .gs-value::before {
-	background-image: url(https://www.dndbeyond.com/Content/Skins/Waterdeep/images/icons/abilities/dexterity.svg);
-}
-.gs-saves-con .gs-value::before, .gs-able-con .gs-value::before {
-	background-image: url(https://www.dndbeyond.com/Content/Skins/Waterdeep/images/icons/abilities/constitution.svg);
-}
-.gs-saves-int .gs-value::before, .gs-able-int .gs-value::before {
-	background-image: url(https://www.dndbeyond.com/Content/Skins/Waterdeep/images/icons/abilities/intelligence.svg);
-}
-.gs-saves-wis .gs-value::before, .gs-able-wis .gs-value::before {
-	background-image: url(https://www.dndbeyond.com/Content/Skins/Waterdeep/images/icons/abilities/wisdom.svg);
-}
-.gs-saves-cha .gs-value::before, .gs-able-cha .gs-value::before {
-	background-image: url(https://www.dndbeyond.com/Content/Skins/Waterdeep/images/icons/abilities/charisma.svg);
-}
 
 .gs-main-able {
-	min-width: 260px;
+	min-width: 250px;
 	max-width: 410px;
 }
 
 .gs-main-saves {
 	min-width: 200px;
-	max-width: 300px;
+	max-width: 250px;
 }
 
 .gs-main-able > .gs-container {
@@ -395,6 +449,14 @@
 	min-width: 55px;
 } 
 
+.gs-header-able {
+	padding-left: 4px;
+}
+
+.gs-header-saves {
+	padding-left: 4px;
+}
+
 .gs-able-number {
 	display: inline-block;
 	min-width: 30px;
@@ -410,7 +472,11 @@
 	width: 130px;
 }
 
-.gs-passives-number{
+.gs-additonal-senses-empty {
+	display:none;
+}
+
+.gs-passives-number {
 	display: inline-block;
 	width: 22px;
 	font-size: 11px;
@@ -439,10 +505,8 @@
 }
 .gs-speed-affix {
     font-size: 16px;
-    position: absolute;
-    top: 2px;
     color: #838383;
-    margin-left: 3px;
+    /*! margin-left: 3px; */
 }
 
 .gs-class  {
