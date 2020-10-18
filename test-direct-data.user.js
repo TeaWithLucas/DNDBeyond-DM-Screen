@@ -10,114 +10,203 @@
 // @grant        none
 // ==/UserScript==
 
+var rulesUrls = ["https://character-service.dndbeyond.com/character/v4/rule-data?v=3.11.3", "https://gamedata-service.dndbeyond.com/vehicles/v3/rule-data?v=3.11.3"];
+var charJSONurlBase = ["https://character-service.dndbeyond.com/character/v4/character/"]
 
+var stateTemplate = {
+    appEnv: {
+        authEndpoint: "https://auth-service.dndbeyond.com/v1/cobalt-token",
+        characterEndpoint: "",
+        characterId: 0,
+        characterServiceBaseUrl: null,
+        diceEnabled: true,
+        diceFeatureConfiguration: {
+            apiEndpoint: "https://dice-service.dndbeyond.com",
+            assetBaseLocation: "https://www.dndbeyond.com/dice",
+            enabled: true,
+            menu: true,
+            notification: false,
+            trackingId: ""
+        },
+        dimensions: {
+            sheet: {
+                height: 0,
+                width: 1200
+            },
+            styleSizeType: 4,
+            window: {
+                height: 571,
+                width: 1920
+            }
+        },
+        isMobile: false,
+        isReadonly: false,
+        redirect: undefined,
+        username: "example"
+    },
+    appInfo: {
+        error: null
+    },
+    character: {},
+    characterEnv: {
+        context: "SHEET",
+        isReadonly: false,
+        loadingStatus: "LOADED"
+    },
+    confirmModal: {
+        modals: []
+    },
+    modal: {
+        open: {}
+    },
+    ruleData: {},
+    serviceData: {
+        classAlwaysKnownSpells: {},
+        classAlwaysPreparedSpells: {},
+        definitionPool: {},
+        infusionsMappings: [],
+        knownInfusionsMappings: [],
+        ruleDataPool: {},
+        vehicleComponentMappings: [],
+        vehicleMappings: []
+    },
+    sheet: {
+        initError: null,
+        initFailed: false
+    },
+    sidebar: {
+        activePaneId: null,
+        alignment: "right",
+        isLocked: false,
+        isVisible: false,
+        panes: [],
+        placement: "overlay",
+        width: 340
+    },
+    syncTransaction: {
+        active: false,
+        initiator: null
+    },
+    toastMessage: {}
+}
 
-parsedata(8048112);
+var rulesData = {}, charactersData = {};
 
-(function() {
-})();
+var charIDs = [8048112, 33178712, 35899931];
+onload(charIDs);
 
-function parsedata(characterId) {
+(function () {})();
 
-	var curstate = {
-		appEnv: {
-			authEndpoint: "https://auth-service.dndbeyond.com/v1/cobalt-token",
-			characterEndpoint: "",
-			characterId: 0,
-			characterServiceBaseUrl: null,
-			diceEnabled: true,
-			diceFeatureConfiguration: {
-				apiEndpoint: "https://dice-service.dndbeyond.com",
-				assetBaseLocation: "https://www.dndbeyond.com/dice",
-				enabled: true,
-				menu: true,
-				notification: false,
-				trackingId: ""
-			},
-			dimensions: {
-				sheet: {
-					height: 0,
-					width: 1200
-				},
-				styleSizeType: 4,
-				window: {
-					height: 571,
-					width: 1920
-				}
-			},
-			isMobile: false,
-			isReadonly: false,
-			redirect: undefined,
-			username: "example"
-		},
-		appInfo: {
-			error: null
-		},
-		character: {},
-		characterEnv: {
-			context: "SHEET",
-			isReadonly: false,
-			loadingStatus: "LOADED"
-		},
-		confirmModal: {
-			modals: []
-		},
-		modal: {
-			open: {}
-		},
-		ruleData: {},
-		serviceData: {
-			classAlwaysKnownSpells: {},
-			classAlwaysPreparedSpells: {},
-			definitionPool: {},
-			infusionsMappings: [],
-			knownInfusionsMappings: [],
-			ruleDataPool: {},
-			vehicleComponentMappings: [],
-			vehicleMappings: []
-		},
-		sheet: {
-			initError: null,
-			initFailed: false
-		},
-		sidebar: {
-			activePaneId: null,
-			alignment: "right",
-			isLocked: false,
-			isVisible: false,
-			panes: [],
-			placement: "overlay",
-			width: 340
-		},
-		syncTransaction: {
-			active: false,
-			initiator: null
-		},
-		toastMessage: {}
-	}
-
-    curstate.appEnv.characterId = characterId;
-    var urls = ["https://character-service.dndbeyond.com/character/v4/character/" + characterId, "https://character-service.dndbeyond.com/character/v4/rule-data?v=3.11.3", "https://gamedata-service.dndbeyond.com/vehicles/v3/rule-data?v=3.11.3"];
-    var proms = urls.map(d => fetch(d));
-
-    Promise.all(proms)
-    .then(ps => Promise.all(ps.map(p => p.json()))) // p.json() also returns a promise
-    .then(js => {
-        curstate.character = js[0].data;
-        curstate.ruleData = js[1].data;
-        curstate.serviceData.ruleDataPool = js[2].data;
-        var info = window.getCharData(curstate);
-		console.log(info);
+function onload(charIDs) {
+    console.log("Starting Test Direct Data");
+    retriveRules().then(() => {
+        generateCharStates(charIDs);
+        updateCharData();
+    }).catch((error) => {
+        console.log(error);
     });
 }
 
-(function(modules) {
+function retriveRules(charIDs) {
+    return new Promise(function (resolve, reject) {
+        console.log("Retriving Rules Data");
+        getJSONfromURLs(rulesUrls).then((js) => {
+            console.log("Rules Data Processing Start");
+            js.forEach(function (rule, index) {
+                if (rule.success == null || rule.lenth < 1 || rule.success != true) {
+                    console.warn("ruleset " + index + " is null, empty or fail");
+                }
+            });
+            rulesData = {
+                ruleset: js[0].data,
+                vehiclesRuleset: js[1].data
+            }
+            console.debug("Rules Data:");
+            console.debug(rulesData);
+            stateTemplate.ruleData = rulesData.ruleset;
+            stateTemplate.serviceData.ruleDataPool = rulesData.ruleset;
+            resolve();
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+}
 
+function generateCharStates(charIDs) {
+    console.log("Starting Char State Generation");
+    charIDs.forEach(generateCharState);
+}
+
+function generateCharState(charID) {
+    console.debug("Generating char: " + charID);
+    charactersData[charID] = {
+        url: charJSONurlBase + charID,
+        state: stateTemplate,
+        data: {}
+    }
+    charactersData[charID].state.appEnv.characterId = charID;
+}
+
+function updateCharData() {
+    console.log("Retriving Char Data");
+    var charURLs = [];
+    for (var charID in charactersData) {
+        charURLs.push(charactersData[charID].url);
+    }
+    getJSONfromURLs(charURLs).then((js) => {
+        window.jstest = js;
+        js.forEach(function (charJSON, index) {
+            if (charJSON.success == null || charJSON.lenth < 1 || charJSON.success != true) {
+                console.warn("charJSON " + index + " is null, empty or fail");
+            }
+            var charId = charJSON.data.id;
+            console.debug("Processing Char: " + charId);
+            charactersData[charId].state.character = charJSON.data;
+            var charData = window.getCharData(charactersData[charId].state);
+            charactersData[charId].data = charData;
+        });
+        console.log("Updated Char Data");
+        console.debug(charactersData);
+        updateCharInfo();
+    }).catch((error) => {
+        console.log(error);
+    });
+}
+
+function getJSONfromURLs(urls) {
+    return new Promise(function (resolve, reject) {
+        console.log("Fetching: ", urls);
+        var proms = urls.map(d => fetch(d));
+        Promise.all(proms)
+        .then(ps => Promise.all(ps.map(p => p.json()))) // p.json() also returns a promise
+        .then(jsons => {
+            console.log("JSON Data Retrived");
+            resolve(jsons);
+        })
+        .catch((error) => {
+            reject(error);
+        });
+    });
+}
+
+function updateCharInfo() {
+    console.log("Updating Char Info");
+    //insert data processing here
+}
+
+(function (modules) {
+    /*
+    A near direct copy of the function from http://media.dndbeyond.com/character-tools/characterTools.bundle.71970e5a4989d91edc1e.min.js
+    This basically loads in the modules in https://media.dndbeyond.com/character-tools/vendors~characterTools.bundle.f8b53c07d1796f1d29cb.min.js which is loaded by this script
+     */
     function webpackJsonpCallback(data) {
         var chunkIds = data[0];
         var moreModules = data[1];
         var executeModules = data[2];
-        var moduleId, chunkId, i = 0, resolves = [];
+        var moduleId,
+        chunkId,
+        i = 0,
+        resolves = [];
         for (; i < chunkIds.length; i++) {
             chunkId = chunkIds[i];
             if (Object.prototype.hasOwnProperty.call(installedChunks, chunkId) && installedChunks[chunkId]) {
@@ -175,16 +264,15 @@ function parsedata(characterId) {
     }
     __webpack_require__.m = modules;
     __webpack_require__.c = installedModules;
-    __webpack_require__.d = function(exports, name, getter) {
+    __webpack_require__.d = function (exports, name, getter) {
         if (!__webpack_require__.o(exports, name)) {
             Object.defineProperty(exports, name, {
                 enumerable: true,
                 get: getter
             })
         }
-    }
-    ;
-    __webpack_require__.r = function(exports) {
+    };
+    __webpack_require__.r = function (exports) {
         if (typeof Symbol !== "undefined" && Symbol.toStringTag) {
             Object.defineProperty(exports, Symbol.toStringTag, {
                 value: "Module"
@@ -193,9 +281,8 @@ function parsedata(characterId) {
         Object.defineProperty(exports, "__esModule", {
             value: true
         })
-    }
-    ;
-    __webpack_require__.t = function(value, mode) {
+    };
+    __webpack_require__.t = function (value, mode) {
         if (mode & 1)
             value = __webpack_require__(value);
         if (mode & 8)
@@ -208,31 +295,30 @@ function parsedata(characterId) {
             enumerable: true,
             value: value
         });
-        if (mode & 2 && typeof value != "string")
-            for (var key in value)
-                __webpack_require__.d(ns, key, function(key) {
+        if (mode & 2 && typeof value != "string") {
+            for (var key in value) {
+                __webpack_require__.d(ns, key, function (key) {
                     return value[key]
                 }
-                .bind(null, key));
+                    .bind(null, key));
+            }
+        }
+
         return ns
-    }
-    ;
-    __webpack_require__.n = function(module) {
+    };
+    __webpack_require__.n = function (module) {
         var getter = module && module.__esModule ? function getDefault() {
             return module["default"]
         }
-        : function getModuleExports() {
+         : function getModuleExports() {
             return module
-        }
-        ;
+        };
         __webpack_require__.d(getter, "a", getter);
         return getter
-    }
-    ;
-    __webpack_require__.o = function(object, property) {
+    };
+    __webpack_require__.o = function (object, property) {
         return Object.prototype.hasOwnProperty.call(object, property)
-    }
-    ;
+    };
     __webpack_require__.p = "";
     var jsonpArray = window["jsonpDDBCT"] = window["jsonpDDBCT"] || [];
     var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
@@ -243,23 +329,28 @@ function parsedata(characterId) {
     var parentJsonpFunction = oldJsonpFunction;
     deferredModules.push([1080, 2]);
     return checkDeferredModules()
-}
-)
+})
 ({
-	1080: function(module, __webpack_exports__, __webpack_require__) {
+    1080: function (module, __webpack_exports__, __webpack_require__) {
         "use strict";
-		__webpack_require__.r(__webpack_exports__);
-		console.log("1080: Hello");
-// 		console.log(__webpack_require__);
-// 		var react = __webpack_require__(0);
-//      var poo = __webpack_require__(4);
-// 		var react_default = __webpack_require__.n(react);
-// 		var react_dom = __webpack_require__(84);
-// 		var react_dom_default = __webpack_require__.n(react_dom);
-// 		var es = __webpack_require__(10);
-		var character_rules_engine_lib_es = __webpack_require__(1);
-		var character_rules_engine_web_adapter_es = __webpack_require__(136);
-        function getCharData(state){
+        __webpack_require__.r(__webpack_exports__);
+        console.log("Module 1080: start");
+        // Unused modules:
+        // var react = __webpack_require__(0);
+        // var react_default = __webpack_require__.n(react);
+        // var react_dom = __webpack_require__(84);
+        // var react_dom_default = __webpack_require__.n(react_dom);
+        // var es = __webpack_require__(10);
+        var character_rules_engine_lib_es = __webpack_require__(1);
+        var character_rules_engine_web_adapter_es = __webpack_require__(136);
+        function getCharData(state) {
+            /*
+            All parts of the following return are from http://media.dndbeyond.com/character-tools/characterTools.bundle.71970e5a4989d91edc1e.min.js, they are found in functions that have: '_mapStateToProps(state)' in the name, like function CharacterManagePane_mapStateToProps(state)
+            Any return that uses the function character_rules_engine_lib_es or character_rules_engine_web_adapter_es can be added to this for more return values as this list is not comprehensive.
+            Anything with selectors_appEnv is unnessisary,as it just returns values in state.appEnv.
+             */
+            console.log("Module 1080: Processing State Info Into Data");
+
             return {
                 name: character_rules_engine_lib_es["jb"].getName(state),
                 avatarUrl: character_rules_engine_lib_es["jb"].getAvatarUrl(state),
@@ -364,6 +455,6 @@ function parsedata(characterId) {
             }
         }
         window.getCharData = getCharData;
-        console.log("1080: Bye");
-	}
+        console.log("Module 1080: end");
+    }
 });
