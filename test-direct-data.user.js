@@ -11,30 +11,11 @@
 // ==/UserScript==
 
 var rulesUrls = ["https://character-service.dndbeyond.com/character/v4/rule-data?v=3.11.3", "https://gamedata-service.dndbeyond.com/vehicles/v3/rule-data?v=3.11.3"];
-var charJSONurlBase = ["https://character-service.dndbeyond.com/character/v4/character/"]
-
-var stateTemplate = {
-	appEnv: {
-		authEndpoint: "https://auth-service.dndbeyond.com/v1/cobalt-token", characterEndpoint: "", characterId: 0, characterServiceBaseUrl: null, diceEnabled: true, diceFeatureConfiguration: {
-			apiEndpoint: "https://dice-service.dndbeyond.com", assetBaseLocation: "https://www.dndbeyond.com/dice", enabled: true, menu: true, notification: false, trackingId: ""
-		}, dimensions: { sheet: { height: 0, width: 1200 }, styleSizeType: 4, window: { height: 571, width: 1920 } }, isMobile: false, isReadonly: false, redirect: undefined, username: "example"
-	},
-	appInfo: { error: null },
-	character: {},
-	characterEnv: { context: "SHEET", isReadonly: false, loadingStatus: "LOADED" },
-	confirmModal: { modals: [] },
-	modal: { open: {} },
-	ruleData: {},
-	serviceData: { classAlwaysKnownSpells: {}, classAlwaysPreparedSpells: {}, definitionPool: {}, infusionsMappings: [], knownInfusionsMappings: [], ruleDataPool: {}, vehicleComponentMappings: [], vehicleMappings: [] },
-	sheet: { initError: null, initFailed: false },
-	sidebar: { activePaneId: null, alignment: "right", isLocked: false, isVisible: false, panes: [], placement: "overlay", width: 340 },
-	syncTransaction: { active: false, initiator: null },
-	toastMessage: {}
-}
+var charJSONurlBase = "https://character-service.dndbeyond.com/character/v4/character/";
 
 var rulesData = {}, charactersData = {};
 
-var charIDs = [8048112, 33178712, 35899931];
+var charIDs = [8048112, 33178712, 35899931, 10026953];
 onload(charIDs);
 
 (function() {
@@ -56,8 +37,8 @@ function retriveRules(charIDs) {
         getJSONfromURLs(rulesUrls).then((js) => {
             console.log("Rules Data Processing Start");
             js.forEach(function(rule, index){
-				if (rule.success == null || rule.lenth < 1 || rule.success != true){
-					console.warn("ruleset " + index + " is null, empty or fail");
+                if (rule.success == null || rule.lenth < 1 || rule.success != true){
+                    console.warn("ruleset " + index + " is null, empty or fail");
                 }
             });
             rulesData = {
@@ -66,8 +47,6 @@ function retriveRules(charIDs) {
             }
             console.debug("Rules Data:");
             console.debug(rulesData);
-            stateTemplate.ruleData = rulesData.ruleset;
-            stateTemplate.serviceData.ruleDataPool = rulesData.ruleset;
             resolve();
         }).catch((error) => {
             reject(error);
@@ -81,6 +60,25 @@ function generateCharStates(charIDs) {
 }
 
 function generateCharState(charID) {
+    var stateTemplate = {
+        appEnv: {
+            authEndpoint: "https://auth-service.dndbeyond.com/v1/cobalt-token", characterEndpoint: "", characterId: 0, characterServiceBaseUrl: null, diceEnabled: true, diceFeatureConfiguration: {
+                apiEndpoint: "https://dice-service.dndbeyond.com", assetBaseLocation: "https://www.dndbeyond.com/dice", enabled: true, menu: true, notification: false, trackingId: ""
+            }, dimensions: { sheet: { height: 0, width: 1200 }, styleSizeType: 4, window: { height: 571, width: 1920 } }, isMobile: false, isReadonly: false, redirect: undefined, username: "example"
+        },
+        appInfo: { error: null },
+        character: {},
+        characterEnv: { context: "SHEET", isReadonly: false, loadingStatus: "LOADED" },
+        confirmModal: { modals: [] },
+        modal: { open: {} },
+        ruleData: rulesData.ruleset,
+        serviceData: { classAlwaysKnownSpells: {}, classAlwaysPreparedSpells: {}, definitionPool: {}, infusionsMappings: [], knownInfusionsMappings: [], ruleDataPool: rulesData.vehiclesRuleset, vehicleComponentMappings: [], vehicleMappings: [] },
+        sheet: { initError: null, initFailed: false },
+        sidebar: { activePaneId: null, alignment: "right", isLocked: false, isVisible: false, panes: [], placement: "overlay", width: 340 },
+        syncTransaction: { active: false, initiator: null },
+        toastMessage: {}
+    }
+
     console.debug("Generating char: " + charID);
     charactersData[charID] = {
         url:  charJSONurlBase + charID,
@@ -114,22 +112,6 @@ function updateCharData() {
 	}).catch((error) => {
 		console.log(error);
 	});
-}
-
-function getJSONfromURLs(urls) {
-    return new Promise(function (resolve, reject) {
-        console.log("Fetching: ", urls);
-        var proms = urls.map(d => fetch(d));
-        Promise.all(proms)
-        .then(ps => Promise.all(ps.map(p => p.json()))) // p.json() also returns a promise
-        .then(jsons => {
-            console.log("JSON Data Retrived");
-            resolve(jsons);
-        })
-        .catch((error) => {
-            reject(error);
-        });
-    });
 }
 
 function updateCharInfo() {
@@ -278,6 +260,7 @@ function updateCharInfo() {
         // var react_dom = __webpack_require__(84);
         // var react_dom_default = __webpack_require__.n(react_dom);
         // var es = __webpack_require__(10);
+        var Core = __webpack_require__(5);
         var character_rules_engine_lib_es = __webpack_require__(1);
         var character_rules_engine_web_adapter_es = __webpack_require__(136);
         function getCharData(state) {
@@ -287,6 +270,38 @@ function updateCharInfo() {
                 Anything with selectors_appEnv is unnessisary,as it just returns values in state.appEnv.
             */
             console.log("Module 1080: Processing State Info Into Data");
+
+            var ruleData = character_rules_engine_lib_es["jb"].getRuleData(state);
+
+            function getSenseData(senses){ // finds returns the label
+                return Object.keys(senses).map(function(index) {
+                    let indexInt = parseInt(index);
+                    return {
+                        id: indexInt,
+                        key: character_rules_engine_lib_es["R"].getSenseTypeModifierKey(indexInt),
+                        name: character_rules_engine_lib_es["R"].getSenseTypeLabel(indexInt),
+                        distance: senses[indexInt]
+                    }
+                })
+            }
+
+            function getSpeedData(speeds){ // finds returns the label
+                let halfSpeed = roundDown(divide(speeds[Core['W'].WALK],2));
+                return Object.keys(speeds).map(function(index) {
+                    let distance = speeds[index];
+                    if(Core['W'].SWIM === index || Core['W'].CLIMB === index){
+                        // swim speed is essentiall half walking speed rounded down if character doesn't have a set swim speed:
+                        // source https://www.dndbeyond.com/sources/basic-rules/adventuring#ClimbingSwimmingandCrawling
+                        distance = speeds[index] <= 0 ? halfSpeed : speeds[index];
+                    }
+                    return {
+                        id: character_rules_engine_lib_es["R"].getMovementTypeBySpeedMovementKey(index),
+                        key: index,
+                        name: character_rules_engine_lib_es["R"].getSpeedMovementKeyLabel(index, ruleData),
+                        distance: distance
+                    }
+                });
+            }
 
             return {
                 name: character_rules_engine_lib_es["jb"].getName(state),
@@ -336,15 +351,19 @@ function updateCharInfo() {
                 hitPointInfo: character_rules_engine_lib_es["jb"].getHitPointInfo(state),
                 fails: character_rules_engine_lib_es["jb"].getDeathSavesFailCount(state),
                 successes: character_rules_engine_lib_es["jb"].getDeathSavesSuccessCount(state),
-                abilities: character_rules_engine_lib_es["jb"].getAbilities(state),
+                abilities: character_rules_engine_lib_es["jb"].getAbilities(state), // not sure what the difference is between this and abilityLookup, seems to be one is a object, the other an array...
+                //abilityLookup: character_rules_engine_lib_es["jb"].getAbilityLookup(state),
                 proficiencyBonus: character_rules_engine_lib_es["jb"].getProficiencyBonus(state),
-                speeds: character_rules_engine_lib_es["jb"].getCurrentWeightSpeed(state),
+                speeds: getSpeedData(character_rules_engine_lib_es["jb"].getCurrentWeightSpeed(state)),
                 preferences: character_rules_engine_lib_es["jb"].getCharacterPreferences(state),
                 inspiration: character_rules_engine_lib_es["jb"].getInspiration(state),
                 passivePerception: character_rules_engine_lib_es["jb"].getPassivePerception(state),
                 passiveInvestigation: character_rules_engine_lib_es["jb"].getPassiveInvestigation(state),
                 passiveInsight: character_rules_engine_lib_es["jb"].getPassiveInsight(state),
-                senses: character_rules_engine_lib_es["jb"].getSenseInfo(state),
+                senses: getSenseData(character_rules_engine_lib_es["jb"].getSenseInfo(state)), //has to be further processed
+                overridePassivePerception: character_rules_engine_lib_es["jb"].getOverridePassivePerception(state),
+                customSensesLookup: character_rules_engine_lib_es["jb"].getCustomSenseLookup(state),
+                customSenses: character_rules_engine_lib_es["jb"].getCustomSenses(state),
                 skills: character_rules_engine_lib_es["jb"].getSkills(state),
                 customSkills: character_rules_engine_lib_es["jb"].getCustomSkills(state),
                 abilities: character_rules_engine_lib_es["jb"].getAbilities(state),
@@ -367,7 +386,6 @@ function updateCharInfo() {
                 notes: character_rules_engine_lib_es["jb"].getCharacterNotes(state),
                 levelSpells: character_rules_engine_lib_es["jb"].getLevelSpells(state),
                 spellCasterInfo: character_rules_engine_lib_es["jb"].getSpellCasterInfo(state),
-                abilityLookup: character_rules_engine_lib_es["jb"].getAbilityLookup(state),
                 ruleData: character_rules_engine_lib_es["jb"].getRuleData(state),
                 xpInfo: character_rules_engine_lib_es["jb"].getExperienceInfo(state),
                 spellSlots: character_rules_engine_lib_es["jb"].getSpellSlots(state),
@@ -388,10 +406,84 @@ function updateCharInfo() {
                 attacksPerActionInfo: character_rules_engine_lib_es["jb"].getAttacksPerActionInfo(state),
                 ritualSpells: character_rules_engine_lib_es["jb"].getRitualSpells(state),
                 spellCasterInfo: character_rules_engine_lib_es["jb"].getSpellCasterInfo(state),
-                hasSpells: character_rules_engine_lib_es["jb"].hasSpells(state),
             }
         }
         window.getCharData = getCharData;
         console.log("Module 1080: end");
     }
 });
+
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//        Generic Functions
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function loadStylesheet(href) {
+    console.debug('Start: Adding CSS Stylesheet ' + href);
+    var link = document.createElement('link');
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.href = href;
+    document.head.appendChild(link);
+    console.debug('Done: Adding CSS Stylesheet');
+}
+
+function getJSONfromURLs(urls) {
+    return new Promise(function (resolve, reject) {
+        console.log("Fetching: ", urls);
+        var proms = urls.map(d => fetch(d));
+        Promise.all(proms)
+        .then(ps => Promise.all(ps.map(p => p.json()))) // p.json() also returns a promise
+        .then(jsons => {
+            console.log("JSON Data Retrived");
+            resolve(jsons);
+        })
+        .catch((error) => {
+            reject(error);
+        });
+    });
+}
+function getSign(input){
+    if (input == null){
+        input = 0;
+    }
+    return input >= 0 ? positiveSign : negativeSign
+}
+
+function roundDown(input){
+    let number = parseInt(input);
+    if (isNaN(number)) {
+        return NaN;
+    }
+    return Math.floor(input);
+}
+
+function roundUp(input){
+    let number = parseInt(input);
+    if (isNaN(number)) {
+        return NaN;
+    }
+    return Math.ceil(input);
+}
+
+function divide(numeratorInput, denominatorInput){
+    let numerator = parseInt(numeratorInput);
+    let denominator = parseInt(denominatorInput);
+    if (isNaN(numerator) || isNaN(denominator)) {
+        return NaN;
+    }
+    return numerator/denominator;
+}
+
+function distanceUnit(input){
+    let number = parseInt(input);
+    if (isNaN(number)) {
+        number = 0;
+    }
+    let unit = 'ft.';
+    if (number && number % FEET_IN_MILES === 0) {
+        number = number / FEET_IN_MILES;
+        unit = 'mile' + (Math.abs(number) === 1 ? '' : 's');
+    }
+    return unit;
+}

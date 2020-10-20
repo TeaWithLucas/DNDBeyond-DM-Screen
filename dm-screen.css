@@ -185,6 +185,10 @@ a.ddb-campaigns-detail-body-listing-campaign-link, a#content-management-link, .d
 	justify-content: stretch;
 }
 
+.gs-empty {
+	display:none;
+}
+
 .gs-label, .gs-header, .gs-subheader{
     text-transform: uppercase;
     font-family: Roboto Condensed,Roboto,Helvetica,sans-serif;
@@ -254,18 +258,19 @@ a.ddb-campaigns-detail-body-listing-campaign-link, a#content-management-link, .d
 	margin: 2px;
 }
 
+.gs-quick-info{
+	position: relative;
+	z-index: 1;
+	color: #fff;
+}
+
 .gs-infobox {
 	display:flex;
 	flex-direction: row;
-    border-top: 1px solid #838383;
-    border-bottom: 2px solid #c53131;
-    background-color: #404040;
-    color: #fff;
-    /*! width: 100%; */
-	
-}
-
-.gs-infobox{
+	border-top: 1px solid #838383;
+	border-bottom: 2px solid #c53131;
+	background-color: #404040;
+	color: #fff;
 	max-width: 400px;
 }
 
@@ -285,11 +290,15 @@ a.ddb-campaigns-detail-body-listing-campaign-link, a#content-management-link, .d
 	overflow: hidden;
 }
 
+
+
 .gs-quickStats {
 	display:flex;
 	justify-content: space-around;
-	position: relative;
-	z-index: 1;
+
+}
+.gs-miscellaneous {
+	
 }
 
 .gs-container .gs-hp {
@@ -414,14 +423,19 @@ a.ddb-campaigns-detail-body-listing-campaign-link, a#content-management-link, .d
 	margin-bottom: 3px;
 }
 
-.gs-main-able {
+.gs-infobox-item1{
 	min-width: 250px;
 	max-width: 410px;
 }
 
+.gs-main-able {
+	/*! min-width: 250px; */
+	/*! max-width: 410px; */
+}
+
 .gs-main-saves {
-	min-width: 200px;
-	max-width: 250px;
+	/*! min-width: 200px; */
+	/*! max-width: 250px; */
 }
 
 .gs-main-able > .gs-container {
@@ -472,8 +486,11 @@ a.ddb-campaigns-detail-body-listing-campaign-link, a#content-management-link, .d
 	width: 130px;
 }
 
-.gs-additonal-senses-empty {
-	display:none;
+.gs-additonal-sense-value, .gs-additonal-sense-affix{
+	font-size: 12px;
+}
+.gs-additonal-sense-affix{
+	vertical-align: unset;
 }
 
 .gs-passives-number {
@@ -514,10 +531,13 @@ a.ddb-campaigns-detail-body-listing-campaign-link, a#content-management-link, .d
 }
 
 .gs-class-label{
+	font-size: 11px;
+}
+.gs-spellattack-label, .gs-spellsavedc-label, .gs-spellmod-label{
 	font-size: 10px;
 }
 
-.gs-savedc-number {
+.gs-class .gs-number {
     position: relative;
 	line-height: 1.1;
     font-size: 20px;

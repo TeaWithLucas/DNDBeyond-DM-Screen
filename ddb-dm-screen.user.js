@@ -7,6 +7,7 @@
 // @match			https://www.dndbeyond.com/campaigns/*
 // @updateURL		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/raw/master/ddb-dm-screen.user.js
 // @require			https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js
+// @require         https://media.dndbeyond.com/character-tools/vendors~characterTools.bundle.f8b53c07d1796f1d29cb.min.js
 // @grant			GM_setValue
 // @grant			GM_getValue
 // @license			MIT; https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/blob/master/LICENSE
@@ -14,13 +15,23 @@
 
 console.log("D&DBeyond DM Screen Starting");
 
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//        Script Globals
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+const linkUrlTarget = '.ddb-campaigns-character-card-footer-links-item-view';
+
+const rulesUrls = ["https://character-service.dndbeyond.com/character/v4/rule-data?v=3.11.3", "https://gamedata-service.dndbeyond.com/vehicles/v3/rule-data?v=3.11.3"];
+const charJSONurlBase = "https://character-service.dndbeyond.com/character/v4/character/";
+
+const stylesheetUrls = ["https://raw.githack.com/TeaWithLucas/DNDBeyond-DM-Screen/master/dm-screen.css"]
+
 var $ = window.jQuery;
 var rulesData = {}, charactersData = {};
 
-var linkUrlTarget = '.ddb-campaigns-character-card-footer-links-item-view';
-
-var rulesUrls = ["https://character-service.dndbeyond.com/character/v4/rule-data?v=3.11.3", "https://gamedata-service.dndbeyond.com/vehicles/v3/rule-data?v=3.11.3"];
-var charJSONurlBase = "https://character-service.dndbeyond.com/character/v4/character/";
+const FEET_IN_MILES = 5280;
+const POUNDS_IN_TON = 2000;
+const positiveSign = '+', negativeSign = '-';
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //        SVG Data
@@ -49,8 +60,6 @@ var abilitySVGs = {
 //        HTML Structures
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-var tableId = 'character-details-${character.id}'; //variable fot table ID. Will be removed in upcoming release.
-
 //base html for the controls
 var controlsHTML = `
     <div id="gs-controls" class="gs-controls">
@@ -72,10 +81,10 @@ var controlsHTML = `
 		</ul>
 	  </div>
 	</div>
-  `
+  `;
 
-    //base html that the code gets added to
-    var mainInfoHTML = `
+//base html that the code gets added to
+var mainInfoHTML = `
     <div class="gs-main-info gs-wrapper gs-infobox">
       <div class="gs-infobox-item1 gs-infobox-item gs-container gs-grid-container gs-row-fill">
 	    <div class="gs-main-able gs-container-line gs-container-spaces">
@@ -94,26 +103,33 @@ var controlsHTML = `
 		  <div class="gs-header gs-header-senses">Senses</div>
 		  <div class="gs-passives">
 		    <div class="gs-subheader gs-header-passives">Passives</div>
-			<div class="gs-container gs-col-container"></div>
+			<div class="gs-container gs-col-container">
+   		      <div class="gs-box gs-box-callout gs-passivePerception">
+   		        <div class="gs-box-background">` + calloutBoxSVG + `</div>
+   		        <div class="gs-number gs-passives-number"></div>
+   		        <div class="gs-label gs-passives-label">Perception</div>
+   			  </div>
+   		      <div class="gs-box gs-box-callout gs-passiveInvestigation">
+   		        <div class="gs-box-background">` + calloutBoxSVG + `</div>
+   		        <div class="gs-number gs-passives-number"></div>
+   		        <div class="gs-label gs-passives-label">Investigation</div>
+   			  </div>
+   		      <div class="gs-box gs-box-callout gs-passiveInsight">
+   		        <div class="gs-box-background">` + calloutBoxSVG + `</div>
+   		        <div class="gs-number gs-passives-number"></div>
+   		        <div class="gs-label gs-passives-label">Insight</div>
+   			  </div>
+            </div>
 		  </div>
 		  <div class="gs-additonal-senses">
 		    <div class="gs-subheader gs-header-additonal-senses">Additional Senses</div>
-			<div class="gs-container gs-col-container">
-			  <div class="gs-text gs-text-additonal-senses"></div>
-			</div>
+			<div class="gs-container gs-col-container"></div>
 		  </div>
 		</div>
-		<div class="gs-miscellaneous gs-col-container gs-container-spaces">
-		  <div class="gs-header gs-header-miscellaneous">Miscellaneous</div>
-		  <div class="gs-speeds">
-		    <div class="gs-subheader gs-header-speeds">Speed</div>
-			<div class="gs-container gs-row-container"></div>
-		  </div>
-		  <div class="gs-classes">
-		    <div class="gs-subheader gs-header-classes">Classes</div>
-			<div class="gs-container gs-row-container"></div>
-	      </div>
-		</div>
+		<div class="gs-classes gs-col-container gs-container-spaces">
+		  <div class="gs-header gs-header-classes">Classes</div>
+		  <div class="gs-container gs-col-container"></div>
+	    </div>
       </div>
     </div>
   `;
@@ -151,6 +167,12 @@ var quickInfoHTML = `
 	      </div>
 	    </div>
       </div>
+	  <div class="gs-miscellaneous gs-col-container gs-container-spaces">
+		<div class="gs-speeds">
+		  <div class="gs-header gs-header-speeds">Speed</div>
+		  <div class="gs-container gs-row-container"></div>
+		</div>
+      </div>
     </div>
   `;
 
@@ -173,396 +195,231 @@ var savingThrowsHTML = `
   `; //removed gs-flex-values
 
 
-var passivesHTML = `
-    <div class="gs-box gs-box-callout">
-      <div class="gs-box-background">` + calloutBoxSVG + `</div>
-      <div class="gs-number gs-passives-number"></div>
-      <div class="gs-label gs-passives-label"></div>
+var additonalSenseHTML = `
+    <div class="gs-additonal-sense gs-container">
+	  <div class="gs-value gs-additonal-sense-value">
+        <span class="gs-text gs-additonal-sense-text"></span>: <span class="gs-number gs-additonal-sense-number"></span><span class="gs-affix gs-additonal-sense-affix"></span>
+	  </div>
     </div>
   `;
 
 var classHTML = `
-    <div class="gs-class gs-container">
-	  <div class="gs-label gs-class-label"></div>
-	  <div class="gs-savedc gs-container">
-        <div class="gs-number gs-savedc-number"></div>
-        <div class="gs-label gs-savedc-label">Save DC</div>
-	  </div>
+    <div class="gs-class gs-container gs-col-container">
+      <div class="gs-label gs-class-label"></div>
+	  <div class="gs-container gs-row-container">
+	    <div class="gs-spellmod gs-container">
+          <div class="gs-number gs-spellmod-number"></div>
+          <div class="gs-label gs-spellmod-label">Modifier</div>
+        </div>
+        <div class="gs-spellsavedc gs-container">
+          <div class="gs-number gs-spellsavedc-number"></div>
+          <div class="gs-label gs-spellsavedc-label">Save DC</div>
+        </div>
+        <div class="gs-spellattack gs-container">
+          <div class="gs-number gs-spellattack-number"></div>
+          <div class="gs-label gs-spellattack-label">Attack</div>
+        </div>
+      </div>
     </div>
   `;
 
 var speedHTML = `
     <div class="gs-speed gs-container">
       <div class="gs-value gs-speed-value">
-	    <span class="gs-number gs-speed-number"></span><span class="gs-affix gs-speed-affix">ft</span>
+	    <span class="gs-number gs-speed-number"></span><span class="gs-affix gs-speed-affix"></span>
 	  </div>
       <div class="gs-label gs-speed-label"></div>
     </div>
   `;
 
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//        Add Custom CSS
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-console.debug('Start: Adding CSS Stylesheet');
-var link = document.createElement('link');
-link.rel = "stylesheet";
-link.type = "text/css";
-link.href = "https://raw.githack.com/TeaWithLucas/DNDBeyond-DM-Screen/master/dm-screen.css"; //new css sheet
-document.head.appendChild(link);
-console.debug('Done: Adding CSS Stylesheet');
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//        Start Character Class
+//        Custom additonal modules to be loaded with D&DBeyond's module loader
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Character {
-    constructor(name) {
-        this.name = name;
-    };
+var initalModules = {
+    1080: function (module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__.r(__webpack_exports__);
+        console.log("Module 1080: start");
+        // Unused modules:
+        // var react = __webpack_require__(0);
+        // var react_default = __webpack_require__.n(react);
+        // var react_dom = __webpack_require__(84);
+        // var react_dom_default = __webpack_require__.n(react_dom);
+        // var es = __webpack_require__(10);
+        var Core = __webpack_require__(5);
+        var character_rules_engine_lib_es = __webpack_require__(1);
+        var character_rules_engine_web_adapter_es = __webpack_require__(136);
+        function getCharData(state) {
+            /*
+                All parts of the following return are from http://media.dndbeyond.com/character-tools/characterTools.bundle.71970e5a4989d91edc1e.min.js, they are found in functions that have: '_mapStateToProps(state)' in the name, like function CharacterManagePane_mapStateToProps(state)
+                Any return that uses the function character_rules_engine_lib_es or character_rules_engine_web_adapter_es can be added to this for more return values as this list is not comprehensive.
+                Anything with selectors_appEnv is unnessisary,as it just returns values in state.appEnv.
+            */
+            console.log("Module 1080: Processing State Info Into Data");
 
-    // Do we need Level and Proficency anymore? They aren't used anywhere in the render function.
-    get level() {
-        var classes = this.iframe.find('.ddbc-character-tidbits__classes').text().split('/').map(function (i) {
-            return parseInt(i.replace(/[^0-9]+/g, ''))
-        });
-        return classes.reduce((a, b) => a + b, 0);
-    }
-    get proficiency() {
-        return Math.ceil(this.level / 4) + 1;
-    }
+            var ruleData = character_rules_engine_lib_es["jb"].getRuleData(state);
 
-    get id() {
-        return this.name.replace(/[^0-9a-zA-Z]+/g, '');
-    }
-
-    get iframe() {
-        return $(`#frame-${this.id}`).contents();
-    }
-
-    get ac() {
-        return parseInt(this.iframe.find(".ddbc-armor-class-box__value").text());
-    }
-
-    get currentHP() {
-        return parseInt(this.iframe.find(".ct-status-summary-mobile__hp-current").text());
-    }
-
-    get maxHP() {
-        return parseInt(this.iframe.find(".ct-status-summary-mobile__hp-max").text());
-    }
-
-    get savingThrows() {
-        var savingThrows = {}
-        var selector = this.iframe.find('.ddbc-saving-throws-summary')
-            selector.children().each(function () {
-            var saveStat = $(this).find(".ddbc-saving-throws-summary__ability-name").text();
-            var saveNumber = $(this).find(".ddbc-signed-number__number").text();
-            var saveSign = $(this).find(".ddbc-signed-number__sign").text();
-            var saveFullNumber = {
-                "sign": saveSign,
-                "number": saveNumber
+            function getSenseData(senses){ // finds returns the label
+                return Object.keys(senses).map(function(index) {
+                    let indexInt = parseInt(index);
+                    return {
+                        id: indexInt,
+                        key: character_rules_engine_lib_es["R"].getSenseTypeModifierKey(indexInt),
+                        name: character_rules_engine_lib_es["R"].getSenseTypeLabel(indexInt),
+                        distance: senses[indexInt]
+                    }
+                })
             }
-            savingThrows[saveStat] = saveFullNumber
-        });
-        return savingThrows
-    }
 
-    get savingThrowMods() {
-        // var modifiers = []
-        // this.iframe.find(".ct-saving-throws-box__modifiers").children().each(function() {
-        //   modifiers.push($(this).text())
-        // })
-        // console.log(modifiers.length)
-        //if(modifiers.length)
-        var modifiers = this.iframe.find("div.ct-saving-throws-box__modifiers").html()
-            return modifiers
-    }
-
-    get savingThrowsCSS() {
-        var css = this.iframe.css()
-            return css
-    }
-
-    get abilities() {
-        var abilities = {}
-        var selector = this.iframe.find('.ddbc-ability-summary');
-        selector.each(function () {
-            var ability = $(this).find(".ddbc-ability-summary__abbr").text();
-            if (ability != "") {
-                abilities[ability] = {
-                    "abbr": ability,
-                    "name": $(this).find(".ddbc-ability-summary__label").text(),
-                    "mod": $(this).find(".ddbc-signed-number__number").text(),
-                    "sign": $(this).find(".ddbc-signed-number__sign").text(),
-                    "number": $(this).find(".ddbc-ability-summary__secondary").text()
-                }
+            function getSpeedData(speeds){ // finds returns the label
+                let halfSpeed = roundDown(divide(speeds[Core['W'].WALK],2));
+                return Object.keys(speeds).map(function(index) {
+                    let distance = speeds[index];
+                    if(Core['W'].SWIM === index || Core['W'].CLIMB === index){
+                        // swim speed is essentiall half walking speed rounded down if character doesn't have a set swim speed:
+                        // source https://www.dndbeyond.com/sources/basic-rules/adventuring#ClimbingSwimmingandCrawling
+                        distance = speeds[index] <= 0 ? halfSpeed : speeds[index];
+                    }
+                    return {
+                        id: character_rules_engine_lib_es["R"].getMovementTypeBySpeedMovementKey(index),
+                        key: index,
+                        name: character_rules_engine_lib_es["R"].getSpeedMovementKeyLabel(index, ruleData),
+                        distance: distance
+                    }
+                });
             }
-        });
-        return abilities
-    }
 
-    get passiveSkills() {
-        var passiveStats = {}
-        var selector = this.iframe.find('.ct-senses__callouts')
-            selector.children().each(function () {
-            var number = $(this).find(".ct-senses__callout-value").text();
-            var skill = ""
-                if ($(this).is(':contains("Perception")')) {
-                    skill = "Perception"
-                } else if ($(this).is(':contains("Investigation")')) {
-                    skill = "Investigation"
-                } else if ($(this).is(':contains("Insight")')) {
-                    skill = "Insight"
-                }
-                passiveStats[skill] = number
-        });
-        return passiveStats
-    }
-
-    get senses() {
-        var senses = this.iframe.find('.ct-senses__summary');
-        if (!senses.hasClass("ct-senses__summary--empty")) {
-            return senses.text();
-        } else {
-            return null;
+            return {
+                name: character_rules_engine_lib_es["jb"].getName(state),
+                avatarUrl: character_rules_engine_lib_es["jb"].getAvatarUrl(state),
+                spellCasterInfo: character_rules_engine_lib_es["jb"].getSpellCasterInfo(state),
+                armorClass: character_rules_engine_lib_es["jb"].getAcTotal(state),
+                initiative: character_rules_engine_lib_es["jb"].getProcessedInitiative(state),
+                hasInitiativeAdvantage: character_rules_engine_lib_es["jb"].getHasInitiativeAdvantage(state),
+                resistances: character_rules_engine_lib_es["jb"].getActiveGroupedResistances(state),
+                immunities: character_rules_engine_lib_es["jb"].getActiveGroupedImmunities(state),
+                vulnerabilities: character_rules_engine_lib_es["jb"].getActiveGroupedVulnerabilities(state),
+                conditions: character_rules_engine_lib_es["jb"].getActiveConditions(state),
+                choiceInfo: character_rules_engine_lib_es["jb"].getChoiceInfo(state),
+                classes: character_rules_engine_lib_es["jb"].getClasses(state),
+                feats: character_rules_engine_lib_es["jb"].getBaseFeats(state),
+                race: character_rules_engine_lib_es["jb"].getRace(state),
+                currentXp: character_rules_engine_lib_es["jb"].getCurrentXp(state),
+                preferences: character_rules_engine_lib_es["jb"].getCharacterPreferences(state),
+                totalClassLevel: character_rules_engine_lib_es["jb"].getTotalClassLevel(state),
+                spellCasterInfo: character_rules_engine_lib_es["jb"].getSpellCasterInfo(state),
+                startingClass: character_rules_engine_lib_es["jb"].getStartingClass(state),
+                background: character_rules_engine_lib_es["jb"].getBackgroundInfo(state),
+                notes: character_rules_engine_lib_es["jb"].getCharacterNotes(state),
+                totalWeight: character_rules_engine_lib_es["jb"].getTotalWeight(state),
+                carryCapacity: character_rules_engine_lib_es["jb"].getCarryCapacity(state),
+                pushDragLiftWeight: character_rules_engine_lib_es["jb"].getPushDragLiftWeight(state),
+                encumberedWeight: character_rules_engine_lib_es["jb"].getEncumberedWeight(state),
+                heavilyEncumberedWeight: character_rules_engine_lib_es["jb"].getHeavilyEncumberedWeight(state),
+                preferences: character_rules_engine_lib_es["jb"].getCharacterPreferences(state),
+                currencies: character_rules_engine_lib_es["jb"].getCurrencies(state),
+                attunedSlots: character_rules_engine_lib_es["jb"].getAttunedSlots(state),
+                attunableArmor: character_rules_engine_lib_es["jb"].getAttunableArmor(state),
+                attunableGear: character_rules_engine_lib_es["jb"].getAttunableGear(state),
+                attunableWeapons: character_rules_engine_lib_es["jb"].getAttunableWeapons(state),
+                startingClass: character_rules_engine_lib_es["jb"].getStartingClass(state),
+                background: character_rules_engine_lib_es["jb"].getBackgroundInfo(state),
+                equipped: {
+                    armorItems: character_rules_engine_lib_es["jb"].getEquippedArmorItems(state),
+                    weaponItems: character_rules_engine_lib_es["jb"].getEquippedWeaponItems(state),
+                    gearItems: character_rules_engine_lib_es["jb"].getEquippedGearItems(state)
+                },
+                unequipped: {
+                    armorItems: character_rules_engine_lib_es["jb"].getUnequippedArmorItems(state),
+                    weaponItems: character_rules_engine_lib_es["jb"].getUnequippedWeaponItems(state),
+                    gearItems: character_rules_engine_lib_es["jb"].getUnequippedGearItems(state)
+                },
+                hitPointInfo: character_rules_engine_lib_es["jb"].getHitPointInfo(state),
+                fails: character_rules_engine_lib_es["jb"].getDeathSavesFailCount(state),
+                successes: character_rules_engine_lib_es["jb"].getDeathSavesSuccessCount(state),
+                abilities: character_rules_engine_lib_es["jb"].getAbilities(state), // not sure what the difference is between this and abilityLookup, seems to be one is a object, the other an array...
+                //abilityLookup: character_rules_engine_lib_es["jb"].getAbilityLookup(state),
+                proficiencyBonus: character_rules_engine_lib_es["jb"].getProficiencyBonus(state),
+                speeds: getSpeedData(character_rules_engine_lib_es["jb"].getCurrentWeightSpeed(state)),
+                preferences: character_rules_engine_lib_es["jb"].getCharacterPreferences(state),
+                inspiration: character_rules_engine_lib_es["jb"].getInspiration(state),
+                passivePerception: character_rules_engine_lib_es["jb"].getPassivePerception(state),
+                passiveInvestigation: character_rules_engine_lib_es["jb"].getPassiveInvestigation(state),
+                passiveInsight: character_rules_engine_lib_es["jb"].getPassiveInsight(state),
+                senses: getSenseData(character_rules_engine_lib_es["jb"].getSenseInfo(state)), //has to be further processed
+                skills: character_rules_engine_lib_es["jb"].getSkills(state),
+                customSkills: character_rules_engine_lib_es["jb"].getCustomSkills(state),
+                savingThrowDiceAdjustments: character_rules_engine_lib_es["jb"].getSavingThrowDiceAdjustments(state),
+                situationalBonusSavingThrowsLookup: character_rules_engine_lib_es["jb"].getSituationalBonusSavingThrowsLookup(state),
+                deathSaveInfo: character_rules_engine_lib_es["jb"].getDeathSaveInfo(state),
+                proficiencyGroups: character_rules_engine_lib_es["jb"].getProficiencyGroups(state),
+                background: character_rules_engine_lib_es["jb"].getBackgroundInfo(state),
+                alignment: character_rules_engine_lib_es["jb"].getAlignment(state),
+                height: character_rules_engine_lib_es["jb"].getHeight(state),
+                weight: character_rules_engine_lib_es["jb"].getWeight(state),
+                size: character_rules_engine_lib_es["jb"].getSize(state),
+                faith: character_rules_engine_lib_es["jb"].getFaith(state),
+                skin: character_rules_engine_lib_es["jb"].getSkin(state),
+                eyes: character_rules_engine_lib_es["jb"].getEyes(state),
+                hair: character_rules_engine_lib_es["jb"].getHair(state),
+                age: character_rules_engine_lib_es["jb"].getAge(state),
+                gender: character_rules_engine_lib_es["jb"].getGender(state),
+                traits: character_rules_engine_lib_es["jb"].getCharacterTraits(state),
+                notes: character_rules_engine_lib_es["jb"].getCharacterNotes(state),
+                levelSpells: character_rules_engine_lib_es["jb"].getLevelSpells(state),
+                spellCasterInfo: character_rules_engine_lib_es["jb"].getSpellCasterInfo(state),
+                ruleData: character_rules_engine_lib_es["jb"].getRuleData(state),
+                xpInfo: character_rules_engine_lib_es["jb"].getExperienceInfo(state),
+                spellSlots: character_rules_engine_lib_es["jb"].getSpellSlots(state),
+                pactMagicSlots: character_rules_engine_lib_es["jb"].getPactMagicSlots(state),
+                attunedSlots: character_rules_engine_lib_es["jb"].getAttunedSlots(state),
+                hasMaxAttunedItems: character_rules_engine_lib_es["jb"].hasMaxAttunedItems(state),
+                weaponSpellDamageGroups: character_rules_engine_lib_es["jb"].getWeaponSpellDamageGroups(state),
+                inventory: character_rules_engine_lib_es["jb"].getInventory(state),
+                creatures: character_rules_engine_lib_es["jb"].getCreatures(state),
+                customItems: character_rules_engine_lib_es["jb"].getCustomItems(state),
+                weight: character_rules_engine_lib_es["jb"].getTotalWeight(state),
+                weightSpeedType: character_rules_engine_lib_es["jb"].getCurrentWeightType(state),
+                notes: character_rules_engine_lib_es["jb"].getCharacterNotes(state),
+                currencies: character_rules_engine_lib_es["jb"].getCurrencies(state),
+                activatables: character_rules_engine_lib_es["jb"].getActivatables(state),
+                attacks: character_rules_engine_lib_es["jb"].getAttacks(state),
+                weaponSpellDamageGroups: character_rules_engine_lib_es["jb"].getWeaponSpellDamageGroups(state),
+                attacksPerActionInfo: character_rules_engine_lib_es["jb"].getAttacksPerActionInfo(state),
+                ritualSpells: character_rules_engine_lib_es["jb"].getRitualSpells(state),
+                spellCasterInfo: character_rules_engine_lib_es["jb"].getSpellCasterInfo(state),
+                hasSpells: character_rules_engine_lib_es["jb"].hasSpells(state),
+            }
         }
-    }
-
-    get stats() {
-        var stats = {};
-        var iframe = this.iframe;
-        iframe.find('.ct-ability-summary').each(function (index) {
-            let name = $(this).find('.ct-ability-summary__abbr').text();
-            stats[name] = {
-                value: Math.max(
-                    parseInt($(this).find('.ct-ability-summary__primary').text()),
-                    parseInt($(this).find('.ct-ability-summary__secondary').text())),
-                modifier: Math.min(
-                    parseInt($(this).find('.ct-ability-summary__primary').text()),
-                    parseInt($(this).find('.ct-ability-summary__secondary').text())),
-                savingThrow: iframe.find(`.ct-saving-throws-summary__ability--${name} .ct-signed-number`).text()
-            };
-        });
-        return stats;
-    }
-
-    get skills() {
-        var skills = {};
-        this.iframe.find('.ct-skills__item').each(function () {
-            var name = $(this).children('.ct-skills__col--skill').text();
-            var value = $(this).children('.ct-skills__col--modifier').text();
-            skills[name] = value;
-        });
-        return skills;
-    }
-
-    get initiative() {
-        var initNumber = parseInt(this.iframe.find(".ct-initiative-box__value").find(".ddbc-signed-number__number").text());
-        var initSign = this.iframe.find(".ct-initiative-box__value").find(".ddbc-signed-number__sign").text();
-        var init = {
-            "number": initNumber,
-            "sign": initSign
-        }
-        return init;
-    }
-
-    get speed() {
-        this.iframe.find(".ct-speed-box").trigger("click");
-        var speeds = {}
-        var selector = this.iframe.find(".ct-speed-manage-pane__speeds")
-            selector.children().each(function () {
-            var label = $(this).find(".ct-speed-manage-pane__speed-label").text();
-            var amount = $(this).find(".ct-speed-manage-pane__speed-amount").find('.ddbc-distance-number__number').text();
-            speeds[label] = amount;
-        });
-        this.iframe.find(".ct-quick-nav__edge-toggle").trigger("click");
-        return speeds;
-    }
-
-    get conditions() {
-        var conds = new Array();
-        this.iframe.find(".ct-combat-tablet__cta-button").trigger("click");
-        this.iframe.find(".ct-collapsible__header-content").each(function (i, v) {
-            if ($(this).find(".ct-toggle-field").hasClass("ct-toggle-field--enabled")) {
-                conds.push($(this).find(".ct-condition-manage-pane__condition-name").text());
-            }
-        })
-        this.iframe.find(".ct-quick-nav__edge-toggle").trigger("click");
-        return conds;
-    }
-
-    get spellSaveDC() {
-        var spellSaveDCs = {};
-        this.iframe.find(".ct-quick-nav__toggle").trigger("click");
-        this.iframe.find(".ct-quick-nav__menu-item--spells").children(".ct-quick-nav__button").trigger("click");
-        var selector = ".ct-spells__casting .ct-spells-level-casting__info-group:has(.ct-spells-level-casting__info-label:contains(Save))";
-        this.iframe.find(selector).find("span").each(function (i, v) {
-            spellSaveDCs[$(this).attr("data-original-title")] = $(this).text();
-        })
-        this.iframe.find(".ct-quick-nav__toggle").trigger("click");
-        this.iframe.find(".ct-quick-nav__menu-item--main").children(".ct-quick-nav__button").trigger("click");
-        return spellSaveDCs;
+        window.getCharData = getCharData;
+        console.log("Module 1080: end");
     }
 };
 
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//        Start Render Function
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-function render(character, node) { // function that builds the scraped data and renders it on the page.
-
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    //        Adding quickInfo elements to page
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    var quickInfoContainer = node.find('.gs-quick-info-container');
-    quickInfoContainer.find('.gs-hp-cur').html(character.currentHP);
-    quickInfoContainer.find('.gs-hp-max').html(character.maxHP);
-    quickInfoContainer.find('.gs-ac-value').html(character.ac);
-    quickInfoContainer.find('.gs-ac-value').html(character.ac);
-    quickInfoContainer.find('.gs-intv-sign').html(character.initiative.sign);
-    quickInfoContainer.find('.gs-intv-number').html(character.initiative.number);
-
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    //        Adding main abilities elements to page
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    var mainAble = node.find('.gs-main-able > .gs-container');
-    mainAble.empty();
-    Object.keys(character.abilities).forEach(function (abbr) {
-        //console.log(character.abilities[abbr]);
-        mainAble.append(abilityHTML);
-        let curAble = mainAble.children().last();
-        //console.log(curAble);
-        curAble.addClass('gs-able-' + abbr);
-        curAble.find('.gs-able-label').html(abbr);
-        curAble.find('.gs-able-prefix').html(abilitySVGs[abbr]);
-        curAble.find('.gs-able-number').html(character.abilities[abbr].number);
-        curAble.find('.gs-able-mod-sign').html(character.abilities[abbr].sign);
-        curAble.find('.gs-able-mod-value').html(character.abilities[abbr].mod);
-    })
-
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    //        Adding saving throw elements to page
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    var mainSave = node.find('.gs-main-saves > .gs-container');
-    mainSave.empty();
-    Object.keys(character.savingThrows).forEach(function (abbr) {
-        //console.log(character.savingThrows[label]);
-        mainSave.append(savingThrowsHTML);
-        let curSave = mainSave.children().last();
-        //console.log(curSave);
-        curSave.addClass('gs-saves-' + abbr);
-        curSave.find('.gs-saves-label').html(abbr);
-        curSave.find('.gs-saves-prefix').html(abilitySVGs[abbr]);
-        curSave.find('.gs-saves-sign').html(character.savingThrows[abbr].sign);
-        curSave.find('.gs-saves-number').html(character.savingThrows[abbr].number);
-    })
-
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    //        Adding sense elements to page
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    // add passive senses data
-    var passives = node.find('.gs-passives > .gs-container');
-    passives.empty();
-    Object.keys(character.passiveSkills).forEach(function (passive) {
-        passives.append(passivesHTML);
-        let curPass = passives.children().last();
-        //console.log(curPass);
-        curPass.addClass('gs-passives-' + passive);
-        curPass.find('.gs-passives-number').html(character.passiveSkills[passive]);
-        curPass.find('.gs-passives-label').html(passive);
-    })
-
-    // add additional senses data if exsists
-    var senses = character.senses;
-    if (senses != null) {
-        node.find('.gs-text-additonal-senses').html(character.senses);
-    } else {
-        node.find('.gs-additonal-senses').addClass("gs-additonal-senses-empty");
-    }
-
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    //        Adding speed elements to page
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    //Adds character speeds to the speed module
-    var speeds = node.find('.gs-speeds > .gs-container');
-    speeds.empty();
-    Object.keys(character.speed).forEach(function (speed) {
-        speeds.append(speedHTML);
-        let curSpeed = speeds.children().last();
-        //console.log(curSpeed);
-        curSpeed.addClass('gs-speed-' + speed);
-        curSpeed.find('.gs-speed-number').html(character.speed[speed]);
-        curSpeed.find('.gs-speed-label').html(speed);
-    })
-
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    //        Adding class elements to page
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    var classes = node.find('.gs-classes > .gs-container');
-    classes.empty();
-    // These next few lines checks if the character has a spell save DC. If it doesn't it replaces the number with a 0 and changes the class to no save.
-    if (Object.keys(character.spellSaveDC).length !== 0 && character.spellSaveDC.constructor === Object) {
-        Object.keys(character.spellSaveDC).forEach(function (className) { // iterates through each item in the object and adds it to the spell save module
-            classes.append(classHTML);
-            let curClass = classes.children().last();
-            //console.log(curClass);
-            curClass.addClass('gs-class-' + className);
-            curClass.find('.gs-class-label').html(className);
-            curClass.find('.gs-savedc-number').html(character.spellSaveDC[className]);
-            curClass.find('.gs-savedc-label').html("Save DC");
-        })
-    } else {}
-
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    //        Update timeout
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-    //get timeout value
-    let refreshTime = parseInt($('input[name ="auto-duration"]').val()) * 1000;
-    setTimeout(function () {
-        //only refresh when checkbox is checked
-        if ($('input[name ="auto-duration"]').is(':checked')) {
-            document.getElementById(`frame-${character.id}`).contentDocument.location.reload(true);
-        }
-        prerender(character, node, 0);
-    }, refreshTime);
-}
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//        Start PreRender Function
+//        Main Function
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-function prerender(character, node, times) { //Prerender logic - needs to be commented further
-    if (!isNaN(character.ac)) {
-        render(character, node);
-    } else {
-        times += 1;
-        if (times < 80) {
-            setTimeout(function () {
-                prerender(character, node, times);
-            }, 500);
-        } else {
-            console.warn("Character AC Not found");
-            console.debug("Character Class:");
-            console.debug(character);
-        };
-    }
-}
+(function () {
+    stylesheetUrls.forEach(loadStylesheet); //load and insert each stylesheet in the settings
+    loadModules(initalModules); //load the module loader which imports from window.jsonpDDBCT and the inputted modules
+    addGUI();
+    findTargets();
+    insertElements();
+    retriveRules().then(() =>{
+        updateCharData();
+    }).catch((error) => {
+        console.log(error);
+    });
+})();
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//        Add GUI
+//        Functions
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 function addGUI() {
     $(".ddb-campaigns-detail-header-secondary > div:nth-child(2)").after(controlsHTML);
@@ -576,14 +433,7 @@ function addGUI() {
     $('input[name ="auto-duration"]').change(function () {
         GM_setValue("ddbDmScreen-updateSeconds", $(this).val());
     });
-    //value updater functions
 }
-
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//        Start iFrame Logic
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 
 function findTargets() {
     console.log("Locating Characters from Window");
@@ -608,7 +458,24 @@ function findTargets() {
             charactersData[charID] = {
                 node: $(value).parents('li'),
                 url: charJSONurlBase + charID,
-                state: {},
+                state: {
+                    appEnv: {
+                        authEndpoint: "https://auth-service.dndbeyond.com/v1/cobalt-token", characterEndpoint: "", characterId: charID, characterServiceBaseUrl: null, diceEnabled: true, diceFeatureConfiguration: {
+                            apiEndpoint: "https://dice-service.dndbeyond.com", assetBaseLocation: "https://www.dndbeyond.com/dice", enabled: true, menu: true, notification: false, trackingId: ""
+                        }, dimensions: { sheet: { height: 0, width: 1200 }, styleSizeType: 4, window: { height: 571, width: 1920 } }, isMobile: false, isReadonly: false, redirect: undefined, username: "example"
+                    },
+                    appInfo: { error: null },
+                    character: {},
+                    characterEnv: { context: "SHEET", isReadonly: false, loadingStatus: "LOADED" },
+                    confirmModal: { modals: [] },
+                    modal: { open: {} },
+                    ruleData: {},
+                    serviceData: { classAlwaysKnownSpells: {}, classAlwaysPreparedSpells: {}, definitionPool: {}, infusionsMappings: [], knownInfusionsMappings: [], ruleDataPool: {}, vehicleComponentMappings: [], vehicleMappings: [] },
+                    sheet: { initError: null, initFailed: false },
+                    sidebar: { activePaneId: null, alignment: "right", isLocked: false, isVisible: false, panes: [], placement: "overlay", width: 340 },
+                    syncTransaction: { active: false, initiator: null },
+                    toastMessage: {}
+                },
                 data: {}
             }
         } else {
@@ -629,30 +496,438 @@ function insertElements() {
     };
 }
 
-(function () { //iFrame Logic - Needs to be commented further
-    addGUI();
-    findTargets();
-    insertElements();
-    console.log("Processing Characters");
-    $('#site').after('<div id="iframeDiv" style="opacity: 0; position: absolute;"></div>'); //visibility: hidden;
-    let chars = $('.ddb-campaigns-detail-body-listing-active').find('.ddb-campaigns-character-card-footer-links-item-view');
-    chars.each(function (index, value) {
-        let node = $(value).parents('.ddb-campaigns-character-card-wrapper');
-        console.debug(node);
-        let name = node.find('.ddb-campaigns-character-card-header-upper-character-info-primary').text();
-        let character = new Character(name);
-        let newIframe = document.createElement('iframe');
-        //after loading iframe, wait for a second to let JS create content.
-        newIframe.onload = function () {
-            prerender(character, node, 0)
-        };
-        newIframe.id = `frame-${character.id}`;
-        newIframe.style = "position: absolute;"; //visibility: hidden;
-        newIframe.width = 1000;
-        newIframe.height = 200;
-        newIframe.seamless = "";
-        newIframe.src = $(this).attr('href');
-        document.body.appendChild(newIframe);
-        $('#iframeDiv').append(newIframe);
+function retriveRules(charIDs) {
+    return new Promise(function (resolve, reject) {
+        console.log("Retriving Rules Data");
+        getJSONfromURLs(rulesUrls).then((js) => {
+            console.log("Rules Data Processing Start");
+            js.forEach(function(rule, index){
+                if (rule.success == null || rule.lenth < 1 || rule.success != true){
+                    console.warn("ruleset " + index + " is null, empty or fail");
+                }
+            });
+            rulesData = {
+                ruleset : js[0].data,
+                vehiclesRuleset : js[1].data
+            }
+            for(let id in charactersData){
+                charactersData[id].state.ruleData = rulesData.ruleset;
+                charactersData[id].state.serviceData.ruleDataPool = rulesData.vehiclesRuleset;
+            }
+            console.debug("Rules Data:");
+            console.debug(rulesData);
+            resolve();
+        }).catch((error) => {
+            reject(error);
+        });
     });
-})();
+}
+
+function getRules(index){
+    return rulesData[index];
+}
+
+function updateCharData() {
+    console.log("Retriving Char Data");
+	var charURLs = [];
+	for(var id in charactersData){
+		charURLs.push(charactersData[id].url);
+	}
+	getJSONfromURLs(charURLs).then((js) => {
+        window.jstest = js;
+        js.forEach(function(charJSON, index){
+            if (charJSON.success == null || charJSON.lenth < 1 || charJSON.success != true){
+                console.warn("charJSON " + index + " is null, empty or fail");
+            }
+            var charId = charJSON.data.id;
+            console.debug("Processing Char: " + charId);
+			charactersData[charId].state.character = charJSON.data;
+			var charData = window.getCharData(charactersData[charId].state);
+			charactersData[charId].data = charData;
+            updateElementData(charactersData[charId]);
+        });
+        console.log("Updated Char Data");
+        console.debug(charactersData);
+        startRefreshTimer();
+	}).catch((error) => {
+		console.log(error);
+        startRefreshTimer();
+	});
+
+}
+
+function startRefreshTimer() {
+    //get timeout value
+    let refreshTime = parseInt($('input[name ="auto-duration"]').val()) * 1000;
+    setTimeout(function () {
+        //only refresh when checkbox is checked
+        if ($('input[name ="auto-duration"]').is(':checked')) {
+            updateCharData();
+        }else{
+            startRefreshTimer();
+        }
+    }, refreshTime);
+}
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//        Element Updating Functions
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function updateElementData(character) { // function that builds the scraped data and renders it on the page.
+    console.log("Updating Information in HTML Elements");
+    updateQuickInfo(character.node, character.data);
+    updateMainInfo(character.node, character.data);
+}
+
+function updateQuickInfo(parent, character){
+    var quickInfo = parent.find('.gs-quick-info');
+    updateHitPointInfo(quickInfo, character.hitPointInfo);
+    updateArmorClass(quickInfo, character.armorClass);
+    updateInitiative(quickInfo, character.initiative);
+    updateSpeeds(quickInfo, character.speeds);
+}
+
+function updateHitPointInfo(parent, hitPointInfo){
+    parent.find('.gs-hp-cur').html(hitPointInfo.remainingHp);
+    parent.find('.gs-hp-max').html(hitPointInfo.totalHp);
+}
+
+function updateArmorClass(parent, armorClass){
+    parent.find('.gs-ac-value').html(armorClass);
+}
+
+function updateInitiative(parent, initiative){
+    parent.find('.gs-intv-sign').html(getSign(initiative));
+    parent.find('.gs-intv-number').html(initiative);
+}
+
+function updateSpeeds(parent, speeds){
+    //Adds character speeds to the speed module
+    let container = parent.find('.gs-speeds > .gs-container');
+    container.empty();
+
+    speeds.forEach(function(item, index){
+        console.log(item);
+        if(item.distance > 0){
+            container.append(speedHTML);
+            let curSpeed = container.children().last();
+            //console.log(curSpeed);
+            curSpeed.addClass('gs-speed-' + item.key);
+            curSpeed.find('.gs-speed-label').html(item.name);
+            curSpeed.find('.gs-speed-number').html(item.distance);
+            curSpeed.find('.gs-speed-affix').html(distanceUnit(item.distance));
+        }
+    });
+    if (container.children().length < 1) {
+        parent.find('.gs-speeds').addClass("gs-empty");
+    }
+}
+
+function updateMainInfo(parent, character){
+    var mainInfo = parent.find('.gs-main-info');
+    updateAbilties(mainInfo, character.abilities);
+    updatePassives(mainInfo, character.passivePerception, character.passiveInvestigation, character.passiveInsight);
+    updateSenses(mainInfo, character.senses);
+    updateClasses(mainInfo, character.classes, character.spellCasterInfo.castingInfo);
+}
+
+function updateAbilties(parent, abilities){
+    var containerAble = parent.find('.gs-main-able > .gs-container');
+    var containerSave = parent.find('.gs-main-saves > .gs-container');
+    containerAble.empty();
+    containerSave.empty();
+    abilities.forEach(function(item, index){
+        //console.log(item);
+        // Abilities
+        containerAble.append(abilityHTML);
+        let curAble = containerAble.children().last();
+        curAble.addClass('gs-able-' + item.name);
+        curAble.find('.gs-able-label').html(item.name);
+        curAble.find('.gs-able-prefix').html(abilitySVGs[item.name]);
+        curAble.find('.gs-able-number').html(item.totalScore);
+        curAble.find('.gs-able-mod-sign').html(getSign(item.modifier));
+        curAble.find('.gs-able-mod-value').html(item.modifier);
+
+        // Saving Throws
+        containerSave.append(savingThrowsHTML);
+        let curSave = containerSave.children().last();
+        curSave.addClass('gs-saves-' + item.name);
+        curSave.find('.gs-saves-label').html(item.name);
+        curSave.find('.gs-saves-prefix').html(abilitySVGs[item.name]);
+        curSave.find('.gs-saves-sign').html(getSign(item.save));
+        curSave.find('.gs-saves-number').html(item.save);
+    });
+}
+
+function updatePassives(parent, passPerception, passInvestigation, passInsight){
+    // add passive senses data
+    let container = parent.find('.gs-passives > .gs-container');
+    container.find('.gs-passivePerception .gs-passives-number').html(passPerception);
+    container.find('.gs-passiveInvestigation .gs-passives-number').html(passInvestigation);
+    container.find('.gs-passiveInsight .gs-passives-number').html(passInsight);
+}
+
+function updateSenses(parent, senses){
+    // add additional senses data if exsists
+    let container = parent.find('.gs-additonal-senses > .gs-container');
+    container.empty();
+    senses.forEach(function(item, index){
+        //console.log(item);
+        if(item.distance > 0){
+            container.append(additonalSenseHTML);
+            let curSense = container.children().last();
+            curSense.addClass('gs-additonal-sense-' + item.key);
+            curSense.find('.gs-additonal-sense-text').html(item.name);
+            curSense.find('.gs-additonal-sense-number').html(item.distance);
+            curSense.find('.gs-additonal-sense-affix').html(distanceUnit(item.distance));
+        }
+    });
+    if (container.children().length < 1) {
+        parent.find('.gs-additonal-senses').addClass("gs-empty");
+    }
+}
+
+function updateClasses(parent, classes, casting){
+    //Adds classes and thier relevant spell modifiers, save dcs and attacks to the classes module
+    let container = parent.find('.gs-classes > .gs-container');
+    container.empty();
+
+    for(let i = 0; i < casting.modifiers.length; i++ ) {
+        let modifier = casting.modifiers[i];
+        let saveDc = casting.saveDcs[i];
+        let attacks = casting.spellAttacks[i];
+        let charClass = classes.find(function (e) { return e.id == modifier.sources[0].id; })
+
+        container.append(classHTML);
+        let curClass = container.children().last();
+
+        curClass.addClass('gs-class-' + charClass.slug);
+        curClass.find('.gs-class-label').html(charClass.definition.name);
+        curClass.find('.gs-spellmod-number').html(modifier.value);
+        curClass.find('.gs-spellsavedc-number').html(saveDc.value);
+        curClass.find('.gs-spellattack-number').html(attacks.value);
+    }
+    if (container.children().length < 1) {
+        parent.find('.gs-classes').addClass("gs-empty");
+    }
+}
+
+
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//        D&DBeyond Module Loader
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function loadModules(modules) {
+    /*
+        A near direct copy of the function from http://media.dndbeyond.com/character-tools/characterTools.bundle.71970e5a4989d91edc1e.min.js
+        This basically loads in the modules in https://media.dndbeyond.com/character-tools/vendors~characterTools.bundle.f8b53c07d1796f1d29cb.min.js and similar module based scripts
+        these are stored in window.jsonpDDBCT and can be loaded by this script and interacted with by active modules
+    */
+    console.log("Loading modules");
+    function webpackJsonpCallback(data) {
+        /*
+            This allows additonal modules to be added run, the input format needs to be at least a two dimentional array,
+            e.g. [[2],[function (module, exports, __webpack_require__) {...},...]] or [2],{34: function (module, exports, __webpack_require__) {...},...}] if you want to have set module id's
+            you can also run modules by adding a third element to the argument data, e.g. [4],{69: function (module, __webpack_exports__, __webpack_require__) {...},...}, [69,4]] which will run the module 69 in chunk 4
+            I am not 100% on the logic of this, so feel free to expand on this and futher comment to help out!
+        */
+        var chunkIds = data[0];
+        var moreModules = data[1];
+        var executeModules = data[2];
+        var moduleId,
+        chunkId,
+        i = 0,
+        resolves = [];
+        for (; i < chunkIds.length; i++) {
+            chunkId = chunkIds[i];
+            if (Object.prototype.hasOwnProperty.call(installedChunks, chunkId) && installedChunks[chunkId]) {
+                resolves.push(installedChunks[chunkId][0])
+            }
+            installedChunks[chunkId] = 0
+        }
+        for (moduleId in moreModules) {
+            if (Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+                modules[moduleId] = moreModules[moduleId]
+            }
+        }
+        if (parentJsonpFunction) parentJsonpFunction(data);
+        while (resolves.length) {
+            resolves.shift()()
+        }
+        deferredModules.push.apply(deferredModules, executeModules || []);
+        return checkDeferredModules()
+    }
+    function checkDeferredModules() {
+        var result;
+        for (var i = 0; i < deferredModules.length; i++) {
+            var deferredModule = deferredModules[i];
+            var fulfilled = true;
+            for (var j = 1; j < deferredModule.length; j++) {
+                var depId = deferredModule[j];
+                if (installedChunks[depId] !== 0) fulfilled = false
+            }
+            if (fulfilled) {
+                deferredModules.splice(i--, 1);
+                result = __webpack_require__(__webpack_require__.s = deferredModule[0])
+            }
+        }
+        return result
+    }
+    var installedModules = {};
+    var installedChunks = {
+        0: 0
+    };
+    var deferredModules = [];
+    function __webpack_require__(moduleId) {
+        if (installedModules[moduleId]) {
+            return installedModules[moduleId].exports
+        }
+        var module = installedModules[moduleId] = {
+            i: moduleId,
+            l: false,
+            exports: {}
+        };
+        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+        module.l = true;
+        return module.exports
+    }
+    __webpack_require__.m = modules;
+    __webpack_require__.c = installedModules;
+    __webpack_require__.d = function (exports, name, getter) {
+        if (!__webpack_require__.o(exports, name)) {
+            Object.defineProperty(exports, name, {
+                enumerable: true,
+                get: getter
+            })
+        }
+    };
+    __webpack_require__.r = function (exports) {
+        if (typeof Symbol !== "undefined" && Symbol.toStringTag) {
+            Object.defineProperty(exports, Symbol.toStringTag, {
+                value: "Module"
+            })
+        }
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        })
+    };
+    __webpack_require__.t = function (value, mode) {
+        if (mode & 1) value = __webpack_require__(value);
+        if (mode & 8) return value;
+        if (mode & 4 && typeof value === "object" && value && value.__esModule) return value;
+        var ns = Object.create(null);
+        __webpack_require__.r(ns);
+        Object.defineProperty(ns, "default", {
+            enumerable: true,
+            value: value
+        });
+        if (mode & 2 && typeof value != "string"){
+            for (var key in value){
+                __webpack_require__.d(ns, key, function (key) {
+                    return value[key]
+                }.bind(null, key));
+            }
+        }
+
+        return ns
+    };
+    __webpack_require__.n = function (module) {
+        var getter = module && module.__esModule ? function getDefault() {
+            return module["default"]
+        }
+         : function getModuleExports() {
+            return module
+        };
+        __webpack_require__.d(getter, "a", getter);
+        return getter
+    };
+    __webpack_require__.o = function (object, property) {
+        return Object.prototype.hasOwnProperty.call(object, property)
+    };
+    __webpack_require__.p = "";
+    var jsonpArray = window["jsonpDDBCT"] = window["jsonpDDBCT"] || [];
+    var oldJsonpFunction = jsonpArray.push.bind(jsonpArray); //This allows additonal modules to be added and run by using window.jsonpDDBCT.push(modules) which calls webpackJsonpCallback(modules) above
+    jsonpArray.push2 = webpackJsonpCallback;
+    jsonpArray = jsonpArray.slice();
+    for (var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
+    var parentJsonpFunction = oldJsonpFunction;
+    deferredModules.push([1080, 2]); //This sets module 1080 as an active module and is run after the other modules are loaded
+    checkDeferredModules();
+    console.log("Finished loading modules");
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//        Generic Functions
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function loadStylesheet(href) {
+    console.debug('Start: Adding CSS Stylesheet ' + href);
+    var link = document.createElement('link');
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.href = href;
+    document.head.appendChild(link);
+    console.debug('Done: Adding CSS Stylesheet');
+}
+
+function getJSONfromURLs(urls) {
+    return new Promise(function (resolve, reject) {
+        console.log("Fetching: ", urls);
+        var proms = urls.map(d => fetch(d));
+        Promise.all(proms)
+        .then(ps => Promise.all(ps.map(p => p.json()))) // p.json() also returns a promise
+        .then(jsons => {
+            console.log("JSON Data Retrived");
+            resolve(jsons);
+        })
+        .catch((error) => {
+            reject(error);
+        });
+    });
+}
+function getSign(input){
+    if (input == null){
+        input = 0;
+    }
+    return input >= 0 ? positiveSign : negativeSign
+}
+
+function roundDown(input){
+    let number = parseInt(input);
+    if (isNaN(number)) {
+        return NaN;
+    }
+    return Math.floor(input);
+}
+
+function roundUp(input){
+    let number = parseInt(input);
+    if (isNaN(number)) {
+        return NaN;
+    }
+    return Math.ceil(input);
+}
+
+function divide(numeratorInput, denominatorInput){
+    let numerator = parseInt(numeratorInput);
+    let denominator = parseInt(denominatorInput);
+    if (isNaN(numerator) || isNaN(denominator)) {
+        return NaN;
+    }
+    return numerator/denominator;
+}
+
+function distanceUnit(input){
+    let number = parseInt(input);
+    if (isNaN(number)) {
+        number = 0;
+    }
+    let unit = 'ft.';
+    if (number && number % FEET_IN_MILES === 0) {
+        number = number / FEET_IN_MILES;
+        unit = 'mile' + (Math.abs(number) === 1 ? '' : 's');
+    }
+    return unit;
+}
