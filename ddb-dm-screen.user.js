@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			D&DBeyond DM Screen
 // @namespace		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/
-// @version			3.0.4
+// @version			3.0.6
 // @description		Advanced DM screen for D&DBeyond campaigns
 // @author			TeaWithLucas
 // @match			https://www.dndbeyond.com/campaigns/*
@@ -26,12 +26,20 @@ const charJSONurlBase = "https://character-service.dndbeyond.com/character/v4/ch
 
 const stylesheetUrls = ["https://raw.githack.com/TeaWithLucas/DNDBeyond-DM-Screen/master/dm-screen.css"]
 
-var $ = window.jQuery;
-var rulesData = {}, charactersData = {};
+const scriptVarPrefix = "DMScreen-";
+
+const charIDRegex = /\/(\d+)\/*$/;
+const campaignIDRegex = /\/(\d+)\/*$/;
 
 const FEET_IN_MILES = 5280;
 const POUNDS_IN_TON = 2000;
 const positiveSign = '+', negativeSign = '-';
+
+const autoUpdateDefault = true;
+const updateDurationDefault = 60;
+
+var $ = window.jQuery;
+var rulesData = {}, charactersData = {}, campaignID = 0;
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //        SVG Data
@@ -405,9 +413,10 @@ var initalModules = {
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 (function () {
+    campaignID = window.location.pathname.match(charIDRegex);
     stylesheetUrls.forEach(loadStylesheet); //load and insert each stylesheet in the settings
     loadModules(initalModules); //load the module loader which imports from window.jsonpDDBCT and the inputted modules
-    addGUI();
+    insertControls();
     findTargets();
     insertElements();
     retriveRules().then(() =>{
@@ -421,29 +430,15 @@ var initalModules = {
 //        Functions
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function addGUI() {
-    $(".ddb-campaigns-detail-header-secondary > div:nth-child(2)").after(controlsHTML);
 
-    $('input[name ="gs-auto-update"]').prop('checked', GM_getValue("ddbDmScreen-autoupdate", false));
-    $('input[name ="gs-auto-duration"]').prop('value', GM_getValue("ddbDmScreen-updateSeconds", 60));
-
-    $('input[name ="gs-auto-update"]').change(function () {
-        GM_setValue("ddbDmScreen-autoupdate", $(this).prop("checked"));
-    });
-    $('input[name ="auto-duration"]').change(function () {
-        GM_setValue("ddbDmScreen-updateSeconds", $(this).val());
-    });
-}
 
 function findTargets() {
     console.log("Locating Characters from Window");
-    var charIdRegex = /\/(\d+)\/*$/;
-    var hooks = $(linkUrlTarget);
-    hooks.each(function (index, value) {
+    $(linkUrlTarget).each(function (index, value) {
         var url = value.html;
         console.debug("Processing: " + url);
         var charID = 0;
-        var matchArr = value.href.match(charIdRegex);
+        var matchArr = value.href.match(charIDRegex);
         if (matchArr.length > 0) {
             var charIDStr = matchArr[1];
             if (charIDStr == "") {
@@ -578,6 +573,28 @@ function startRefreshTimer() {
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //        Element Updating Functions
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function insertControls() {
+    console.log("Inseting Main Controls");
+    let campaignPrefix = scriptVarPrefix + "-" + campaignID;
+    $(".ddb-campaigns-detail-header-secondary > div:nth-child(1)").after(controlsHTML);
+
+    // Loads ideally value set for this campaign, if not found it loads the last saved value otherwise it defaults
+    let autoUpdateLoaded = GM_getValue(campaignPrefix + "-autoUpdate", GM_getValue(scriptVarPrefix + "-autoUpdate", autoUpdateDefault));
+    let updateDurationLoaded = GM_getValue(campaignPrefix + "-updateDuration", GM_getValue(scriptVarPrefix + "-updateDuration", updateDurationDefault))
+
+    $('input[name ="gs-auto-update"]').prop('checked', autoUpdateLoaded);
+    $('input[name ="gs-auto-duration"]').prop('value', updateDurationLoaded);
+
+    $('input[name ="gs-auto-update"]').change(function () {
+        GM_setValue(campaignPrefix + "-autoUpdate", $(this).prop("checked"));
+        GM_setValue(scriptVarPrefix + "-autoUpdate", $(this).prop("checked"));
+    });
+    $('input[name ="gs-auto-duration"]').change(function () {
+        GM_setValue(campaignPrefix + "-updateDuration", $(this).val());
+        GM_setValue(scriptVarPrefix + "-updateDuration", $(this).val());
+    });
+}
 
 function updateElementData(character) { // function that builds the scraped data and renders it on the page.
     //console.log("Updating Information in HTML Elements");
