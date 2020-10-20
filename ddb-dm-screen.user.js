@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			D&DBeyond DM Screen
 // @namespace		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/
-// @version			3.1.1
+// @version			3.1.2
 // @description		Advanced DM screen for D&DBeyond campaigns
 // @author			TeaWithLucas
 // @match			https://www.dndbeyond.com/campaigns/*
@@ -698,7 +698,7 @@ function updateArmorClass(parent, armorClass){
 
 function updateInitiative(parent, initiative){
     parent.find('.gs-intv-sign').html(getSign(initiative));
-    parent.find('.gs-intv-number').html(initiative);
+    parent.find('.gs-intv-number').html(Math.abs(initiative));
 }
 
 function updateSpeeds(parent, speeds){
@@ -746,7 +746,7 @@ function updateAbilties(parent, abilities){
         curAble.find('.gs-able-prefix').html(abilitySVGs[item.name]);
         curAble.find('.gs-able-number').html(item.totalScore);
         curAble.find('.gs-able-mod-sign').html(getSign(item.modifier));
-        curAble.find('.gs-able-mod-value').html(item.modifier);
+        curAble.find('.gs-able-mod-value').html(Math.abs(item.modifier));
 
         // Saving Throws
         containerSave.append(savingThrowsHTML);
@@ -755,7 +755,7 @@ function updateAbilties(parent, abilities){
         curSave.find('.gs-saves-label').html(item.name);
         curSave.find('.gs-saves-prefix').html(abilitySVGs[item.name]);
         curSave.find('.gs-saves-sign').html(getSign(item.save));
-        curSave.find('.gs-saves-number').html(item.save);
+        curSave.find('.gs-saves-number').html(Math.abs(item.save));
     });
 }
 
