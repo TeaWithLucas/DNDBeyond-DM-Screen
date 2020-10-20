@@ -1,4 +1,4 @@
-/* Version 3.0.3 CSS */
+/* Version 3.1.0 CSS */
 
 /** Overriding Existing CSS **/
 
@@ -87,7 +87,7 @@ a.ddb-campaigns-detail-body-listing-campaign-link, a#content-management-link, .d
     padding-right: 1%;
 }
 
-.gs-controls {
+.gs-campaign {
     border-color: #bc0f0f;
     border-top: 3px solid #1b9af0;
     border-bottom-color: rgb(27, 154, 240);
@@ -95,12 +95,13 @@ a.ddb-campaigns-detail-body-listing-campaign-link, a#content-management-link, .d
     padding-top: 16px;
 }
 
-.gs-controls {
+.gs-campaign {
 	width: 100%;
 	position: relative;
 	background: rgba(0,0,0,0.04);
 	padding: 15px;
 	border-radius: 3px;
+	margin: 0 10px 15px 0;
 }
 
 .form-field input[type=number] {

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			D&DBeyond DM Screen
 // @namespace		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/
-// @version			3.0.6
+// @version			3.1.0
 // @description		Advanced DM screen for D&DBeyond campaigns
 // @author			TeaWithLucas
 // @match			https://www.dndbeyond.com/campaigns/*
@@ -39,7 +39,7 @@ const autoUpdateDefault = true;
 const updateDurationDefault = 60;
 
 var $ = window.jQuery;
-var rulesData = {}, charactersData = {}, campaignID = 0;
+var rulesData = {}, charactersData = {}, campaignID = 0, campaignNode = {};
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //        SVG Data
@@ -70,9 +70,9 @@ var abilitySVGs = {
 
 //base html for the controls
 var controlsHTML = `
-    <div id="gs-controls" class="gs-controls">
+    <div id="gs-campaign" class="gs-campaign">
 	  <div class="gs-header gs-header-controls">DM Screen Controls</div>
-	  <div class="gs-container">
+	  <div class="gs-controls gs-container">
 	    <ul class="flat-list">
 		  <li class="gs-field gs-field-checkbox">
 		    <div class="form-field  form-field-checkbox">
@@ -87,6 +87,16 @@ var controlsHTML = `
 			</div>
 		  </li>
 		</ul>
+	  </div>
+	  <div class="gs-outputs gs-container">
+	    <div class="gs-languages gs-col-container gs-container-spaces">
+          <div class="gs-subheader gs-header-passives">Known Languages</div>
+          <div class="gs-container gs-col-container">
+	    	<div class="gs-language">
+	      	  <span class="gs-text gs-language-text"></span>
+	    	</div>
+          </div>
+        </div>
 	  </div>
 	</div>
   `;
@@ -450,8 +460,21 @@ function findTargets() {
             console.warn("error: no numbers found in " + value.href);
         }
         if (charID != 0) {
+            let node = $(value).parents('li');
+            let type = 'unknown';
+            let typeNode = $(value).parents('.ddb-campaigns-detail-body-listing');
+            if(typeNode.hasClass('ddb-campaigns-detail-body-listing-active')){
+                let unassignedNode = $(value).parents('.ddb-campaigns-detail-body-listing-unassigned-active');
+                if(unassignedNode.length > 0){
+                    type = 'unassigned';
+                } else {
+                    type = 'active';
+                }
+            } else if(typeNode.hasClass('ddb-campaigns-detail-body-listing-inactive')){
+                type = 'deactivated';
+            }
             charactersData[charID] = {
-                node: $(value).parents('li'),
+                node: node,
                 url: charJSONurlBase + charID,
                 state: {
                     appEnv: {
@@ -471,7 +494,8 @@ function findTargets() {
                     syncTransaction: { active: false, initiator: null },
                     toastMessage: {}
                 },
-                data: {}
+                data: {},
+                type: type,
             }
         } else {
             console.warn("warn: skipping " + value.href + " due to ID not found");
@@ -524,42 +548,57 @@ function getRules(index){
 
 function updateAllCharData() {
     console.log("Retriving Each Char Data");
-	for(var id in charactersData){
-		updateCharData(charactersData[id].url);
-	}
+    //console.debug(charactersData);
+    let promises = []
+    for(let id in charactersData){
+        promises.push(updateCharData(charactersData[id].url));
+    }
+    //console.log(charactersData);
+    Promise.all(promises)
+    .then(() =>{
+        updateCampaignData();
+    }).catch((error) => {
+		console.log(error);
+	});
 	startRefreshTimer();
 	console.log("Updated All Char Data");
 }
 
 function updateCharData(url) {
-	console.log("Retriving Char Data");
-	getJSONfromURLs([url]).then((js) => {
-        window.jstest = js;
-        js.forEach(function(charJSON, index){
-            if (charJSON.success == null || charJSON.lenth < 1 || charJSON.success != true){
-                console.warn("charJSON " + index + " is null, empty or fail");
-            }
-            var charId = charJSON.data.id;
-            console.debug("Processing Char: " + charId);
-			charactersData[charId].state.character = charJSON.data;
-			var charData = window.getCharData(charactersData[charId].state);
-			charactersData[charId].data = charData;
-            updateElementData(charactersData[charId]);
-			console.log("Retrived Char Data for char " + charId + " aka " + charactersData[charId].data.name);
-			console.debug(charactersData[charId]);
 
+    return new Promise(function (resolve, reject) {
+        console.log("Retriving Char Data");
+        getJSONfromURLs([url]).then((js) => {
+            //window.jstest = js;
+            js.forEach(function(charJSON, index){
+                if (charJSON.success == null || charJSON.lenth < 1 || charJSON.success != true){
+                    console.warn("charJSON " + index + " is null, empty or fail");
+                }
+                var charId = charJSON.data.id;
+                console.debug("Processing Char: " + charId);
+                charactersData[charId].state.character = charJSON.data;
+                var charData = window.getCharData(charactersData[charId].state);
+                charactersData[charId].data = charData;
+                updateElementData(charactersData[charId]);
+                console.log("Retrived Char Data for char " + charId + " aka " + charactersData[charId].data.name);
+                console.debug(charactersData[charId]);
+
+            });
+            resolve();
+
+        }).catch((error) => {
+            console.log(error);
+            reject();
         });
-
-	}).catch((error) => {
-		console.log(error);
-
-	});
+    });
 
 }
 
 function startRefreshTimer() {
     //get timeout value
-    let refreshTime = parseInt($('input[name ="gs-auto-duration"]').val()) * 1000;
+    let refreshTime = parseInt($('input[name ="gs-auto-duration"]').val());
+    let refreshTimeMiliSecs = refreshTime * 1000;
+    console.log("Starting Refresh Timer: " + refreshTime);
     setTimeout(function () {
         //only refresh when checkbox is checked
         if ($('input[name ="gs-auto-update"]').is(':checked')) {
@@ -567,7 +606,7 @@ function startRefreshTimer() {
         }else{
             startRefreshTimer();
         }
-    }, refreshTime);
+    }, refreshTimeMiliSecs);
 }
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -578,23 +617,59 @@ function insertControls() {
     console.log("Inseting Main Controls");
     let campaignPrefix = scriptVarPrefix + "-" + campaignID;
     $(".ddb-campaigns-detail-header-secondary > div:nth-child(1)").after(controlsHTML);
+    campaignNode = $(".gs-campaign");
+    let controlsNode = campaignNode.find('.gs-controls');
+
+    let autoUpdate = controlsNode.find('input[name ="gs-auto-update"]');
+    let autoDuration = controlsNode.find('input[name ="gs-auto-duration"]');
 
     // Loads ideally value set for this campaign, if not found it loads the last saved value otherwise it defaults
     let autoUpdateLoaded = GM_getValue(campaignPrefix + "-autoUpdate", GM_getValue(scriptVarPrefix + "-autoUpdate", autoUpdateDefault));
     let updateDurationLoaded = GM_getValue(campaignPrefix + "-updateDuration", GM_getValue(scriptVarPrefix + "-updateDuration", updateDurationDefault))
 
-    $('input[name ="gs-auto-update"]').prop('checked', autoUpdateLoaded);
-    $('input[name ="gs-auto-duration"]').prop('value', updateDurationLoaded);
+    autoUpdate.prop('checked', autoUpdateLoaded);
+    autoDuration.prop('value', updateDurationLoaded);
 
-    $('input[name ="gs-auto-update"]').change(function () {
+    autoUpdate.change(function () {
         GM_setValue(campaignPrefix + "-autoUpdate", $(this).prop("checked"));
         GM_setValue(scriptVarPrefix + "-autoUpdate", $(this).prop("checked"));
     });
-    $('input[name ="gs-auto-duration"]').change(function () {
+    autoDuration.change(function () {
         GM_setValue(campaignPrefix + "-updateDuration", $(this).val());
         GM_setValue(scriptVarPrefix + "-updateDuration", $(this).val());
     });
 }
+
+function updateCampaignData(){
+    console.log("Updating Campaign Data");
+    let outputsNode = campaignNode.find(".gs-outputs");
+    updateLanguages(outputsNode);
+}
+
+function updateLanguages(parent){
+    console.log("Updating Campaign Languages Data");
+    let languages = {};
+	for(let id in charactersData){
+        let character = charactersData[id];
+		let charLanguages = character.data.proficiencyGroups.find(function (e) { return e.label == 'Languages'; });
+        for(let index in charLanguages.modifierGroups){
+            let language = charLanguages.modifierGroups[index];
+            if (language.label != undefined){
+                if(languages[language.label] == undefined){
+                    languages[language.label] = [];
+                }
+                languages[language.label].push({
+                    id: id,
+                    name: character.data.name
+                });
+            }
+        }
+	}
+    //console.log(languages);
+    let languagesOut = Object.keys(languages);
+    parent.find('.gs-language-text').html(languagesOut.sort().join(', '));
+}
+
 
 function updateElementData(character) { // function that builds the scraped data and renders it on the page.
     //console.log("Updating Information in HTML Elements");
