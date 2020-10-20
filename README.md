@@ -12,7 +12,7 @@ This Tampermonkey or Greecemonkey userscript aims to provide simple DM screen by
 
 ## Images
 
-![Screenshot of the DM Screen](https://i.imgur.com/Q2Fk9eI.png)
+![Screenshot of the DM Screen](https://i.imgur.com/lzMFAC4.png)
 
 ## Note from the Orignal Author
 
