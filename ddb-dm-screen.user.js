@@ -533,6 +533,8 @@ function updateAllCharData() {
 		updateCharData(charactersData[id].url);
 	}
 	startRefreshTimer();
+	console.log("Updated Char Data");
+	console.debug(charactersData);
 }
 
 function updateCharData(url) {
@@ -550,8 +552,7 @@ function updateCharData(url) {
 			charactersData[charId].data = charData;
             updateElementData(charactersData[charId]);
         });
-        console.log("Updated Char Data");
-        console.debug(charactersData);
+        
 	}).catch((error) => {
 		console.log(error);
         
