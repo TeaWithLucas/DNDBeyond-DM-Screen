@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			D&DBeyond DM Screen
 // @namespace		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/
-// @version			2.4.9
+// @version			3.0.4
 // @description		Advanced DM screen for D&DBeyond campaigns
 // @author			TeaWithLucas
 // @match			https://www.dndbeyond.com/campaigns/*
@@ -483,7 +483,7 @@ function findTargets() {
         }
     });
     console.log("Finished locating Characters from Window");
-    console.debug(charactersData);
+    //console.debug(charactersData);
 }
 
 function insertElements() {
@@ -528,17 +528,16 @@ function getRules(index){
 }
 
 function updateAllCharData() {
-    console.log("Retriving Char Data");
+    console.log("Retriving Each Char Data");
 	for(var id in charactersData){
 		updateCharData(charactersData[id].url);
 	}
 	startRefreshTimer();
-	console.log("Updated Char Data");
-	console.debug(charactersData);
+	console.log("Updated All Char Data");
 }
 
 function updateCharData(url) {
-
+	console.log("Retriving Char Data");
 	getJSONfromURLs([url]).then((js) => {
         window.jstest = js;
         js.forEach(function(charJSON, index){
@@ -551,11 +550,14 @@ function updateCharData(url) {
 			var charData = window.getCharData(charactersData[charId].state);
 			charactersData[charId].data = charData;
             updateElementData(charactersData[charId]);
+			console.log("Retrived Char Data for char " + charId + " aka " + charactersData[charId].data.name);
+			console.debug(charactersData[charId]);
+
         });
-        
+
 	}).catch((error) => {
 		console.log(error);
-        
+
 	});
 
 }

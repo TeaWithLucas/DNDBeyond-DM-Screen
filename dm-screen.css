@@ -1,4 +1,4 @@
-/* Version 3.0.2 CSS */
+/* Version 3.0.3 CSS */
 
 /** Overriding Existing CSS **/
 
@@ -40,13 +40,13 @@
 }
 
 .ddb-campaigns-character-card-header-upper-character-info-primary{
-	display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  /*! display: -webkit-box; */
+  /*! -webkit-line-clamp: 1; */
+  /*! -webkit-box-orient: vertical; */
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: unset;
+  /*! white-space: unset; */
   word-wrap: normal;
 
   font-family: "Roboto Condensed",Roboto,Helvetica,sans-serif;
