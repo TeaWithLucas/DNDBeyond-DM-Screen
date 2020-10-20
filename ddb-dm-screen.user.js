@@ -75,7 +75,7 @@ var controlsHTML = `
 		  <li class="gs-field gs-field-number">
 		    <div class="form-field  form-field-number">
 			  <label for="gs-auto-duration"><span>Duration (s)</span></label>
-			  <input type="number" name="auto-duration" id="auto-duration" value="60" placeholder="Duration (secs)">
+			  <input type="number" name="gs-auto-duration" id="gs-auto-duration" value="60" placeholder="Duration (secs)">
 			</div>
 		  </li>
 		</ul>
@@ -411,7 +411,7 @@ var initalModules = {
     findTargets();
     insertElements();
     retriveRules().then(() =>{
-        updateCharData();
+        updateAllCharData();
     }).catch((error) => {
         console.log(error);
     });
@@ -425,7 +425,7 @@ function addGUI() {
     $(".ddb-campaigns-detail-header-secondary > div:nth-child(2)").after(controlsHTML);
 
     $('input[name ="gs-auto-update"]').prop('checked', GM_getValue("ddbDmScreen-autoupdate", false));
-    $('input[name ="auto-duration"]').prop('value', GM_getValue("ddbDmScreen-updateSeconds", 60));
+    $('input[name ="gs-auto-duration"]').prop('value', GM_getValue("ddbDmScreen-updateSeconds", 60));
 
     $('input[name ="gs-auto-update"]').change(function () {
         GM_setValue("ddbDmScreen-autoupdate", $(this).prop("checked"));
@@ -488,8 +488,8 @@ function findTargets() {
 
 function insertElements() {
     console.log("Inserting Structual Elements");
-    for(var id in charactersData) {
-        var node = charactersData[id].node;
+    for(let id in charactersData) {
+        let node = charactersData[id].node;
         node.addClass('.gs-' + id);
         node.append(mainInfoHTML); // add the structure for the main info adjacent ro the player card;
         node.find('.ddb-campaigns-character-card-header').append(quickInfoHTML); // add the structure for quick stats inside player card
@@ -527,13 +527,17 @@ function getRules(index){
     return rulesData[index];
 }
 
-function updateCharData() {
+function updateAllCharData() {
     console.log("Retriving Char Data");
-	var charURLs = [];
 	for(var id in charactersData){
-		charURLs.push(charactersData[id].url);
+		updateCharData(charactersData[id].url);
 	}
-	getJSONfromURLs(charURLs).then((js) => {
+	startRefreshTimer();
+}
+
+function updateCharData(url) {
+
+	getJSONfromURLs([url]).then((js) => {
         window.jstest = js;
         js.forEach(function(charJSON, index){
             if (charJSON.success == null || charJSON.lenth < 1 || charJSON.success != true){
@@ -548,21 +552,20 @@ function updateCharData() {
         });
         console.log("Updated Char Data");
         console.debug(charactersData);
-        startRefreshTimer();
 	}).catch((error) => {
 		console.log(error);
-        startRefreshTimer();
+        
 	});
 
 }
 
 function startRefreshTimer() {
     //get timeout value
-    let refreshTime = parseInt($('input[name ="auto-duration"]').val()) * 1000;
+    let refreshTime = parseInt($('input[name ="gs-auto-duration"]').val()) * 1000;
     setTimeout(function () {
         //only refresh when checkbox is checked
-        if ($('input[name ="auto-duration"]').is(':checked')) {
-            updateCharData();
+        if ($('input[name ="gs-auto-update"]').is(':checked')) {
+            updateAllCharData();
         }else{
             startRefreshTimer();
         }
@@ -574,7 +577,7 @@ function startRefreshTimer() {
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function updateElementData(character) { // function that builds the scraped data and renders it on the page.
-    console.log("Updating Information in HTML Elements");
+    //console.log("Updating Information in HTML Elements");
     updateQuickInfo(character.node, character.data);
     updateMainInfo(character.node, character.data);
 }
@@ -607,7 +610,7 @@ function updateSpeeds(parent, speeds){
     container.empty();
 
     speeds.forEach(function(item, index){
-        console.log(item);
+        //console.log(item);
         if(item.distance > 0){
             container.append(speedHTML);
             let curSpeed = container.children().last();
