@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			D&DBeyond DM Screen
 // @namespace		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/
-// @version			3.1.0
+// @version			3.1.1
 // @description		Advanced DM screen for D&DBeyond campaigns
 // @author			TeaWithLucas
 // @match			https://www.dndbeyond.com/campaigns/*
@@ -651,17 +651,19 @@ function updateLanguages(parent){
     let languages = {};
 	for(let id in charactersData){
         let character = charactersData[id];
-		let charLanguages = character.data.proficiencyGroups.find(function (e) { return e.label == 'Languages'; });
-        for(let index in charLanguages.modifierGroups){
-            let language = charLanguages.modifierGroups[index];
-            if (language.label != undefined){
-                if(languages[language.label] == undefined){
-                    languages[language.label] = [];
+        if(character.type == 'active'){
+            let charLanguages = character.data.proficiencyGroups.find(function (e) { return e.label == 'Languages'; });
+            for(let index in charLanguages.modifierGroups){
+                let language = charLanguages.modifierGroups[index];
+                if (language.label != undefined){
+                    if(languages[language.label] == undefined){
+                        languages[language.label] = [];
+                    }
+                    languages[language.label].push({
+                        id: id,
+                        name: character.data.name
+                    });
                 }
-                languages[language.label].push({
-                    id: id,
-                    name: character.data.name
-                });
             }
         }
 	}
