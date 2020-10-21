@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			D&DBeyond DM Screen
 // @namespace		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/
-// @version			3.1.2
+// @version			3.2.1
 // @description		Advanced DM screen for D&DBeyond campaigns
 // @author			TeaWithLucas
 // @match			https://www.dndbeyond.com/campaigns/*
@@ -20,6 +20,7 @@ console.log("D&DBeyond DM Screen Starting");
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 const linkUrlTarget = '.ddb-campaigns-character-card-footer-links-item-view';
+const campaignElementTarget = '.ddb-campaigns-detail-header-secondary';
 
 const rulesUrls = ["https://character-service.dndbeyond.com/character/v4/rule-data?v=3.11.3", "https://gamedata-service.dndbeyond.com/vehicles/v3/rule-data?v=3.11.3"];
 const charJSONurlBase = "https://character-service.dndbeyond.com/character/v4/character/";
@@ -37,6 +38,15 @@ const positiveSign = '+', negativeSign = '-';
 
 const autoUpdateDefault = true;
 const updateDurationDefault = 60;
+const currenciesDefault = {gold : 0};
+const currenciesTypeDefault = {
+    platinum : { name: 'Platinum', conversion: 10 },
+    gold : { name: 'Gold', conversion: 1 },
+    electrum : { name: 'Electrum', conversion: 0.5 },
+    silver : { name: 'Silver', conversion: 0.1 },
+    copper : { name: 'Copper', conversion: 0.01 },
+};
+const currenciesMainDefault = 'gold';
 
 var $ = window.jQuery;
 var rulesData = {}, charactersData = {}, campaignID = 0, campaignNode = {};
@@ -70,34 +80,61 @@ var abilitySVGs = {
 
 //base html for the controls
 var controlsHTML = `
-    <div id="gs-campaign" class="gs-campaign">
-	  <div class="gs-header gs-header-controls">DM Screen Controls</div>
-	  <div class="gs-controls gs-container">
-	    <ul class="flat-list">
-		  <li class="gs-field gs-field-checkbox">
-		    <div class="form-field  form-field-checkbox">
-			  <label for="gs-auto-update"><span>Auto Update</span></label>
-			  <input type="checkbox" name="gs-auto-update" id="gs-auto-update" value="false">
-			</div>
-		  </li>
-		  <li class="gs-field gs-field-number">
-		    <div class="form-field  form-field-number">
-			  <label for="gs-auto-duration"><span>Duration (s)</span></label>
-			  <input type="number" name="gs-auto-duration" id="gs-auto-duration" value="60" placeholder="Duration (secs)">
-			</div>
-		  </li>
-		</ul>
-	  </div>
-	  <div class="gs-outputs gs-container">
-	    <div class="gs-languages gs-col-container gs-container-spaces">
-          <div class="gs-subheader gs-header-passives">Known Languages</div>
-          <div class="gs-container gs-col-container">
-	    	<div class="gs-language">
-	      	  <span class="gs-text gs-language-text"></span>
-	    	</div>
+    <div id="gs-campaign" class="gs-campaign gs-box-grey gs-box-bluetop">
+	  <div class="gs-title gs-header-campaign">Campaign</div>
+      <div class="gs-container gs-col-container">
+	    <div class="gs-campaign-row1 gs-container gs-row-container">
+          <div class="gs-controls gs-container gs-col-container">
+	        <div class="gs-header gs-header-controls">Controls</div>
+	        <div class="gs-container gs-row-container">
+	  	      <div class="gs-auto-update-controls gs-container gs-col-container">
+                <div class="gs-subheader gs-header-auto-update-controls">Auto Update</div>
+	  	        <div class="gs-form-group gs-container gs-col-container">
+			      <div class="gs-form-field gs-row-container">
+			        <label for="gs-auto-update"><span>Enabled</span></label>
+		            <input type="checkbox" name="gs-auto-update" id="gs-auto-update" value="false">
+			      </div>
+		          <div class="gs-form-field gs-form-field-number gs-row-container">
+			        <label for="gs-auto-duration"><span>Duration (s)</span></label>
+		            <input type="number" name="gs-auto-duration" id="gs-auto-duration" value="60" placeholder="Duration (secs)">
+			      </div>
+		        </div>
+		      </div>
+		    </div>
           </div>
+		  <div class="gs-stored gs-container">
+            <div class="gs-header gs-header-controls">Stored</div>
+	        <div class="gs-container gs-row-container">
+		      <div class="gs-camp-currencies gs-container gs-col-container">
+                <div class="gs-subheader gs-header-camp-currencies">Currencies</div>
+                <div class="gs-container gs-row-container"></div>
+                <div class="gs-form-group gs-row-container">
+		          <div class="gs-form-field gs-form-field-number gs-row-container">
+		            <input type="number" name="gs-currency-amount" id="gs-currency-amount" placeholder="Amount">
+			      </div>
+		          <div class="gs-form-field gs-form-field-dropdown gs-row-container">
+		            <select type="number" name="gs-currency-type" id="gs-currency-type"></select>
+			      </div>
+		          <div class="gs-form-field gs-form-field-button gs-row-container">
+		             <button type="button" name="gs-currency-confirm" id="gs-currency-confirm">Ammend</button>
+			      </div>
+                </div>
+              </div>
+            </div>
+		  </div>
+	    </div>
+        <div class="gs-campaign-row2 gs-container gs-row-container">
+	      <div class="gs-outputs gs-container gs-col-container">
+            <div class="gs-header gs-header-controls">Known Traits</div>
+            <div class="gs-container gs-row-container">
+	          <div class="gs-camp-languages gs-col-container">
+                <div class="gs-subheader gs-header-camp-languages">Known Languages</div>
+                <div class="gs-container gs-row-container"></div>
+              </div>
+            </div>
+	      </div>
         </div>
-	  </div>
+      </div>
 	</div>
   `;
 
@@ -250,8 +287,20 @@ var speedHTML = `
     </div>
   `;
 
+var languageHTML = `
+	<div class="gs-language">
+	  <span class="gs-text gs-language-text"></span>
+	</div>
+	`;
 
-
+var currencyHTML = `
+	<div class="gs-camp-currency">
+	  <div class="gs-value gs-currency-value">
+	    <span class="gs-prefix gs-currency-prefix"></span><span class="gs-number gs-currency-number"></span>
+	  </div>
+      <div class="gs-label gs-currency-label"></div>
+	</div>
+	`;
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //        Custom additonal modules to be loaded with D&DBeyond's module loader
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -426,7 +475,7 @@ var initalModules = {
     campaignID = window.location.pathname.match(charIDRegex);
     stylesheetUrls.forEach(loadStylesheet); //load and insert each stylesheet in the settings
     loadModules(initalModules); //load the module loader which imports from window.jsonpDDBCT and the inputted modules
-    insertControls();
+    insertCampaignElements();
     findTargets();
     insertElements();
     retriveRules().then(() =>{
@@ -613,12 +662,19 @@ function startRefreshTimer() {
 //        Element Updating Functions
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function insertControls() {
+function insertCampaignElements() {
+    console.log("Inseting Campaign Elements");
+	let campaignPrefix = scriptVarPrefix + "-" + campaignID;
+    $(campaignElementTarget + " > div:nth-child(1)").after(controlsHTML);
+	campaignNode = $(".gs-campaign");
+    insertControls(campaignNode, campaignPrefix);
+	insertStoredElements(campaignNode, campaignPrefix);
+}
+
+function insertControls(parent, campaignPrefix) {
     console.log("Inseting Main Controls");
-    let campaignPrefix = scriptVarPrefix + "-" + campaignID;
-    $(".ddb-campaigns-detail-header-secondary > div:nth-child(1)").after(controlsHTML);
-    campaignNode = $(".gs-campaign");
-    let controlsNode = campaignNode.find('.gs-controls');
+
+    let controlsNode = parent.find('.gs-controls');
 
     let autoUpdate = controlsNode.find('input[name ="gs-auto-update"]');
     let autoDuration = controlsNode.find('input[name ="gs-auto-duration"]');
@@ -631,13 +687,75 @@ function insertControls() {
     autoDuration.prop('value', updateDurationLoaded);
 
     autoUpdate.change(function () {
-        GM_setValue(campaignPrefix + "-autoUpdate", $(this).prop("checked"));
-        GM_setValue(scriptVarPrefix + "-autoUpdate", $(this).prop("checked"));
+        let updatedAutoUpdate = parseBool($(this).prop("checked"));
+        GM_setValue(campaignPrefix + "-autoUpdate", updatedAutoUpdate);
+        GM_setValue(scriptVarPrefix + "-autoUpdate", updatedAutoUpdate);
     });
     autoDuration.change(function () {
-        GM_setValue(campaignPrefix + "-updateDuration", $(this).val());
-        GM_setValue(scriptVarPrefix + "-updateDuration", $(this).val());
+        let updatedAutoDuration = parseIntSafe($(this).val());
+        GM_setValue(campaignPrefix + "-updateDuration", updatedAutoDuration);
+        GM_setValue(scriptVarPrefix + "-updateDuration", updatedAutoDuration);
     });
+}
+
+function insertStoredElements(parent, campaignPrefix) {
+    console.log("Inseting Stored Elements");
+	let storedNode = parent.find('.gs-stored');
+	insertCurrencies(storedNode);
+}
+
+function insertCurrencies(parent, campaignPrefix){
+    console.log("Updating Campaign Currencies Data");
+	let currenciesLoaded = GM_getValue(campaignPrefix + "-currencies", currenciesDefault);
+	//console.log(currenciesLoaded);
+	let container = parent.find('.gs-camp-currencies > .gs-container');
+
+    let currencyAmount = parent.find('.gs-camp-currencies > .gs-form-group input[name="gs-currency-amount"]');
+    let currencyType = parent.find('.gs-camp-currencies > .gs-form-group select[name="gs-currency-type"]');
+    let currencyConfirm = parent.find('.gs-camp-currencies > .gs-form-group button[name="gs-currency-confirm"]');
+
+    for(let id in currenciesTypeDefault){
+        let currency = currenciesTypeDefault[id];
+        $('<option/>', {
+            value: id,
+            class: 'gs-currency-type-option gs-currency-type-' + id + '-option',
+            html: currency.name
+        }).appendTo(currencyType);
+    }
+
+    currencyType.val(currenciesMainDefault);
+
+    currencyConfirm.click(function () {
+        let updatedAmount = parseIntSafe(currencyAmount.val());
+        if(updatedAmount != 0){
+            let selectedType = currencyType.val();
+            if(updatedAmount != undefined){
+                let currenciesUpdate = GM_getValue(campaignPrefix + "-currencies", currenciesDefault);
+                if(currenciesUpdate[selectedType] == undefined){
+                    currenciesUpdate[selectedType] = 0;
+                }
+                currenciesUpdate[selectedType] += updatedAmount;
+                GM_setValue(campaignPrefix + "-currencies", currenciesUpdate);
+                updateCurrency(container, selectedType, currenciesUpdate[selectedType]);
+            }
+        }
+    });
+
+	for(let id in currenciesLoaded){
+		updateCurrency(container, id, currenciesLoaded[id]);
+	}
+}
+
+function updateCurrency(parent, id, value){
+	let curCurrency = parent.find('.gs-currency-' + id);
+    //console.log(curCurrency);
+	if (curCurrency.length < 1) {
+		parent.append(currencyHTML);
+		curCurrency = parent.children().last();
+		curCurrency.addClass('gs-currency-' + id);
+		curCurrency.find('.gs-currency-label').html(id);
+	}
+	curCurrency.find('.gs-currency-number').html(value);
 }
 
 function updateCampaignData(){
@@ -667,9 +785,16 @@ function updateLanguages(parent){
             }
         }
 	}
+	let container = parent.find('.gs-camp-languages > .gs-container');
+    container.empty();
+
     //console.log(languages);
-    let languagesOut = Object.keys(languages);
-    parent.find('.gs-language-text').html(languagesOut.sort().join(', '));
+	for(let id in languages){
+		container.append(languageHTML);
+		let curLanguage = container.children().last();
+		curLanguage.addClass('gs-language-' + id);
+		curLanguage.find('.gs-language-text').html(id);
+	}
 }
 
 
@@ -988,10 +1113,8 @@ function getJSONfromURLs(urls) {
     });
 }
 function getSign(input){
-    if (input == null){
-        input = 0;
-    }
-    return input >= 0 ? positiveSign : negativeSign
+    let number = parseIntSafe(input);
+    return number >= 0 ? positiveSign : negativeSign
 }
 
 function roundDown(input){
@@ -1020,14 +1143,23 @@ function divide(numeratorInput, denominatorInput){
 }
 
 function distanceUnit(input){
-    let number = parseInt(input);
-    if (isNaN(number)) {
-        number = 0;
-    }
+    let number = parseIntSafe(input);
     let unit = 'ft.';
     if (number && number % FEET_IN_MILES === 0) {
         number = number / FEET_IN_MILES;
         unit = 'mile' + (Math.abs(number) === 1 ? '' : 's');
     }
     return unit;
+}
+
+function parseIntSafe(input){
+    let number = parseInt(input);
+    if (isNaN(number)) {
+        number = 0;
+    }
+    return number;
+}
+
+function parseBool(x) {
+    return x ? true : false;
 }

@@ -1,4 +1,4 @@
-/* Version 3.1.0 CSS */
+/* Version 3.2.1 CSS */
 
 /** Overriding Existing CSS **/
 
@@ -61,82 +61,10 @@ a.ddb-campaigns-detail-body-listing-campaign-link, a#content-management-link, .d
 	padding: 6px 10px;
 }
 
-.flat-list {
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -webkit-flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    padding-bottom: 40px;
-    z-index: 1;
-	padding-bottom: 20px;
-    position: relative;
-	width: 100%;
-    margin: 0 auto;
-}
-
-.flat-list .gs-field {
-    width: 20% !important;
-    margin-left: 0;
-    margin-right: 0;
-    padding-left: 0;
-    padding-right: 1%;
-}
-
-.gs-campaign {
-    border-color: #bc0f0f;
-    border-top: 3px solid #1b9af0;
-    border-bottom-color: rgb(27, 154, 240);
-    padding-bottom: 8px;
-    padding-top: 16px;
-}
-
-.gs-campaign {
-	width: 100%;
-	position: relative;
-	background: rgba(0,0,0,0.04);
-	padding: 15px;
-	border-radius: 3px;
-	margin: 0 10px 15px 0;
-}
-
-.form-field input[type=number] {
-	padding: 0 10px;
-	border-radius: 0;
-	height: 50px;
-	background-color: white;
-	box-shadow: inset 0 0 4px 0 rgba(138,177,198,0.48);
-	border: solid 1px #d8dde3;
-	box-sizing: border-box;
-	font-size: 15px !important;
-	margin: 0 auto;
-	-webkit-transition: .2s linear border,0.2s linear box-shadow;
-  -moz-transition: .2s linear border,0.2s linear box-shadow;
-  transition: .2s linear border,0.2s linear box-shadow;
-}
-
-.form-field input[type=checkbox] {
-	padding: 0 10px;
-	border-radius: 0;
-	height: 10px;
-	background-color: white;
-	box-shadow: inset 0 0 4px 0 rgba(138,177,198,0.48);
-	border: solid 1px #d8dde3;
-	box-sizing: border-box;
-	font-size: 15px !important;
-	margin: 0 auto;
-	-webkit-transition: .2s linear border,0.2s linear box-shadow;
-  -moz-transition: .2s linear border,0.2s linear box-shadow;
-  transition: .2s linear border,0.2s linear box-shadow;
-}
-
-
 
 /** New CSS **/
+
+
 
 .gs-row-container, .gs-col-container{
 	display: flex;
@@ -194,6 +122,11 @@ a.ddb-campaigns-detail-body-listing-campaign-link, a#content-management-link, .d
     text-transform: uppercase;
     font-family: Roboto Condensed,Roboto,Helvetica,sans-serif;
     font-weight: 700;
+}
+
+.gs-title {
+	font-size: 18px;
+	font-family: Roboto Condensed,Roboto,Helvetica,sans-serif;
 }
 
 .gs-header {
@@ -291,7 +224,80 @@ a.ddb-campaigns-detail-body-listing-campaign-link, a#content-management-link, .d
 	overflow: hidden;
 }
 
+.gs-form-field input, .gs-form-field select, .gs-form-field button {
+	padding: 7px 10px;
+}
 
+.gs-form-field input[type=number] {
+
+	border-radius: 0;
+	/*! height: 50px; */
+	background-color: white;
+	box-shadow: inset 0 0 4px 0 rgba(138,177,198,0.48);
+	border: solid 1px #d8dde3;
+	box-sizing: border-box;
+	font-size: 15px !important;
+	margin: 0 auto;
+	-webkit-transition: .2s linear border,0.2s linear box-shadow;
+	-moz-transition: .2s linear border,0.2s linear box-shadow;
+	transition: .2s linear border,0.2s linear box-shadow;
+	min-width: 80px;
+	max-width: 100px;
+}
+
+.gs-form-field input[type=checkbox] {
+	padding: 0 10px;
+	border-radius: 0;
+	height: 10px;
+	background-color: white;
+	box-shadow: inset 0 0 4px 0 rgba(138,177,198,0.48);
+	border: solid 1px #d8dde3;
+	box-sizing: border-box;
+	font-size: 15px !important;
+	margin: 0 auto;
+	-webkit-transition: .2s linear border,0.2s linear box-shadow;
+	-moz-transition: .2s linear border,0.2s linear box-shadow;
+	transition: .2s linear border,0.2s linear box-shadow;
+}
+
+.gs-form-field.gs-row-container {
+	justify-content: flex-start;
+}
+
+.gs-form-field.gs-row-container > label {
+	margin-left: 10px;
+	width: 100px;
+}
+
+
+.gs-box-bluetop {
+    border-color: #bc0f0f;
+    border-top: 3px solid #1b9af0;
+    border-bottom-color: rgb(27, 154, 240);
+    padding-top: 16px;
+}
+
+.gs-box-grey {
+	background: rgba(0,0,0,0.04);
+	border-radius: 3px;
+	padding: 15px;
+	margin: 0 10px 15px 0;
+}
+
+.gs-campaign {
+	width: 100%;
+	position: relative;
+	padding: 15px;
+	margin: 0 10px 15px 0;
+}
+
+.gs-campaign-row1.gs-row-container {
+	justify-content: flex-start;
+}
+
+.gs-campaign-row2.gs-row-container {
+	justify-content: flex-start;
+}
 
 .gs-quickStats {
 	display:flex;
@@ -575,4 +581,3 @@ a.ddb-campaigns-detail-body-listing-campaign-link, a#content-management-link, .d
 .cls-j {
 	stroke-miterlimit:10;
 }
-
