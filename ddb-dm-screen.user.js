@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			D&DBeyond DM Screen
 // @namespace		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/
-// @version			3.2.1
+// @version			3.2.2
 // @description		Advanced DM screen for D&DBeyond campaigns
 // @author			TeaWithLucas
 // @match			https://www.dndbeyond.com/campaigns/*
@@ -116,7 +116,7 @@ var controlsHTML = `
 		            <select type="number" name="gs-currency-type" id="gs-currency-type"></select>
 			      </div>
 		          <div class="gs-form-field gs-form-field-button gs-row-container">
-		             <button type="button" name="gs-currency-confirm" id="gs-currency-confirm">Ammend</button>
+		             <button type="button" name="gs-currency-confirm" id="gs-currency-confirm">Amend</button>
 			      </div>
                 </div>
               </div>
@@ -701,7 +701,7 @@ function insertControls(parent, campaignPrefix) {
 function insertStoredElements(parent, campaignPrefix) {
     console.log("Inseting Stored Elements");
 	let storedNode = parent.find('.gs-stored');
-	insertCurrencies(storedNode);
+	insertCurrencies(storedNode, campaignPrefix);
 }
 
 function insertCurrencies(parent, campaignPrefix){
