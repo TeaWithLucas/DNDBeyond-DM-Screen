@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			D&DBeyond DM Screen
 // @namespace		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/
-// @version			3.2.2
+// @version			3.2.4
 // @description		Advanced DM screen for D&DBeyond campaigns
 // @author			TeaWithLucas
 // @match			https://www.dndbeyond.com/campaigns/*
@@ -49,7 +49,7 @@ const currenciesTypeDefault = {
 const currenciesMainDefault = 'gold';
 
 var $ = window.jQuery;
-var rulesData = {}, charactersData = {}, campaignID = 0, campaignNode = {};
+var rulesData = {}, charactersData = {}, campaignID = 0, campaignNode = {}, authHeaders ={};
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //        SVG Data
@@ -316,9 +316,17 @@ var initalModules = {
         // var react_dom = __webpack_require__(84);
         // var react_dom_default = __webpack_require__.n(react_dom);
         // var es = __webpack_require__(10);
+        var dist = __webpack_require__(562);
+        var dist_default = __webpack_require__.n(dist);
         var Core = __webpack_require__(5);
         var character_rules_engine_lib_es = __webpack_require__(1);
         var character_rules_engine_web_adapter_es = __webpack_require__(136);
+
+        function getAuthHeaders() {
+            return dist_default.a.makeGetAuthorizationHeaders({});
+
+        }
+
         function getCharData(state) {
             /*
                 All parts of the following return are from http://media.dndbeyond.com/character-tools/characterTools.bundle.71970e5a4989d91edc1e.min.js, they are found in functions that have: '_mapStateToProps(state)' in the name, like function CharacterManagePane_mapStateToProps(state)
@@ -461,7 +469,10 @@ var initalModules = {
                 hasSpells: character_rules_engine_lib_es["jb"].hasSpells(state),
             }
         }
-        window.getCharData = getCharData;
+        window.moduleExport = {
+            getCharData : getCharData,
+            getAuthHeaders : getAuthHeaders,
+        }
         console.log("Module 1080: end");
     }
 };
@@ -478,11 +489,15 @@ var initalModules = {
     insertCampaignElements();
     findTargets();
     insertElements();
-    retriveRules().then(() =>{
-        updateAllCharData();
-    }).catch((error) => {
-        console.log(error);
-    });
+    window.moduleExport.getAuthHeaders()().then((function (headers) {
+        authHeaders = headers;
+        console.log("authHeaders: ", headers);
+        retriveRules().then(() =>{
+            updateAllCharData();
+        }).catch((error) => {
+            console.log(error);
+        });
+    }));
 })();
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -570,9 +585,7 @@ function retriveRules(charIDs) {
         getJSONfromURLs(rulesUrls).then((js) => {
             console.log("Rules Data Processing Start");
             js.forEach(function(rule, index){
-                if (rule.success == null || rule.lenth < 1 || rule.success != true){
-                    console.warn("ruleset " + index + " is null, empty or fail");
-                }
+                isSuccessfulJSON(rule, index);
             });
             rulesData = {
                 ruleset : js[0].data,
@@ -620,18 +633,18 @@ function updateCharData(url) {
         getJSONfromURLs([url]).then((js) => {
             //window.jstest = js;
             js.forEach(function(charJSON, index){
-                if (charJSON.success == null || charJSON.lenth < 1 || charJSON.success != true){
-                    console.warn("charJSON " + index + " is null, empty or fail");
+                if(isSuccessfulJSON(charJSON, index)){
+                    var charId = charJSON.data.id;
+                    console.debug("Processing Char: " + charId);
+                    charactersData[charId].state.character = charJSON.data;
+                    var charData = window.moduleExport.getCharData(charactersData[charId].state);
+                    charactersData[charId].data = charData;
+                    updateElementData(charactersData[charId]);
+                    console.log("Retrived Char Data for char " + charId + " aka " + charactersData[charId].data.name);
+                    console.debug(charactersData[charId]);
+                } else {
+                    console.log("Char URL " + url + " was skipped");
                 }
-                var charId = charJSON.data.id;
-                console.debug("Processing Char: " + charId);
-                charactersData[charId].state.character = charJSON.data;
-                var charData = window.getCharData(charactersData[charId].state);
-                charactersData[charId].data = charData;
-                updateElementData(charactersData[charId]);
-                console.log("Retrived Char Data for char " + charId + " aka " + charactersData[charId].data.name);
-                console.debug(charactersData[charId]);
-
             });
             resolve();
 
@@ -1087,6 +1100,24 @@ function loadModules(modules) {
 //        Generic Functions
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+function isSuccessfulJSON(js, name){
+    let success = true;
+    if(js.length < 1 || js.success == undefined){
+        console.warn("JSON " + name + " is malformed");
+        return false;
+    } else if (js.success == false){
+        console.warn("JSON " + name + "'s retrieval was unsuccessful");
+        return false;
+    } else if (js.success != true) {
+        console.warn("JSON " + name + "'s retrieval was unsuccessful and is malformed");
+        return false;
+    } else if (js.data == undefined || js.data.length < 1) {
+        console.warn("JSON " + name + "'s data is malformed");
+        return false;
+    }
+    return true;
+}
+
 function loadStylesheet(href) {
     console.debug('Start: Adding CSS Stylesheet ' + href);
     var link = document.createElement('link');
@@ -1100,7 +1131,7 @@ function loadStylesheet(href) {
 function getJSONfromURLs(urls) {
     return new Promise(function (resolve, reject) {
         console.log("Fetching: ", urls);
-        var proms = urls.map(d => fetch(d));
+        var proms = urls.map(d => fetchRequest(d));
         Promise.all(proms)
         .then(ps => Promise.all(ps.map(p => p.json()))) // p.json() also returns a promise
         .then(jsons => {
@@ -1112,6 +1143,26 @@ function getJSONfromURLs(urls) {
         });
     });
 }
+function fetchRequest(url, body, cookies) {
+    let options = {};
+    let myHeaders = new Headers({
+        'X-Custom-Header': 'hello world',
+    });
+    for(let id in authHeaders){
+        myHeaders.append(id, authHeaders[id]);
+    }
+    options.headers = myHeaders;
+    if(body != undefined && body != ''){
+       options.body = body;
+    }
+    if(cookies != undefined && cookies != ''){
+       options.cookies = cookies;
+    }
+    options.credentials = 'include';
+    console.log(options);
+    return fetch(url, options);
+}
+
 function getSign(input){
     let number = parseIntSafe(input);
     return number >= 0 ? positiveSign : negativeSign
