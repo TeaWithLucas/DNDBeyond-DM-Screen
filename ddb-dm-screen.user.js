@@ -1,18 +1,17 @@
 // ==UserScript==
 // @name			D&DBeyond DM Screen
 // @namespace		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/
-// @version			3.2.4
+// @version			3.2.5
 // @description		Advanced DM screen for D&DBeyond campaigns
 // @author			TeaWithLucas
 // @match			https://www.dndbeyond.com/campaigns/*
 // @updateURL		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/raw/master/ddb-dm-screen.user.js
 // @require			https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js
-// @require         https://media.dndbeyond.com/character-tools/vendors~characterTools.bundle.f8b53c07d1796f1d29cb.min.js
+// @require         https://media.dndbeyond.com/character-tools/vendors~characterTools.bundle.dec3c041829e401e5940.min.js
 // @grant			GM_setValue
 // @grant			GM_getValue
 // @license			MIT; https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/blob/master/LICENSE
 // ==/UserScript==
-
 console.log("D&DBeyond DM Screen Starting");
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -22,10 +21,12 @@ console.log("D&DBeyond DM Screen Starting");
 const linkUrlTarget = '.ddb-campaigns-character-card-footer-links-item-view';
 const campaignElementTarget = '.ddb-campaigns-detail-header-secondary';
 
-const rulesUrls = ["https://character-service.dndbeyond.com/character/v4/rule-data?v=3.11.3", "https://gamedata-service.dndbeyond.com/vehicles/v3/rule-data?v=3.11.3"];
+const rulesUrls = ["https://character-service.dndbeyond.com/character/v4/rule-data", "https://gamedata-service.dndbeyond.com/vehicles/v3/rule-data"];
 const charJSONurlBase = "https://character-service.dndbeyond.com/character/v4/character/";
 
 const stylesheetUrls = ["https://raw.githack.com/TeaWithLucas/DNDBeyond-DM-Screen/master/dm-screen.css"]
+
+
 
 const scriptVarPrefix = "DMScreen-";
 
@@ -47,6 +48,8 @@ const currenciesTypeDefault = {
     copper : { name: 'Copper', conversion: 0.01 },
 };
 const currenciesMainDefault = 'gold';
+
+const character_rules_engine_key = "Nb";
 
 var $ = window.jQuery;
 var rulesData = {}, charactersData = {}, campaignID = 0, campaignNode = {}, authHeaders ={};
@@ -306,21 +309,49 @@ var currencyHTML = `
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 var initalModules = {
-    1080: function (module, __webpack_exports__, __webpack_require__) {
+    2080: function (module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.r(__webpack_exports__);
-        console.log("Module 1080: start");
+        console.log("Module 2080: start");
         // Unused modules:
         // var react = __webpack_require__(0);
         // var react_default = __webpack_require__.n(react);
         // var react_dom = __webpack_require__(84);
         // var react_dom_default = __webpack_require__.n(react_dom);
         // var es = __webpack_require__(10);
-        var dist = __webpack_require__(562);
+        var dist = __webpack_require__(710);
         var dist_default = __webpack_require__.n(dist);
         var Core = __webpack_require__(5);
         var character_rules_engine_lib_es = __webpack_require__(1);
         var character_rules_engine_web_adapter_es = __webpack_require__(136);
+
+        var crk = character_rules_engine_key;
+        var ktl = "U";
+        var cmov = "ab";
+
+        var key = "";
+
+        for (key in character_rules_engine_lib_es){
+            if (typeof character_rules_engine_lib_es[key].getAbilities === 'function'){
+                crk = key;
+                console.log("crk found: " + key);
+            }
+            if (typeof character_rules_engine_lib_es[key].getSenseTypeModifierKey === 'function'){
+                ktl = key;
+                console.log("ktl found: " + key);
+            }
+        }
+
+        for (key in Core){
+            if (typeof Core[key].WALK !== 'undefined' && typeof Core[key].SWIM !== 'undefined' && typeof Core[key].CLIMB !== 'undefined' && typeof Core[key].FLY !== 'undefined' && typeof Core[key].BURROW !== 'undefined'){
+                cmov = key;
+                console.log("cmov found: " + key);
+            }
+        }
+
+        var charf1 = character_rules_engine_lib_es[crk];
+        var charf2 = character_rules_engine_lib_es[ktl];
+        var coref1 = character_rules_engine_lib_es[cmov];
 
         function getAuthHeaders() {
             return dist_default.a.makeGetAuthorizationHeaders({});
@@ -333,147 +364,149 @@ var initalModules = {
                 Any return that uses the function character_rules_engine_lib_es or character_rules_engine_web_adapter_es can be added to this for more return values as this list is not comprehensive.
                 Anything with selectors_appEnv is unnessisary,as it just returns values in state.appEnv.
             */
-            console.log("Module 1080: Processing State Info Into Data");
+            console.log("Module 2080: Processing State Info Into Data");
 
-            var ruleData = character_rules_engine_lib_es["jb"].getRuleData(state);
+            var ruleData = charf1.getRuleData(state);
 
             function getSenseData(senses){ // finds returns the label
                 return Object.keys(senses).map(function(index) {
                     let indexInt = parseInt(index);
                     return {
                         id: indexInt,
-                        key: character_rules_engine_lib_es["R"].getSenseTypeModifierKey(indexInt),
-                        name: character_rules_engine_lib_es["R"].getSenseTypeLabel(indexInt),
+                        key: charf2.getSenseTypeModifierKey(indexInt),
+                        name: charf2.getSenseTypeLabel(indexInt),
                         distance: senses[indexInt]
                     }
                 })
             }
 
             function getSpeedData(speeds){ // finds returns the label
-                let halfSpeed = roundDown(divide(speeds[Core['W'].WALK],2));
+                let halfSpeed = roundDown(divide(speeds[Core[cmov].WALK],2));
                 return Object.keys(speeds).map(function(index) {
                     let distance = speeds[index];
-                    if(Core['W'].SWIM === index || Core['W'].CLIMB === index){
+                    if(Core[cmov].SWIM === index || Core[cmov].CLIMB === index){
                         // swim speed is essentiall half walking speed rounded down if character doesn't have a set swim speed:
                         // source https://www.dndbeyond.com/sources/basic-rules/adventuring#ClimbingSwimmingandCrawling
                         distance = speeds[index] <= 0 ? halfSpeed : speeds[index];
                     }
                     return {
-                        id: character_rules_engine_lib_es["R"].getMovementTypeBySpeedMovementKey(index),
+                        id: charf2.getMovementTypeBySpeedMovementKey(index),
                         key: index,
-                        name: character_rules_engine_lib_es["R"].getSpeedMovementKeyLabel(index, ruleData),
+                        name: charf2.getSpeedMovementKeyLabel(index, ruleData),
                         distance: distance
                     }
                 });
             }
 
             return {
-                name: character_rules_engine_lib_es["jb"].getName(state),
-                avatarUrl: character_rules_engine_lib_es["jb"].getAvatarUrl(state),
-                spellCasterInfo: character_rules_engine_lib_es["jb"].getSpellCasterInfo(state),
-                armorClass: character_rules_engine_lib_es["jb"].getAcTotal(state),
-                initiative: character_rules_engine_lib_es["jb"].getProcessedInitiative(state),
-                hasInitiativeAdvantage: character_rules_engine_lib_es["jb"].getHasInitiativeAdvantage(state),
-                resistances: character_rules_engine_lib_es["jb"].getActiveGroupedResistances(state),
-                immunities: character_rules_engine_lib_es["jb"].getActiveGroupedImmunities(state),
-                vulnerabilities: character_rules_engine_lib_es["jb"].getActiveGroupedVulnerabilities(state),
-                conditions: character_rules_engine_lib_es["jb"].getActiveConditions(state),
-                choiceInfo: character_rules_engine_lib_es["jb"].getChoiceInfo(state),
-                classes: character_rules_engine_lib_es["jb"].getClasses(state),
-                feats: character_rules_engine_lib_es["jb"].getBaseFeats(state),
-                race: character_rules_engine_lib_es["jb"].getRace(state),
-                currentXp: character_rules_engine_lib_es["jb"].getCurrentXp(state),
-                preferences: character_rules_engine_lib_es["jb"].getCharacterPreferences(state),
-                totalClassLevel: character_rules_engine_lib_es["jb"].getTotalClassLevel(state),
-                spellCasterInfo: character_rules_engine_lib_es["jb"].getSpellCasterInfo(state),
-                startingClass: character_rules_engine_lib_es["jb"].getStartingClass(state),
-                background: character_rules_engine_lib_es["jb"].getBackgroundInfo(state),
-                notes: character_rules_engine_lib_es["jb"].getCharacterNotes(state),
-                totalWeight: character_rules_engine_lib_es["jb"].getTotalWeight(state),
-                carryCapacity: character_rules_engine_lib_es["jb"].getCarryCapacity(state),
-                pushDragLiftWeight: character_rules_engine_lib_es["jb"].getPushDragLiftWeight(state),
-                encumberedWeight: character_rules_engine_lib_es["jb"].getEncumberedWeight(state),
-                heavilyEncumberedWeight: character_rules_engine_lib_es["jb"].getHeavilyEncumberedWeight(state),
-                preferences: character_rules_engine_lib_es["jb"].getCharacterPreferences(state),
-                currencies: character_rules_engine_lib_es["jb"].getCurrencies(state),
-                attunedSlots: character_rules_engine_lib_es["jb"].getAttunedSlots(state),
-                attunableArmor: character_rules_engine_lib_es["jb"].getAttunableArmor(state),
-                attunableGear: character_rules_engine_lib_es["jb"].getAttunableGear(state),
-                attunableWeapons: character_rules_engine_lib_es["jb"].getAttunableWeapons(state),
-                startingClass: character_rules_engine_lib_es["jb"].getStartingClass(state),
-                background: character_rules_engine_lib_es["jb"].getBackgroundInfo(state),
+                name: charf1.getName(state),
+                avatarUrl: charf1.getAvatarUrl(state),
+                spellCasterInfo: charf1.getSpellCasterInfo(state),
+                armorClass: charf1.getAcTotal(state),
+                initiative: charf1.getProcessedInitiative(state),
+                hasInitiativeAdvantage: charf1.getHasInitiativeAdvantage(state),
+                resistances: charf1.getActiveGroupedResistances(state),
+                immunities: charf1.getActiveGroupedImmunities(state),
+                vulnerabilities: charf1.getActiveGroupedVulnerabilities(state),
+                conditions: charf1.getActiveConditions(state),
+                choiceInfo: charf1.getChoiceInfo(state),
+                classes: charf1.getClasses(state),
+                feats: charf1.getBaseFeats(state),
+                race: charf1.getRace(state),
+                currentXp: charf1.getCurrentXp(state),
+                preferences: charf1.getCharacterPreferences(state),
+                totalClassLevel: charf1.getTotalClassLevel(state),
+                spellCasterInfo: charf1.getSpellCasterInfo(state),
+                startingClass: charf1.getStartingClass(state),
+                background: charf1.getBackgroundInfo(state),
+                notes: charf1.getCharacterNotes(state),
+                totalWeight: charf1.getTotalWeight(state),
+                carryCapacity: charf1.getCarryCapacity(state),
+                pushDragLiftWeight: charf1.getPushDragLiftWeight(state),
+                encumberedWeight: charf1.getEncumberedWeight(state),
+                heavilyEncumberedWeight: charf1.getHeavilyEncumberedWeight(state),
+                preferences: charf1.getCharacterPreferences(state),
+                currencies: charf1.getCurrencies(state),
+                attunedSlots: charf1.getAttunedSlots(state),
+                attunableArmor: charf1.getAttunableArmor(state),
+                attunableGear: charf1.getAttunableGear(state),
+                attunableWeapons: charf1.getAttunableWeapons(state),
+                startingClass: charf1.getStartingClass(state),
+                background: charf1.getBackgroundInfo(state),
                 equipped: {
-                    armorItems: character_rules_engine_lib_es["jb"].getEquippedArmorItems(state),
-                    weaponItems: character_rules_engine_lib_es["jb"].getEquippedWeaponItems(state),
-                    gearItems: character_rules_engine_lib_es["jb"].getEquippedGearItems(state)
+                    armorItems: charf1.getEquippedArmorItems(state),
+                    weaponItems: charf1.getEquippedWeaponItems(state),
+                    gearItems: charf1.getEquippedGearItems(state)
                 },
                 unequipped: {
-                    armorItems: character_rules_engine_lib_es["jb"].getUnequippedArmorItems(state),
-                    weaponItems: character_rules_engine_lib_es["jb"].getUnequippedWeaponItems(state),
-                    gearItems: character_rules_engine_lib_es["jb"].getUnequippedGearItems(state)
+                    armorItems: charf1.getUnequippedArmorItems(state),
+                    weaponItems: charf1.getUnequippedWeaponItems(state),
+                    gearItems: charf1.getUnequippedGearItems(state)
                 },
-                hitPointInfo: character_rules_engine_lib_es["jb"].getHitPointInfo(state),
-                fails: character_rules_engine_lib_es["jb"].getDeathSavesFailCount(state),
-                successes: character_rules_engine_lib_es["jb"].getDeathSavesSuccessCount(state),
-                abilities: character_rules_engine_lib_es["jb"].getAbilities(state), // not sure what the difference is between this and abilityLookup, seems to be one is a object, the other an array...
-                //abilityLookup: character_rules_engine_lib_es["jb"].getAbilityLookup(state),
-                proficiencyBonus: character_rules_engine_lib_es["jb"].getProficiencyBonus(state),
-                speeds: getSpeedData(character_rules_engine_lib_es["jb"].getCurrentWeightSpeed(state)),
-                preferences: character_rules_engine_lib_es["jb"].getCharacterPreferences(state),
-                inspiration: character_rules_engine_lib_es["jb"].getInspiration(state),
-                passivePerception: character_rules_engine_lib_es["jb"].getPassivePerception(state),
-                passiveInvestigation: character_rules_engine_lib_es["jb"].getPassiveInvestigation(state),
-                passiveInsight: character_rules_engine_lib_es["jb"].getPassiveInsight(state),
-                senses: getSenseData(character_rules_engine_lib_es["jb"].getSenseInfo(state)), //has to be further processed
-                skills: character_rules_engine_lib_es["jb"].getSkills(state),
-                customSkills: character_rules_engine_lib_es["jb"].getCustomSkills(state),
-                savingThrowDiceAdjustments: character_rules_engine_lib_es["jb"].getSavingThrowDiceAdjustments(state),
-                situationalBonusSavingThrowsLookup: character_rules_engine_lib_es["jb"].getSituationalBonusSavingThrowsLookup(state),
-                deathSaveInfo: character_rules_engine_lib_es["jb"].getDeathSaveInfo(state),
-                proficiencyGroups: character_rules_engine_lib_es["jb"].getProficiencyGroups(state),
-                background: character_rules_engine_lib_es["jb"].getBackgroundInfo(state),
-                alignment: character_rules_engine_lib_es["jb"].getAlignment(state),
-                height: character_rules_engine_lib_es["jb"].getHeight(state),
-                weight: character_rules_engine_lib_es["jb"].getWeight(state),
-                size: character_rules_engine_lib_es["jb"].getSize(state),
-                faith: character_rules_engine_lib_es["jb"].getFaith(state),
-                skin: character_rules_engine_lib_es["jb"].getSkin(state),
-                eyes: character_rules_engine_lib_es["jb"].getEyes(state),
-                hair: character_rules_engine_lib_es["jb"].getHair(state),
-                age: character_rules_engine_lib_es["jb"].getAge(state),
-                gender: character_rules_engine_lib_es["jb"].getGender(state),
-                traits: character_rules_engine_lib_es["jb"].getCharacterTraits(state),
-                notes: character_rules_engine_lib_es["jb"].getCharacterNotes(state),
-                levelSpells: character_rules_engine_lib_es["jb"].getLevelSpells(state),
-                spellCasterInfo: character_rules_engine_lib_es["jb"].getSpellCasterInfo(state),
-                ruleData: character_rules_engine_lib_es["jb"].getRuleData(state),
-                xpInfo: character_rules_engine_lib_es["jb"].getExperienceInfo(state),
-                spellSlots: character_rules_engine_lib_es["jb"].getSpellSlots(state),
-                pactMagicSlots: character_rules_engine_lib_es["jb"].getPactMagicSlots(state),
-                attunedSlots: character_rules_engine_lib_es["jb"].getAttunedSlots(state),
-                hasMaxAttunedItems: character_rules_engine_lib_es["jb"].hasMaxAttunedItems(state),
-                weaponSpellDamageGroups: character_rules_engine_lib_es["jb"].getWeaponSpellDamageGroups(state),
-                inventory: character_rules_engine_lib_es["jb"].getInventory(state),
-                creatures: character_rules_engine_lib_es["jb"].getCreatures(state),
-                customItems: character_rules_engine_lib_es["jb"].getCustomItems(state),
-                weight: character_rules_engine_lib_es["jb"].getTotalWeight(state),
-                weightSpeedType: character_rules_engine_lib_es["jb"].getCurrentWeightType(state),
-                notes: character_rules_engine_lib_es["jb"].getCharacterNotes(state),
-                currencies: character_rules_engine_lib_es["jb"].getCurrencies(state),
-                activatables: character_rules_engine_lib_es["jb"].getActivatables(state),
-                attacks: character_rules_engine_lib_es["jb"].getAttacks(state),
-                weaponSpellDamageGroups: character_rules_engine_lib_es["jb"].getWeaponSpellDamageGroups(state),
-                attacksPerActionInfo: character_rules_engine_lib_es["jb"].getAttacksPerActionInfo(state),
-                ritualSpells: character_rules_engine_lib_es["jb"].getRitualSpells(state),
-                spellCasterInfo: character_rules_engine_lib_es["jb"].getSpellCasterInfo(state),
-                hasSpells: character_rules_engine_lib_es["jb"].hasSpells(state),
+                hitPointInfo: charf1.getHitPointInfo(state),
+                fails: charf1.getDeathSavesFailCount(state),
+                successes: charf1.getDeathSavesSuccessCount(state),
+                abilities: charf1.getAbilities(state), // not sure what the difference is between this and abilityLookup, seems to be one is a object, the other an array...
+                abilityLookup: charf1.getAbilityLookup(state),
+                proficiencyBonus: charf1.getProficiencyBonus(state),
+                speeds: getSpeedData(charf1.getCurrentWeightSpeed(state)),
+                preferences: charf1.getCharacterPreferences(state),
+                inspiration: charf1.getInspiration(state),
+                passivePerception: charf1.getPassivePerception(state),
+                passiveInvestigation: charf1.getPassiveInvestigation(state),
+                passiveInsight: charf1.getPassiveInsight(state),
+                senses: getSenseData(charf1.getSenseInfo(state)), //has to be further processed
+                skills: charf1.getSkills(state),
+                customSkills: charf1.getCustomSkills(state),
+                savingThrowDiceAdjustments: charf1.getSavingThrowDiceAdjustments(state),
+                situationalBonusSavingThrowsLookup: charf1.getSituationalBonusSavingThrowsLookup(state),
+                deathSaveInfo: charf1.getDeathSaveInfo(state),
+                proficiencyGroups: charf1.getProficiencyGroups(state),
+                background: charf1.getBackgroundInfo(state),
+                alignment: charf1.getAlignment(state),
+                height: charf1.getHeight(state),
+                weight: charf1.getWeight(state),
+                size: charf1.getSize(state),
+                faith: charf1.getFaith(state),
+                skin: charf1.getSkin(state),
+                eyes: charf1.getEyes(state),
+                hair: charf1.getHair(state),
+                age: charf1.getAge(state),
+                gender: charf1.getGender(state),
+                traits: charf1.getCharacterTraits(state),
+                notes: charf1.getCharacterNotes(state),
+                levelSpells: charf1.getLevelSpells(state),
+                spellCasterInfo: charf1.getSpellCasterInfo(state),
+                ruleData: charf1.getRuleData(state),
+                xpInfo: charf1.getExperienceInfo(state),
+                spellSlots: charf1.getSpellSlots(state),
+                pactMagicSlots: charf1.getPactMagicSlots(state),
+                attunedSlots: charf1.getAttunedSlots(state),
+                hasMaxAttunedItems: charf1.hasMaxAttunedItems(state),
+                weaponSpellDamageGroups: charf1.getWeaponSpellDamageGroups(state),
+                inventory: charf1.getInventory(state),
+                creatures: charf1.getCreatures(state),
+                customItems: charf1.getCustomItems(state),
+                weight: charf1.getTotalWeight(state),
+                weightSpeedType: charf1.getCurrentWeightType(state),
+                notes: charf1.getCharacterNotes(state),
+                currencies: charf1.getCurrencies(state),
+                activatables: charf1.getActivatables(state),
+                attacks: charf1.getAttacks(state),
+                weaponSpellDamageGroups: charf1.getWeaponSpellDamageGroups(state),
+                attacksPerActionInfo: charf1.getAttacksPerActionInfo(state),
+                ritualSpells: charf1.getRitualSpells(state),
+                spellCasterInfo: charf1.getSpellCasterInfo(state),
+                originRefRaceData: charf1.getDataOriginRefRaceData(state),
+                hasSpells: charf1.hasSpells(state),
+                optionalOrigins: charf1.getOptionalOrigins(state),
             }
         }
         window.moduleExport = {
             getCharData : getCharData,
             getAuthHeaders : getAuthHeaders,
         }
-        console.log("Module 1080: end");
+        console.log("Module 2080: end");
     }
 };
 
@@ -1090,7 +1123,7 @@ function loadModules(modules) {
     jsonpArray = jsonpArray.slice();
     for (var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
     var parentJsonpFunction = oldJsonpFunction;
-    deferredModules.push([1080, 2]); //This sets module 1080 as an active module and is run after the other modules are loaded
+    deferredModules.push([2080, 2]); //This sets module 2080 as an active module and is run after the other modules are loaded
     checkDeferredModules();
     console.log("Finished loading modules");
 }
