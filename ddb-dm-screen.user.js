@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			D&DBeyond DM Screen
 // @namespace		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/
-// @version			3.2.5
+// @version			3.3.1
 // @description		Advanced DM screen for D&DBeyond campaigns
 // @author			TeaWithLucas
 // @match			https://www.dndbeyond.com/campaigns/*
@@ -26,7 +26,11 @@ const charJSONurlBase = "https://character-service.dndbeyond.com/character/v4/ch
 
 const stylesheetUrls = ["https://raw.githack.com/TeaWithLucas/DNDBeyond-DM-Screen/master/dm-screen.css"]
 
-
+const gameCollectionUrl = {prefix :"https://character-service.dndbeyond.com/character/v4/game-data/", postfix: "/collection"}
+const optionalRules = {
+    "optionalOrigins": {category:"racial-trait", id:"racialTraitId" },
+    "optionalClassFeatures": {category:"class-feature", id:"classFeatureId" },
+};
 
 const scriptVarPrefix = "DMScreen-";
 
@@ -48,8 +52,6 @@ const currenciesTypeDefault = {
     copper : { name: 'Copper', conversion: 0.01 },
 };
 const currenciesMainDefault = 'gold';
-
-const character_rules_engine_key = "Nb";
 
 var $ = window.jQuery;
 var rulesData = {}, charactersData = {}, campaignID = 0, campaignNode = {}, authHeaders ={};
@@ -325,7 +327,7 @@ var initalModules = {
         var character_rules_engine_lib_es = __webpack_require__(1);
         var character_rules_engine_web_adapter_es = __webpack_require__(136);
 
-        var crk = character_rules_engine_key;
+        var crk = "js";
         var ktl = "U";
         var cmov = "ab";
 
@@ -594,6 +596,13 @@ function findTargets() {
                 data: {},
                 type: type,
             }
+
+            for (let ruleID in optionalRules){
+                charactersData[charID].state.serviceData.definitionPool[optionalRules[ruleID].category] = {
+                    accessTypeLookup:{},
+                    definitionLookup:{},
+                };
+            }
         } else {
             console.warn("warn: skipping " + value.href + " due to ID not found");
         }
@@ -667,17 +676,63 @@ function updateCharData(url) {
             //window.jstest = js;
             js.forEach(function(charJSON, index){
                 if(isSuccessfulJSON(charJSON, index)){
-                    var charId = charJSON.data.id;
+                    let charId = charJSON.data.id;
                     console.debug("Processing Char: " + charId);
                     charactersData[charId].state.character = charJSON.data;
-                    var charData = window.moduleExport.getCharData(charactersData[charId].state);
-                    charactersData[charId].data = charData;
-                    updateElementData(charactersData[charId]);
-                    console.log("Retrived Char Data for char " + charId + " aka " + charactersData[charId].data.name);
-                    console.debug(charactersData[charId]);
+                    let promises = retriveCharacterRules(charId)
+                    Promise.all(promises).then(()=>{
+                        var charData = window.moduleExport.getCharData(charactersData[charId].state);
+                        charactersData[charId].data = charData;
+                        updateElementData(charactersData[charId]);
+                        console.log("Retrived Char Data for char " + charId + " aka " + charactersData[charId].data.name);
+                        console.log(charactersData[charId]);
+                        resolve();
+                    });
                 } else {
                     console.log("Char URL " + url + " was skipped");
                 }
+            });
+        }).catch((error) => {
+            console.log(error);
+            reject();
+        });
+    });
+
+}
+
+function retriveCharacterRules(charId) {
+    let promises = [];
+    console.log("Looking for optional rules for " + charactersData[charId].data.name);
+    for(let ruleID in optionalRules){
+        if(ruleID in charactersData[charId].state.character && charactersData[charId].state.character[ruleID].length > 0 ){
+            console.log("Optional ruleset for " + ruleID + " found.");
+            promises.push(retriveCharacterRule(charId, ruleID));
+        }
+    }
+    return promises;
+}
+
+function retriveCharacterRule(charId, ruleID) {
+    let url = gameCollectionUrl.prefix + optionalRules[ruleID].category + gameCollectionUrl.postfix;
+
+    let ruleIds = []
+    for(let item of charactersData[charId].state.character[ruleID]){
+        ruleIds.push(item[optionalRules[ruleID].id]);
+    }
+
+    let body = {"campaignId":null,"sharingSetting":2,"ids":ruleIds};
+    return new Promise(function (resolve, reject) {
+        getJSONfromURLs([url], body).then((js) => {
+            js.forEach(function(charJSON, index){
+                console.log("Retrived " + ruleID + " data, processing.");
+                console.log(charJSON);
+                if(charJSON.success && charJSON.data.definitionData != undefined){
+                    for(let data of charJSON.data.definitionData){
+                        charactersData[charId].state.serviceData.definitionPool[optionalRules[ruleID].category].definitionLookup[data.id] = data;
+                        charactersData[charId].state.serviceData.definitionPool[optionalRules[ruleID].category].accessTypeLookup[data.id] = 1;
+                    }
+                }
+                console.log(ruleID + " finished processing.");
             });
             resolve();
 
@@ -686,7 +741,6 @@ function updateCharData(url) {
             reject();
         });
     });
-
 }
 
 function startRefreshTimer() {
@@ -1105,7 +1159,7 @@ function loadModules(modules) {
     };
     __webpack_require__.n = function (module) {
         var getter = module && module.__esModule ? function getDefault() {
-            return module["default"]
+            return module.default
         }
          : function getModuleExports() {
             return module
@@ -1117,7 +1171,7 @@ function loadModules(modules) {
         return Object.prototype.hasOwnProperty.call(object, property)
     };
     __webpack_require__.p = "";
-    var jsonpArray = window["jsonpDDBCT"] = window["jsonpDDBCT"] || [];
+    var jsonpArray = window.jsonpDDBCT = window.jsonpDDBCT || [];
     var oldJsonpFunction = jsonpArray.push.bind(jsonpArray); //This allows additonal modules to be added and run by using window.jsonpDDBCT.push(modules) which calls webpackJsonpCallback(modules) above
     jsonpArray.push2 = webpackJsonpCallback;
     jsonpArray = jsonpArray.slice();
@@ -1161,10 +1215,10 @@ function loadStylesheet(href) {
     console.debug('Done: Adding CSS Stylesheet');
 }
 
-function getJSONfromURLs(urls) {
+function getJSONfromURLs(urls, body, headers, cookies) {
     return new Promise(function (resolve, reject) {
         console.log("Fetching: ", urls);
-        var proms = urls.map(d => fetchRequest(d));
+        var proms = urls.map(d => fetchRequest(d, body, cookies));
         Promise.all(proms)
         .then(ps => Promise.all(ps.map(p => p.json()))) // p.json() also returns a promise
         .then(jsons => {
@@ -1176,7 +1230,7 @@ function getJSONfromURLs(urls) {
         });
     });
 }
-function fetchRequest(url, body, cookies) {
+function fetchRequest(url, body, headers, cookies) {
     let options = {};
     let myHeaders = new Headers({
         'X-Custom-Header': 'hello world',
@@ -1184,14 +1238,17 @@ function fetchRequest(url, body, cookies) {
     for(let id in authHeaders){
         myHeaders.append(id, authHeaders[id]);
     }
-    options.headers = myHeaders;
     if(body != undefined && body != ''){
-       options.body = body;
+       options.method = 'POST'
+       myHeaders.append('Accept','application/json');
+       myHeaders.append('Content-Type','application/json');
+       options.body = JSON.stringify(body);
     }
     if(cookies != undefined && cookies != ''){
        options.cookies = cookies;
     }
     options.credentials = 'include';
+    options.headers = myHeaders;
     console.log(options);
     return fetch(url, options);
 }
