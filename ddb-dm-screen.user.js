@@ -855,22 +855,45 @@ function insertVisibilityControls(parent, campaignPrefix) {
         let updatedShowAbilities = parseBool($(this).prop("checked"));
         GM_setValue(campaignPrefix + "-showAbilities", updatedShowAbilities);
         GM_setValue(scriptVarPrefix + "-showAbilities", updatedShowAbilities);
+        updateVisibility();
     });
     showSavingThrows.change(function () {
         let updatedShowSavingThrows = parseBool($(this).prop("checked"));
         GM_setValue(campaignPrefix + "-showSavingThrows", updatedShowSavingThrows);
         GM_setValue(scriptVarPrefix + "-showSavingThrows", updatedShowSavingThrows);
+        updateVisibility();
     });
     showSenses.change(function () {
         let updatedShowSensesUpdate = parseBool($(this).prop("checked"));
         GM_setValue(campaignPrefix + "-showSenses", updatedShowSensesUpdate);
         GM_setValue(scriptVarPrefix + "-showSenses", updatedShowSensesUpdate);
+        updateVisibility();
     });
     showClasses.change(function () {
         let updatedShowClasses = parseBool($(this).prop("checked"));
         GM_setValue(campaignPrefix + "-showClasses", updatedShowClasses);
         GM_setValue(scriptVarPrefix + "-showClasses", updatedShowClasses);
+        updateVisibility();
     });
+
+    updateVisibility();
+}
+
+function updateVisibility() {
+    console.log("Updating data visibility");
+
+    let abilities = $('input[name ="gs-show-abilities"]').is(':checked');
+    let saves = $('input[name ="gs-show-saving-throws"]').is(':checked');
+    let senses = $('input[name ="gs-show-senses"]').is(':checked');
+    let classes = $('input[name ="gs-show-classes"]').is(':checked');
+
+    $('.gs-main-able').toggle(abilities);
+    $('.gs-main-saves').toggle(saves);
+    $('.gs-main-able').parents('.gs-container').toggle(abilities || saves);
+
+    $('.gs-senses').toggle(senses);
+    $('.gs-classes').toggle(classes);
+    $('.gs-senses').parents('.gs-container').toggle(senses || classes);
 }
 
 function insertStoredElements(parent, campaignPrefix) {
