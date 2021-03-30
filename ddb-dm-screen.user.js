@@ -107,6 +107,31 @@ var controlsHTML = `
 		      </div>
 		    </div>
           </div>
+          <div class="gs-views gs-container gs-col-container">
+            <div class="gs-header gs-header-controls">Visible Sections</div>
+            <div class="gs-container gs-row-container">
+              <div class="gs-view-controls gs-container gs-col-container">
+                <div class="gs-auto-update-controls gs-container gs-col-container">
+                  <div class="gs-form-field gs-row-container">
+                    <label for="gs-show-abilities"><span>Abilities</span></label>
+                    <input type="checkbox" name="gs-show-abilities" id="gs-auto-update" value="false">
+                  </div>
+                  <div class="gs-form-field gs-row-container">
+                    <label for="gs-show-saving-throws"><span>Saving Throws</span></label>
+                    <input type="checkbox" name="gs-show-saving-throws" id="gs-show-saving-throws" value="false">
+                  </div>
+                  <div class="gs-form-field gs-row-container">
+                    <label for="gs-show-senses"><span>Senses</span></label>
+                    <input type="checkbox" name="gs-show-senses" id="gs-show-senses" value="false">
+                  </div>
+                  <div class="gs-form-field gs-row-container">
+                    <label for="gs-show-classes"><span>Classes</span></label>
+                    <input type="checkbox" name="gs-show-classes" id="gs-show-classes" value="false">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 		  <div class="gs-stored gs-container">
             <div class="gs-header gs-header-controls">Stored</div>
 	        <div class="gs-container gs-row-container">
