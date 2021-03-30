@@ -43,6 +43,12 @@ const positiveSign = '+', negativeSign = '-';
 
 const autoUpdateDefault = true;
 const updateDurationDefault = 60;
+
+const showAbilitiesDefault = true;
+const showSavingThrowsDefault = true;
+const showSensesDefault = true;
+const showClassesDefault = true;
+
 const currenciesDefault = {gold : 0};
 const currenciesTypeDefault = {
     platinum : { name: 'Platinum', conversion: 10 },
@@ -114,7 +120,7 @@ var controlsHTML = `
                 <div class="gs-auto-update-controls gs-container gs-col-container">
                   <div class="gs-form-field gs-row-container">
                     <label for="gs-show-abilities"><span>Abilities</span></label>
-                    <input type="checkbox" name="gs-show-abilities" id="gs-auto-update" value="false">
+                    <input type="checkbox" name="gs-show-abilities" id="gs-show-abilities" value="false">
                   </div>
                   <div class="gs-form-field gs-row-container">
                     <label for="gs-show-saving-throws"><span>Saving Throws</span></label>
@@ -791,9 +797,10 @@ function insertCampaignElements() {
     console.log("Inseting Campaign Elements");
 	let campaignPrefix = scriptVarPrefix + "-" + campaignID;
     $(campaignElementTarget + " > div:nth-child(1)").after(controlsHTML);
-	campaignNode = $(".gs-campaign");
+    campaignNode = $(".gs-campaign");
     insertControls(campaignNode, campaignPrefix);
-	insertStoredElements(campaignNode, campaignPrefix);
+    insertVisibilityControls(campaignNode, campaignPrefix);
+    insertStoredElements(campaignNode, campaignPrefix);
 }
 
 function insertControls(parent, campaignPrefix) {
@@ -820,6 +827,49 @@ function insertControls(parent, campaignPrefix) {
         let updatedAutoDuration = parseIntSafe($(this).val());
         GM_setValue(campaignPrefix + "-updateDuration", updatedAutoDuration);
         GM_setValue(scriptVarPrefix + "-updateDuration", updatedAutoDuration);
+    });
+}
+
+function insertVisibilityControls(parent, campaignPrefix) {
+    console.log("Inseting Visibility Controls");
+
+    let controlsNode = parent.find('.gs-views');
+
+    let showAbilities = controlsNode.find('input[name ="gs-show-abilities"]');
+    let showSavingThrows = controlsNode.find('input[name ="gs-show-saving-throws"]');
+    let showSenses = controlsNode.find('input[name ="gs-show-senses"]');
+    let showClasses = controlsNode.find('input[name ="gs-show-classes"]');
+
+    // Loads ideally value set for this campaign, if not found it loads the last saved value otherwise it defaults
+    let showAbilitiesLoaded = GM_getValue(campaignPrefix + "-showAbilities", GM_getValue(scriptVarPrefix + "-showAbilities", showAbilitiesDefault));
+    let showSavingThrowsLoaded = GM_getValue(campaignPrefix + "-showSavingThrows", GM_getValue(scriptVarPrefix + "-showSavingThrows", showSavingThrowsDefault));
+    let showSensesLoaded = GM_getValue(campaignPrefix + "-showSenses", GM_getValue(scriptVarPrefix + "-showSenses", showSensesDefault));
+    let showClassesLoaded = GM_getValue(campaignPrefix + "-showClasses", GM_getValue(scriptVarPrefix + "-showClasses", showClassesDefault));
+
+    showAbilities.prop('checked', showAbilitiesLoaded);
+    showSavingThrows.prop('checked', showSavingThrowsLoaded);
+    showSenses.prop('checked', showSensesLoaded);
+    showClasses.prop('checked', showClassesLoaded);
+
+    showAbilities.change(function () {
+        let updatedShowAbilities = parseBool($(this).prop("checked"));
+        GM_setValue(campaignPrefix + "-showAbilities", updatedShowAbilities);
+        GM_setValue(scriptVarPrefix + "-showAbilities", updatedShowAbilities);
+    });
+    showSavingThrows.change(function () {
+        let updatedShowSavingThrows = parseBool($(this).prop("checked"));
+        GM_setValue(campaignPrefix + "-showSavingThrows", updatedShowSavingThrows);
+        GM_setValue(scriptVarPrefix + "-showSavingThrows", updatedShowSavingThrows);
+    });
+    showSenses.change(function () {
+        let updatedShowSensesUpdate = parseBool($(this).prop("checked"));
+        GM_setValue(campaignPrefix + "-showSenses", updatedShowSensesUpdate);
+        GM_setValue(scriptVarPrefix + "-showSenses", updatedShowSensesUpdate);
+    });
+    showClasses.change(function () {
+        let updatedShowClasses = parseBool($(this).prop("checked"));
+        GM_setValue(campaignPrefix + "-showClasses", updatedShowClasses);
+        GM_setValue(scriptVarPrefix + "-showClasses", updatedShowClasses);
     });
 }
 
