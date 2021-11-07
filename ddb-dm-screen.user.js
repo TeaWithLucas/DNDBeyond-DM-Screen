@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			D&DBeyond DM Screen
 // @namespace		https://github.com/TeaWithLucas/DNDBeyond-DM-Screen/
-// @version			3.3.3
+// @version			3.3.4
 // @description		Advanced DM screen for D&DBeyond campaigns
 // @author			TeaWithLucas
 // @match			https://www.dndbeyond.com/campaigns/*
@@ -242,7 +242,8 @@ var quickInfoHTML = `
 	      <div class="gs-label gs-hp-label">Hit Points</div>
 	      <div class="gs-box gs-hp-box">
 	        <div class="gs-box-background">` + otherBoxSVG + `</div>
-              <span class="gs-number gs-hp-cur"></span>
+		<div class="gs-value gs-hp-value">
+	          <span class="gs-number gs-hp-cur"></span>
 	          <span class="gs-number gs-hp-max"></span>
 	        </div>
 	      </div>
