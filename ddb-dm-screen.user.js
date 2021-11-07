@@ -221,6 +221,10 @@ var mainInfoHTML = `
 		  <div class="gs-header gs-header-classes">Classes</div>
 		  <div class="gs-container gs-col-container"></div>
 	    </div>
+        <div class="gs-resources gs-col-container gs-container-spaces">
+		  <div class="gs-header gs-header-resources">Resources</div>
+		  <div class="gs-container gs-col-container"></div>
+	    </div>
       </div>
     </div>
   `;
@@ -311,6 +315,20 @@ var classHTML = `
           <div class="gs-label gs-spellattack-label">Attack</div>
         </div>
       </div>
+    </div>
+  `;
+
+var resourcesHTML = `
+    <div class="gs-resource gs-container gs-col-container">
+	  <div class="gs-container gs-row-container">
+	    <div class="gs-ration gs-class gs-container">
+          <div class="gs-number gs-ration-number"></div>
+          <div class="gs-label gs-spellmod-label">Rations</div>
+        </div>
+        <div class="gs-healing-potion gs-class gs-container">
+          <div class="gs-number gs-healing-potion-number">0</div>
+          <div class="gs-label gs-spellmod-label">Healing<br>Potion</div>
+        </div>
     </div>
   `;
 
@@ -690,13 +708,13 @@ function updateAllCharData() {
     }
     //console.log(charactersData);
     Promise.all(promises)
-    .then(() =>{
+        .then(() =>{
         updateCampaignData();
     }).catch((error) => {
-		console.log(error);
-	});
-	startRefreshTimer();
-	console.log("Updated All Char Data");
+        console.log(error);
+    });
+    startRefreshTimer();
+    console.log("Updated All Char Data");
 }
 
 function updateCharData(url) {
@@ -795,7 +813,7 @@ function startRefreshTimer() {
 
 function insertCampaignElements() {
     console.log("Inseting Campaign Elements");
-	let campaignPrefix = scriptVarPrefix + "-" + campaignID;
+    let campaignPrefix = scriptVarPrefix + "-" + campaignID;
     $(campaignElementTarget + " > div:nth-child(1)").after(controlsHTML);
     campaignNode = $(".gs-campaign");
     insertControls(campaignNode, campaignPrefix);
@@ -898,15 +916,15 @@ function updateVisibility() {
 
 function insertStoredElements(parent, campaignPrefix) {
     console.log("Inseting Stored Elements");
-	let storedNode = parent.find('.gs-stored');
-	insertCurrencies(storedNode, campaignPrefix);
+    let storedNode = parent.find('.gs-stored');
+    insertCurrencies(storedNode, campaignPrefix);
 }
 
 function insertCurrencies(parent, campaignPrefix){
     console.log("Updating Campaign Currencies Data");
-	let currenciesLoaded = GM_getValue(campaignPrefix + "-currencies", currenciesDefault);
-	//console.log(currenciesLoaded);
-	let container = parent.find('.gs-camp-currencies > .gs-container');
+    let currenciesLoaded = GM_getValue(campaignPrefix + "-currencies", currenciesDefault);
+    //console.log(currenciesLoaded);
+    let container = parent.find('.gs-camp-currencies > .gs-container');
 
     let currencyAmount = parent.find('.gs-camp-currencies > .gs-form-group input[name="gs-currency-amount"]');
     let currencyType = parent.find('.gs-camp-currencies > .gs-form-group select[name="gs-currency-type"]');
@@ -939,21 +957,21 @@ function insertCurrencies(parent, campaignPrefix){
         }
     });
 
-	for(let id in currenciesLoaded){
-		updateCurrency(container, id, currenciesLoaded[id]);
-	}
+    for(let id in currenciesLoaded){
+        updateCurrency(container, id, currenciesLoaded[id]);
+    }
 }
 
 function updateCurrency(parent, id, value){
-	let curCurrency = parent.find('.gs-currency-' + id);
+    let curCurrency = parent.find('.gs-currency-' + id);
     //console.log(curCurrency);
-	if (curCurrency.length < 1) {
-		parent.append(currencyHTML);
-		curCurrency = parent.children().last();
-		curCurrency.addClass('gs-currency-' + id);
-		curCurrency.find('.gs-currency-label').html(id);
-	}
-	curCurrency.find('.gs-currency-number').html(value);
+    if (curCurrency.length < 1) {
+        parent.append(currencyHTML);
+        curCurrency = parent.children().last();
+        curCurrency.addClass('gs-currency-' + id);
+        curCurrency.find('.gs-currency-label').html(id);
+    }
+    curCurrency.find('.gs-currency-number').html(value);
 }
 
 function updateCampaignData(){
@@ -965,7 +983,7 @@ function updateCampaignData(){
 function updateLanguages(parent){
     console.log("Updating Campaign Languages Data");
     let languages = {};
-	for(let id in charactersData){
+    for(let id in charactersData){
         let character = charactersData[id];
         if(character.type == 'active'){
             let charLanguages = character.data.proficiencyGroups.find(function (e) { return e.label == 'Languages'; });
@@ -982,17 +1000,17 @@ function updateLanguages(parent){
                 }
             }
         }
-	}
-	let container = parent.find('.gs-camp-languages > .gs-container');
+    }
+    let container = parent.find('.gs-camp-languages > .gs-container');
     container.empty();
 
     //console.log(languages);
-	for(let id in languages){
-		container.append(languageHTML);
-		let curLanguage = container.children().last();
-		curLanguage.addClass('gs-language-' + id);
-		curLanguage.find('.gs-language-text').html(id);
-	}
+    for(let id in languages){
+        container.append(languageHTML);
+        let curLanguage = container.children().last();
+        curLanguage.addClass('gs-language-' + id);
+        curLanguage.find('.gs-language-text').html(id);
+    }
 }
 
 
@@ -1052,6 +1070,7 @@ function updateMainInfo(parent, character){
     updatePassives(mainInfo, character.passivePerception, character.passiveInvestigation, character.passiveInsight);
     updateSenses(mainInfo, character.senses);
     updateClasses(mainInfo, character.classes, character.spellCasterInfo.castingInfo);
+    updateResources(mainInfo, character.inventory);
 }
 
 function updateAbilties(parent, abilities){
@@ -1135,6 +1154,37 @@ function updateClasses(parent, classes, casting){
     }
 }
 
+function updateResources(parent, infos){
+    //Adds resources quantities
+    let container = parent.find('.gs-resources > .gs-container');
+    container.empty();
+
+    let listResources = {
+        "Rations (1 day)": "ration",
+        "Healing Potion": "healing-potion"
+    };
+
+    for (let i = 0; i < infos.length; i++){
+        let currentItem = infos[i];
+
+        if (!(currentItem.definition.name in listResources)) {
+            continue;
+        }
+
+        let divInfo = listResources[currentItem.definition.name];
+
+        container.append(resourcesHTML);
+        let curClass = container.children().last();
+
+        curClass.addClass('gs-class-resources');
+        curClass.find('.gs-' + divInfo + '-number').html(currentItem.quantity);
+        console.log(curClass);
+    }
+    if (container.children().length < 1) {
+        parent.find('.gs-resources').addClass("gs-empty");
+    }
+}
+
 
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1159,9 +1209,9 @@ function loadModules(modules) {
         var moreModules = data[1];
         var executeModules = data[2];
         var moduleId,
-        chunkId,
-        i = 0,
-        resolves = [];
+            chunkId,
+            i = 0,
+            resolves = [];
         for (; i < chunkIds.length; i++) {
             chunkId = chunkIds[i];
             if (Object.prototype.hasOwnProperty.call(installedChunks, chunkId) && installedChunks[chunkId]) {
@@ -1259,7 +1309,7 @@ function loadModules(modules) {
         var getter = module && module.__esModule ? function getDefault() {
             return module.default
         }
-         : function getModuleExports() {
+        : function getModuleExports() {
             return module
         };
         __webpack_require__.d(getter, "a", getter);
@@ -1318,12 +1368,12 @@ function getJSONfromURLs(urls, body, headers, cookies) {
         console.log("Fetching: ", urls);
         var proms = urls.map(d => fetchRequest(d, body, cookies));
         Promise.all(proms)
-        .then(ps => Promise.all(ps.map(p => p.json()))) // p.json() also returns a promise
-        .then(jsons => {
+            .then(ps => Promise.all(ps.map(p => p.json()))) // p.json() also returns a promise
+            .then(jsons => {
             console.log("JSON Data Retrived");
             resolve(jsons);
         })
-        .catch((error) => {
+            .catch((error) => {
             reject(error);
         });
     });
@@ -1337,13 +1387,13 @@ function fetchRequest(url, body, headers, cookies) {
         myHeaders.append(id, authHeaders[id]);
     }
     if(body != undefined && body != ''){
-       options.method = 'POST'
-       myHeaders.append('Accept','application/json');
-       myHeaders.append('Content-Type','application/json');
-       options.body = JSON.stringify(body);
+        options.method = 'POST'
+        myHeaders.append('Accept','application/json');
+        myHeaders.append('Content-Type','application/json');
+        options.body = JSON.stringify(body);
     }
     if(cookies != undefined && cookies != ''){
-       options.cookies = cookies;
+        options.cookies = cookies;
     }
     options.credentials = 'include';
     options.headers = myHeaders;
