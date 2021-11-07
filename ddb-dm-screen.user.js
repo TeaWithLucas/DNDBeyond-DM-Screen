@@ -48,6 +48,7 @@ const showAbilitiesDefault = true;
 const showSavingThrowsDefault = true;
 const showSensesDefault = true;
 const showClassesDefault = true;
+const showResourcesDefault = true;
 
 const currenciesDefault = {gold : 0};
 const currenciesTypeDefault = {
@@ -133,6 +134,10 @@ var controlsHTML = `
                   <div class="gs-form-field gs-row-container">
                     <label for="gs-show-classes"><span>Classes</span></label>
                     <input type="checkbox" name="gs-show-classes" id="gs-show-classes" value="false">
+                  </div>
+                  <div class="gs-form-field gs-row-container">
+                    <label for="gs-show-resources"><span>Resources</span></label>
+                    <input type="checkbox" name="gs-show-resources" id="gs-show-resources" value="false">
                   </div>
                 </div>
               </div>
@@ -237,7 +242,6 @@ var quickInfoHTML = `
 	      <div class="gs-label gs-hp-label">Hit Points</div>
 	      <div class="gs-box gs-hp-box">
 	        <div class="gs-box-background">` + otherBoxSVG + `</div>
-	        <div class="gs-value gs-hp-value">
               <span class="gs-number gs-hp-cur"></span>
 	          <span class="gs-number gs-hp-max"></span>
 	        </div>
@@ -713,6 +717,8 @@ function updateAllCharData() {
     }).catch((error) => {
         console.log(error);
     });
+    updateVisibility();
+
     startRefreshTimer();
     console.log("Updated All Char Data");
 }
@@ -857,17 +863,20 @@ function insertVisibilityControls(parent, campaignPrefix) {
     let showSavingThrows = controlsNode.find('input[name ="gs-show-saving-throws"]');
     let showSenses = controlsNode.find('input[name ="gs-show-senses"]');
     let showClasses = controlsNode.find('input[name ="gs-show-classes"]');
+    let showResources = controlsNode.find('input[name ="gs-show-resources"]');
 
     // Loads ideally value set for this campaign, if not found it loads the last saved value otherwise it defaults
     let showAbilitiesLoaded = GM_getValue(campaignPrefix + "-showAbilities", GM_getValue(scriptVarPrefix + "-showAbilities", showAbilitiesDefault));
     let showSavingThrowsLoaded = GM_getValue(campaignPrefix + "-showSavingThrows", GM_getValue(scriptVarPrefix + "-showSavingThrows", showSavingThrowsDefault));
     let showSensesLoaded = GM_getValue(campaignPrefix + "-showSenses", GM_getValue(scriptVarPrefix + "-showSenses", showSensesDefault));
     let showClassesLoaded = GM_getValue(campaignPrefix + "-showClasses", GM_getValue(scriptVarPrefix + "-showClasses", showClassesDefault));
+    let showResourcesLoaded = GM_getValue(campaignPrefix + "-showResources", GM_getValue(scriptVarPrefix + "-showResources", showResourcesDefault));
 
     showAbilities.prop('checked', showAbilitiesLoaded);
     showSavingThrows.prop('checked', showSavingThrowsLoaded);
     showSenses.prop('checked', showSensesLoaded);
     showClasses.prop('checked', showClassesLoaded);
+    showResources.prop('checked', showResourcesLoaded);
 
     showAbilities.change(function () {
         let updatedShowAbilities = parseBool($(this).prop("checked"));
@@ -893,8 +902,12 @@ function insertVisibilityControls(parent, campaignPrefix) {
         GM_setValue(scriptVarPrefix + "-showClasses", updatedShowClasses);
         updateVisibility();
     });
-
-    updateVisibility();
+    showResources.change(function () {
+        let updatedShowResources = parseBool($(this).prop("checked"));
+        GM_setValue(campaignPrefix + "-showResources", updatedShowResources);
+        GM_setValue(scriptVarPrefix + "-showResources", updatedShowResources);
+        updateVisibility();
+    });
 }
 
 function updateVisibility() {
@@ -904,6 +917,7 @@ function updateVisibility() {
     let saves = $('input[name ="gs-show-saving-throws"]').is(':checked');
     let senses = $('input[name ="gs-show-senses"]').is(':checked');
     let classes = $('input[name ="gs-show-classes"]').is(':checked');
+    let resources = $('input[name ="gs-show-resources"]').is(':checked');
 
     $('.gs-main-able').toggle(abilities);
     $('.gs-main-saves').toggle(saves);
@@ -911,7 +925,8 @@ function updateVisibility() {
 
     $('.gs-senses').toggle(senses);
     $('.gs-classes').toggle(classes);
-    $('.gs-senses').parents('.gs-container').toggle(senses || classes);
+    $('.gs-resources').toggle(resources);
+    $('.gs-senses').parents('.gs-container').toggle(senses || classes || resources);
 }
 
 function insertStoredElements(parent, campaignPrefix) {
