@@ -37,9 +37,20 @@ Some ideas for future work:
 * Health and Conditons Interactable - Would only be available for DM and character owner, not sure if possible, allow for additons and removal of health and conditions
 * Group items - Like campaign currencies, a seproate storage for group items, may be too ambitions/time consuming to do.
 
-## Images
+## Gallery
 
 ![Screenshot of the DM Screen](https://i.imgur.com/F2hdXDg.png)
+
+## Alternative styles
+
+Here are some notable forks (not maintained by me) that you may prefer.
+Feel free to add yours here
+
+### Ootz0rz
+Here is a fork by [Ootz0rz](https://github.com/ootz0rz/), its a no frills console style table based layout
+https://github.com/ootz0rz/DNDBeyond-DM-Screen/
+![ootz0rz fork screenshot](https://user-images.githubusercontent.com/18538046/150768423-e7e214e6-94f8-4e95-bb01-50de74b43e38.png)
+
 
 ## Note from the Orignal Author
 
