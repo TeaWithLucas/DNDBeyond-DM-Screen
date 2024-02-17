@@ -1,6 +1,26 @@
-# D&DBeyond DM Screen
+![Static Badge](https://img.shields.io/badge/logo-javascript-blue?logo=javascript)
 
-This Tampermonkey or Greecemonkey userscript aims to provide simple DM screen by scraping character sheet for relevant values. It works on campaign screen and shows stats, HP, AC and passives.
+
+# D&D Beyond Live Campaign Page
+
+
+## What is this?
+
+This is a script which is used via the [TamperMonkey](https://www.tampermonkey.net/) or [Greasemonkey browser](https://www.greasespot.net/) browser extensions.
+
+userscript aims to provide simple DM screen by scraping character sheet for relevant values. It works on campaign screen and shows stats, HP, AC and passives.
+
+## How to Install and Run
+
+
+## How to Use
+
+
+## Credits
+
+## License
+
+
 
 ## Usage
 
