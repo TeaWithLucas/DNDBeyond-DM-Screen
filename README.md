@@ -22,7 +22,7 @@ Install either TamperMonkey or GreaseMonkey for your browser.
 
 ## 2. How to Install and Set-up
 
-Install this user script to your browser extension by [clicking on this link](https://github.com/FaithLilley/DnDBeyond-Live-Campaign/raw/master/ddb-liive-campaign.user.js) and following the instructions from Tampermonkey/Greasemonkey.
+Install this user script to your browser extension by [clicking on this link](https://github.com/FaithLilley/DnDBeyond-Live-Campaign/raw/master/ddb-live-campaign.user.js) and following the instructions from Tampermonkey/Greasemonkey.
 
 ## 3. How to Use
 
