@@ -26,6 +26,8 @@ Install one of these extensions for your browser. If you're not sure, I recommen
 
 ## 2. How to Install and Set-up
 
+**WARNING: CURRENTLY UNDER DEVELOPMENT - NOT FUNCTIONING - COME BACK LATER**
+
 [Click on this link](https://github.com/FaithLilley/DnDBeyond-Live-Campaign/raw/master/ddb-live-campaign.user.js) to install this user script to your browser extension, then follow the instructions from your browser extension.
 
 ## 3. How to Use
