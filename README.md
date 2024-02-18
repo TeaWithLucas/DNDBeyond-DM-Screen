@@ -13,21 +13,27 @@
 
 ## 1. Prerequisites
 
-To use this script, you will need a browser extension that allows you to run User Scripts. The two most used are:
+To use this script, you will need a browser extension that allows you to run User Scripts. There a numerous available to choose from, including:
 
-- [Tampermonkey](https://www.tampermonkey.net/)
-- [Greasemonkey](https://www.greasespot.net/)
+| Extension | Browser Support |
+| --- | --- |
+| [Firemonkey](https://addons.mozilla.org/en-US/firefox/addon/firemonkey/) | ![Firefox](./images/icon-firefox.png) |
+| [Greasemonkey](https://www.greasespot.net/) | ![Firefox](./images/icon-firefox.png) |
+| [Tampermonkey](https://www.tampermonkey.net/) | ![Chrome](./images/icon-chrome-18.png) ![Edge](./images/icon-edge.png) ![Firefox](./images/icon-firefox.png) ![Opera Next](./images/icon-opera.png) ![Safari](./images/icon-safari.png) |
+| [Violentmonkey](https://violentmonkey.github.io/) | ![Chrome](./images/icon-chrome-18.png) ![Edge](./images/icon-edge.png) ![Firefox](./images/icon-firefox.png) |
 
-Install either TamperMonkey or GreaseMonkey for your browser.
+Install one of these extensions for your browser. If you're not sure, I recommend Tampermonkey.
 
 ## 2. How to Install and Set-up
 
-_This project is currently in development._
+**WARNING: CURRENTLY UNDER DEVELOPMENT - NOT FUNCTIONING - COME BACK LATER**
+
+[Click on this link](https://github.com/FaithLilley/DnDBeyond-Live-Campaign/raw/master/ddb-live-campaign.user.js) to install this user script to your browser extension, then follow the instructions from your browser extension.
 
 ## 3. How to Use
 
 1. Open your [campaigns page on the D&D Beyond website](https://www.dndbeyond.com/my-campaigns).
-2. Click on your required campaign.
+2. Click on one of your campaigns.
 
 You'll now see additional information displayed on the card of each character, showing:
 
