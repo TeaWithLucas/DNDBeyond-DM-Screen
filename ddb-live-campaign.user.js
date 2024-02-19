@@ -1,11 +1,14 @@
 // ==UserScript==
-// @name			D&D Beyond Live Campaign
+// @name			D&D Beyond Live-Update Campaign
 // @namespace		https://github.com/FaithLilley/DnDBeyond-Live-Campaign/
+// @copyright		Copyright (c) 2024 Faith Elisabeth Lilley (aka Stormknight)
 // @version			0.1
 // @description		Provides live character data on the D&D Beyond campaign page
-// @author			Faith Lilley (aka Stormknight)
+// @author			Faith Elisabeth Lilley (aka Stormknight)
 // @match			https://www.dndbeyond.com/campaigns/*
 // @updateURL		https://github.com/FaithLilley/DnDBeyond-Live-Campaign/raw/master/ddb-live-campaign.user.js
+// @downloadURL		https://github.com/FaithLilley/DnDBeyond-Live-Campaign/raw/master/ddb-live-campaign.user.js
+// @supportURL		https://github.com/FaithLilley/DnDBeyond-Live-Campaign/
 // @require			https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // @require         https://media.dndbeyond.com/character-tools/vendors~characterTools.bundle.dec3c041829e401e5940.min.js
 // @grant			GM_setValue
@@ -14,1056 +17,129 @@
 // ==/UserScript==
 console.log("Initialising D&D Beyond Live Campaign.");
 
-// --------------------------------------------------------------------------------
-// Script Globals
-// --------------------------------------------------------------------------------
+/**
+* DEFINE GLOBALS
+*/
 
-const linkUrlTarget = '.ddb-campaigns-character-card-footer-links-item-view';
-const campaignElementTarget = '.ddb-campaigns-detail-header-secondary';
+// Content sharing and description section.
+// const campaignElementTarget = ".ddb-campaigns-detail-header-secondary";
 
-const rulesUrls = ["https://character-service.dndbeyond.com/character/v4/rule-data", "https://gamedata-service.dndbeyond.com/vehicles/v3/rule-data"];
-const charJSONurlBase = "https://character-service.dndbeyond.com/character/v4/character/";
-
-const stylesheetUrls = ["https://raw.githack.com/FaithLilley/DnDBeyond-Live-Campaign/sk-rebuild/ddb-live-campaign.css"]
-
-const gameCollectionUrl = {prefix :"https://character-service.dndbeyond.com/character/v4/game-data/", postfix: "/collection"}
-const optionalRules = {
-    "optionalOrigins": {category:"racial-trait", id:"racialTraitId" },
-    "optionalClassFeatures": {category:"class-feature", id:"classFeatureId" },
+// jQuery set-up
+const rulesUrls = [
+  "https://character-service.dndbeyond.com/character/v4/rule-data",
+  "https://gamedata-service.dndbeyond.com/vehicles/v3/rule-data",
+];
+const charJSONurlBase =
+  "https://character-service.dndbeyond.com/character/v4/character/";
+const gameCollectionUrl = {
+  prefix: "https://character-service.dndbeyond.com/character/v4/game-data/",
+  postfix: "/collection",
 };
 
-const scriptVarPrefix = "DDBLC-";
+const stylesheetUrls = [
+  "https://raw.githack.com/FaithLilley/DnDBeyond-Live-Campaign/build-code-01/ddb-live-campaign.css",
+];
 
-const charIDRegex = /\/(\d+)\/*$/;
-const campaignIDRegex = /\/(\d+)\/*$/;
+const positiveSign = "+",
+  negativeSign = "-";
 
-const positiveSign = '+', negativeSign = '-';
+const debugMode = true;
 
 const autoUpdateDefault = true;
 const updateDurationDefault = 60;
 
 var $ = window.jQuery;
-var rulesData = {}, charactersData = {}, campaignID = 0, campaignNode = {}, authHeaders ={};
+var rulesData = {},
+    charactersData = {},
+    campaignID = 0,
+    svgImageData = {},
+    authHeaders = {};
+
+/**
+* charactersData is an object array of all characters in the campaign
+* * charactersData[characterID].property
+* node:     the top DOM element for each character card
+* url:      JSON query for character data in the DDB charater service
+* data:     Data for the character
+*/
 
 // PHB cover image for cards
 // https://www.dndbeyond.com/attachments/2/723/phbcover.jpg
 
-// --------------------------------------------------------------------------------
-// SVG Data
-// --------------------------------------------------------------------------------
-
-
-
-// --------------------------------------------------------------------------------
-// HTML Structures
-// --------------------------------------------------------------------------------
-
-
-// --------------------------------------------------------------------------------
-// Custom additonal modules to be loaded with D&DBeyond's module loader
-// --------------------------------------------------------------------------------
-
-var initalModules = {
-    2080: function (module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__.r(__webpack_exports__);
-        console.log("Module 2080: start");
-        // Unused modules:
-        // var react = __webpack_require__(0);
-        // var react_default = __webpack_require__.n(react);
-        // var react_dom = __webpack_require__(84);
-        // var react_dom_default = __webpack_require__.n(react_dom);
-        // var es = __webpack_require__(10);
-        var dist = __webpack_require__(710);
-        var dist_default = __webpack_require__.n(dist);
-        var Core = __webpack_require__(5);
-        var character_rules_engine_lib_es = __webpack_require__(1);
-        var character_rules_engine_web_adapter_es = __webpack_require__(136);
-
-        var crk = "js";
-        var ktl = "U";
-        var cmov = "ab";
-
-        var key = "";
-
-        for (key in character_rules_engine_lib_es){
-            if (typeof character_rules_engine_lib_es[key].getAbilities === 'function'){
-                crk = key;
-                console.log("crk found: " + key);
-            }
-            if (typeof character_rules_engine_lib_es[key].getSenseTypeModifierKey === 'function'){
-                ktl = key;
-                console.log("ktl found: " + key);
-            }
-        }
-
-        for (key in Core){
-            if (typeof Core[key].WALK !== 'undefined' && typeof Core[key].SWIM !== 'undefined' && typeof Core[key].CLIMB !== 'undefined' && typeof Core[key].FLY !== 'undefined' && typeof Core[key].BURROW !== 'undefined'){
-                cmov = key;
-                console.log("cmov found: " + key);
-            }
-        }
-
-        var charf1 = character_rules_engine_lib_es[crk];
-        var charf2 = character_rules_engine_lib_es[ktl];
-        var coref1 = character_rules_engine_lib_es[cmov];
-
-        function getAuthHeaders() {
-            return dist_default.a.makeGetAuthorizationHeaders({});
-
-        }
-
-        function getCharData(state) {
-            /*
-                All parts of the following return are from http://media.dndbeyond.com/character-tools/characterTools.bundle.71970e5a4989d91edc1e.min.js, they are found in functions that have: '_mapStateToProps(state)' in the name, like function CharacterManagePane_mapStateToProps(state)
-                Any return that uses the function character_rules_engine_lib_es or character_rules_engine_web_adapter_es can be added to this for more return values as this list is not comprehensive.
-                Anything with selectors_appEnv is unnessisary,as it just returns values in state.appEnv.
-            */
-            console.log("Module 2080: Processing State Info Into Data");
-
-            var ruleData = charf1.getRuleData(state);
-
-            function getSenseData(senses){ // finds returns the label
-                return Object.keys(senses).map(function(index) {
-                    let indexInt = parseInt(index);
-                    return {
-                        id: indexInt,
-                        key: charf2.getSenseTypeModifierKey(indexInt),
-                        name: charf2.getSenseTypeLabel(indexInt),
-                        distance: senses[indexInt]
-                    }
-                })
-            }
-
-            function getSpeedData(speeds){ // finds returns the label
-                let halfSpeed = roundDown(divide(speeds[Core[cmov].WALK],2));
-                return Object.keys(speeds).map(function(index) {
-                    let distance = speeds[index];
-                    if(Core[cmov].SWIM === index || Core[cmov].CLIMB === index){
-                        // swim speed is essentiall half walking speed rounded down if character doesn't have a set swim speed:
-                        // source https://www.dndbeyond.com/sources/basic-rules/adventuring#ClimbingSwimmingandCrawling
-                        distance = speeds[index] <= 0 ? halfSpeed : speeds[index];
-                    }
-                    return {
-                        id: charf2.getMovementTypeBySpeedMovementKey(index),
-                        key: index,
-                        name: charf2.getSpeedMovementKeyLabel(index, ruleData),
-                        distance: distance
-                    }
-                });
-            }
-
-            return {
-                name: charf1.getName(state),
-                avatarUrl: charf1.getAvatarUrl(state),
-                spellCasterInfo: charf1.getSpellCasterInfo(state),
-                armorClass: charf1.getAcTotal(state),
-                initiative: charf1.getProcessedInitiative(state),
-                hasInitiativeAdvantage: charf1.getHasInitiativeAdvantage(state),
-                resistances: charf1.getActiveGroupedResistances(state),
-                immunities: charf1.getActiveGroupedImmunities(state),
-                vulnerabilities: charf1.getActiveGroupedVulnerabilities(state),
-                conditions: charf1.getActiveConditions(state),
-                choiceInfo: charf1.getChoiceInfo(state),
-                classes: charf1.getClasses(state),
-                feats: charf1.getBaseFeats(state),
-                race: charf1.getRace(state),
-                currentXp: charf1.getCurrentXp(state),
-                preferences: charf1.getCharacterPreferences(state),
-                totalClassLevel: charf1.getTotalClassLevel(state),
-                spellCasterInfo: charf1.getSpellCasterInfo(state),
-                startingClass: charf1.getStartingClass(state),
-                background: charf1.getBackgroundInfo(state),
-                notes: charf1.getCharacterNotes(state),
-                totalWeight: charf1.getTotalWeight(state),
-                carryCapacity: charf1.getCarryCapacity(state),
-                pushDragLiftWeight: charf1.getPushDragLiftWeight(state),
-                encumberedWeight: charf1.getEncumberedWeight(state),
-                heavilyEncumberedWeight: charf1.getHeavilyEncumberedWeight(state),
-                preferences: charf1.getCharacterPreferences(state),
-                currencies: charf1.getCurrencies(state),
-                attunedSlots: charf1.getAttunedSlots(state),
-                attunableArmor: charf1.getAttunableArmor(state),
-                attunableGear: charf1.getAttunableGear(state),
-                attunableWeapons: charf1.getAttunableWeapons(state),
-                startingClass: charf1.getStartingClass(state),
-                background: charf1.getBackgroundInfo(state),
-                equipped: {
-                    armorItems: charf1.getEquippedArmorItems(state),
-                    weaponItems: charf1.getEquippedWeaponItems(state),
-                    gearItems: charf1.getEquippedGearItems(state)
-                },
-                unequipped: {
-                    armorItems: charf1.getUnequippedArmorItems(state),
-                    weaponItems: charf1.getUnequippedWeaponItems(state),
-                    gearItems: charf1.getUnequippedGearItems(state)
-                },
-                hitPointInfo: charf1.getHitPointInfo(state),
-                fails: charf1.getDeathSavesFailCount(state),
-                successes: charf1.getDeathSavesSuccessCount(state),
-                abilities: charf1.getAbilities(state), // not sure what the difference is between this and abilityLookup, seems to be one is a object, the other an array...
-                abilityLookup: charf1.getAbilityLookup(state),
-                proficiencyBonus: charf1.getProficiencyBonus(state),
-                speeds: getSpeedData(charf1.getCurrentWeightSpeed(state)),
-                preferences: charf1.getCharacterPreferences(state),
-                inspiration: charf1.getInspiration(state),
-                passivePerception: charf1.getPassivePerception(state),
-                passiveInvestigation: charf1.getPassiveInvestigation(state),
-                passiveInsight: charf1.getPassiveInsight(state),
-                senses: getSenseData(charf1.getSenseInfo(state)), //has to be further processed
-                skills: charf1.getSkills(state),
-                customSkills: charf1.getCustomSkills(state),
-                savingThrowDiceAdjustments: charf1.getSavingThrowDiceAdjustments(state),
-                situationalBonusSavingThrowsLookup: charf1.getSituationalBonusSavingThrowsLookup(state),
-                deathSaveInfo: charf1.getDeathSaveInfo(state),
-                proficiencyGroups: charf1.getProficiencyGroups(state),
-                background: charf1.getBackgroundInfo(state),
-                alignment: charf1.getAlignment(state),
-                height: charf1.getHeight(state),
-                weight: charf1.getWeight(state),
-                size: charf1.getSize(state),
-                faith: charf1.getFaith(state),
-                skin: charf1.getSkin(state),
-                eyes: charf1.getEyes(state),
-                hair: charf1.getHair(state),
-                age: charf1.getAge(state),
-                gender: charf1.getGender(state),
-                traits: charf1.getCharacterTraits(state),
-                notes: charf1.getCharacterNotes(state),
-                levelSpells: charf1.getLevelSpells(state),
-                spellCasterInfo: charf1.getSpellCasterInfo(state),
-                ruleData: charf1.getRuleData(state),
-                xpInfo: charf1.getExperienceInfo(state),
-                spellSlots: charf1.getSpellSlots(state),
-                pactMagicSlots: charf1.getPactMagicSlots(state),
-                attunedSlots: charf1.getAttunedSlots(state),
-                hasMaxAttunedItems: charf1.hasMaxAttunedItems(state),
-                weaponSpellDamageGroups: charf1.getWeaponSpellDamageGroups(state),
-                inventory: charf1.getInventory(state),
-                creatures: charf1.getCreatures(state),
-                customItems: charf1.getCustomItems(state),
-                weight: charf1.getTotalWeight(state),
-                weightSpeedType: charf1.getCurrentWeightType(state),
-                notes: charf1.getCharacterNotes(state),
-                currencies: charf1.getCurrencies(state),
-                activatables: charf1.getActivatables(state),
-                attacks: charf1.getAttacks(state),
-                weaponSpellDamageGroups: charf1.getWeaponSpellDamageGroups(state),
-                attacksPerActionInfo: charf1.getAttacksPerActionInfo(state),
-                ritualSpells: charf1.getRitualSpells(state),
-                spellCasterInfo: charf1.getSpellCasterInfo(state),
-                originRefRaceData: charf1.getDataOriginRefRaceData(state),
-                hasSpells: charf1.hasSpells(state),
-                optionalOrigins: charf1.getOptionalOrigins(state),
-            }
-        }
-        window.moduleExport = {
-            getCharData : getCharData,
-            getAuthHeaders : getAuthHeaders,
-        }
-        console.log("Module 2080: end");
-    }
-};
-
-
-// --------------------------------------------------------------------------------
-// Main Function
-// --------------------------------------------------------------------------------
+/**
+* MAIN FUNCTION
+* * Called by Tampermonkey
+* TODO: Add the data loading
+*/
 
 (function () {
-    campaignID = window.location.pathname.match(charIDRegex);
+    const campaignIDRegex = /(?<=\/)\d+/;
+    writeDebugData("Main function executing");
     stylesheetUrls.forEach(loadStylesheet); //load and insert each stylesheet in the settings
-    loadModules(initalModules); //load the module loader which imports from window.jsonpDDBCT and the inputted modules
-    insertCampaignElements();
-    findTargets();
-    insertElements();
-    window.moduleExport.getAuthHeaders()().then((function (headers) {
-        authHeaders = headers;
-        console.log("authHeaders: ", headers);
-        retriveRules().then(() =>{
-            updateAllCharData();
-        }).catch((error) => {
-            console.log(error);
-        });
-    }));
+    campaignID = window.location.pathname.match(campaignIDRegex);
+    writeDebugData("Campaign detected: " + campaignID);
+    defineSVGimageData();
+    defineHTMLsnippets();
+    locateCharacters();
 })();
 
-// --------------------------------------------------------------------------------
-// Functions
-// --------------------------------------------------------------------------------
-
-function findTargets() {
-    console.log("Locating Characters from Window");
+/**
+* locateCharacters()
+* Parse through the page to locate every active character in the campaign.
+* Initialises charactersData
+* * No parameters
+*/
+function locateCharacters() {
+    const charIDRegex = /(?<=\/)\d+/;
+    const linkUrlTarget = ".ddb-campaigns-detail-body-listing-active .ddb-campaigns-character-card-footer-links-item-view";
+    writeDebugData("Locating active characters on the campaign page.");
     $(linkUrlTarget).each(function (index, value) {
-        var url = value.html;
-        console.debug("Processing: " + url);
-        var charID = 0;
-        var matchArr = value.href.match(charIDRegex);
-        if (matchArr.length > 0) {
-            var charIDStr = matchArr[1];
-            if (charIDStr == "") {
-                console.warn("error: empty charIdStr");
-            } else {
-                charID = parseInt(charIDStr);
-            }
-        } else {
-            console.warn("error: no numbers found in " + value.href);
-        }
-        if (charID != 0) {
+        let characterID = parseInt(value.href.match(charIDRegex));
+        writeDebugData("Character ID located: " + characterID);
+        if (characterID != 0) {
             let node = $(value).parents('li');
-            let type = 'unknown';
-            let typeNode = $(value).parents('.ddb-campaigns-detail-body-listing');
-            if(typeNode.hasClass('ddb-campaigns-detail-body-listing-active')){
-                let unassignedNode = $(value).parents('.ddb-campaigns-detail-body-listing-unassigned-active');
-                if(unassignedNode.length > 0){
-                    type = 'unassigned';
-                } else {
-                    type = 'active';
-                }
-            } else if(typeNode.hasClass('ddb-campaigns-detail-body-listing-inactive')){
-                type = 'deactivated';
-            }
-            charactersData[charID] = {
+            charactersData[characterID] = {
                 node: node,
-                url: charJSONurlBase + charID,
-                state: {
-                    appEnv: {
-                        authEndpoint: "https://auth-service.dndbeyond.com/v1/cobalt-token", characterEndpoint: "", characterId: charID, characterServiceBaseUrl: null, diceEnabled: true, diceFeatureConfiguration: {
-                            apiEndpoint: "https://dice-service.dndbeyond.com", assetBaseLocation: "https://www.dndbeyond.com/dice", enabled: true, menu: true, notification: false, trackingId: ""
-                        }, dimensions: { sheet: { height: 0, width: 1200 }, styleSizeType: 4, window: { height: 571, width: 1920 } }, isMobile: false, isReadonly: false, redirect: undefined, username: "example"
-                    },
-                    appInfo: { error: null },
-                    character: {},
-                    characterEnv: { context: "SHEET", isReadonly: false, loadingStatus: "LOADED" },
-                    confirmModal: { modals: [] },
-                    modal: { open: {} },
-                    ruleData: {},
-                    serviceData: { classAlwaysKnownSpells: {}, classAlwaysPreparedSpells: {}, definitionPool: {}, infusionsMappings: [], knownInfusionsMappings: [], ruleDataPool: {}, vehicleComponentMappings: [], vehicleMappings: [] },
-                    sheet: { initError: null, initFailed: false },
-                    sidebar: { activePaneId: null, alignment: "right", isLocked: false, isVisible: false, panes: [], placement: "overlay", width: 340 },
-                    syncTransaction: { active: false, initiator: null },
-                    toastMessage: {}
-                },
+                url: charJSONurlBase + characterID,
                 data: {},
-                type: type,
             }
-
-            for (let ruleID in optionalRules){
-                charactersData[charID].state.serviceData.definitionPool[optionalRules[ruleID].category] = {
-                    accessTypeLookup:{},
-                    definitionLookup:{},
-                };
-            }
+            injectNewCharacterCardElements(characterID);
+            updateCharacterClasses(characterID);
+            writeDebugData(charactersData[characterID].url);
         } else {
-            console.warn("warn: skipping " + value.href + " due to ID not found");
+            console.warn("Warning! Character with null character ID was found!");
         }
     });
-    console.log("Finished locating Characters from Window");
-    //console.debug(charactersData);
-}
-
-function insertElements() {
-    console.log("Inserting Structual Elements");
-    for(let id in charactersData) {
-        let node = charactersData[id].node;
-        node.addClass('.gs-' + id);
-        node.append(mainInfoHTML); // add the structure for the main info adjacent ro the player card;
-        node.find('.ddb-campaigns-character-card-header').append(quickInfoHTML); // add the structure for quick stats inside player card
-    };
-}
-
-function retriveRules(charIDs) {
-    return new Promise(function (resolve, reject) {
-        console.log("Retriving Rules Data");
-        getJSONfromURLs(rulesUrls).then((js) => {
-            console.log("Rules Data Processing Start");
-            js.forEach(function(rule, index){
-                isSuccessfulJSON(rule, index);
-            });
-            rulesData = {
-                ruleset : js[0].data,
-                vehiclesRuleset : js[1].data
-            }
-            for(let id in charactersData){
-                charactersData[id].state.ruleData = rulesData.ruleset;
-                charactersData[id].state.serviceData.ruleDataPool = rulesData.vehiclesRuleset;
-            }
-            console.debug("Rules Data:");
-            console.debug(rulesData);
-            resolve();
-        }).catch((error) => {
-            reject(error);
-        });
-    });
-}
-
-function getRules(index){
-    return rulesData[index];
-}
-
-function updateAllCharData() {
-    console.log("Retriving Each Char Data");
-    //console.debug(charactersData);
-    let promises = []
-    for(let id in charactersData){
-        promises.push(updateCharData(charactersData[id].url));
-    }
-    //console.log(charactersData);
-    Promise.all(promises)
-        .then(() =>{
-        updateCampaignData();
-    }).catch((error) => {
-        console.log(error);
-    });
-    updateVisibility();
-
-    startRefreshTimer();
-    console.log("Updated All Char Data");
-}
-
-function updateCharData(url) {
-
-    return new Promise(function (resolve, reject) {
-        console.log("Retriving Char Data");
-        getJSONfromURLs([url]).then((js) => {
-            //window.jstest = js;
-            js.forEach(function(charJSON, index){
-                if(isSuccessfulJSON(charJSON, index)){
-                    let charId = charJSON.data.id;
-                    console.debug("Processing Char: " + charId);
-                    charactersData[charId].state.character = charJSON.data;
-                    let promises = retriveCharacterRules(charId)
-                    Promise.all(promises).then(()=>{
-                        var charData = window.moduleExport.getCharData(charactersData[charId].state);
-                        charactersData[charId].data = charData;
-                        updateElementData(charactersData[charId]);
-                        console.log("Retrived Char Data for char " + charId + " aka " + charactersData[charId].data.name);
-                        console.log(charactersData[charId]);
-                        resolve();
-                    });
-                } else {
-                    console.log("Char URL " + url + " was skipped");
-                }
-            });
-        }).catch((error) => {
-            console.log(error);
-            reject();
-        });
-    });
-
-}
-
-function retriveCharacterRules(charId) {
-    let promises = [];
-    console.log("Looking for optional rules for " + charactersData[charId].data.name);
-    for(let ruleID in optionalRules){
-        if(ruleID in charactersData[charId].state.character && charactersData[charId].state.character[ruleID].length > 0 ){
-            console.log("Optional ruleset for " + ruleID + " found.");
-            promises.push(retriveCharacterRule(charId, ruleID));
-        }
-    }
-    return promises;
-}
-
-function retriveCharacterRule(charId, ruleID) {
-    let url = gameCollectionUrl.prefix + optionalRules[ruleID].category + gameCollectionUrl.postfix;
-
-    let ruleIds = []
-    for(let item of charactersData[charId].state.character[ruleID]){
-        ruleIds.push(item[optionalRules[ruleID].id]);
-    }
-
-    let body = {"campaignId":null,"sharingSetting":2,"ids":ruleIds};
-    return new Promise(function (resolve, reject) {
-        getJSONfromURLs([url], body).then((js) => {
-            js.forEach(function(charJSON, index){
-                console.log("Retrived " + ruleID + " data, processing.");
-                console.log(charJSON);
-                if(charJSON.success && charJSON.data.definitionData != undefined){
-                    for(let data of charJSON.data.definitionData){
-                        charactersData[charId].state.serviceData.definitionPool[optionalRules[ruleID].category].definitionLookup[data.id] = data;
-                        charactersData[charId].state.serviceData.definitionPool[optionalRules[ruleID].category].accessTypeLookup[data.id] = 1;
-                    }
-                }
-                console.log(ruleID + " finished processing.");
-            });
-            resolve();
-
-        }).catch((error) => {
-            console.log(error);
-            reject();
-        });
-    });
-}
-
-function startRefreshTimer() {
-    //get timeout value
-    let refreshTime = parseInt($('input[name ="gs-auto-duration"]').val());
-    let refreshTimeMiliSecs = refreshTime * 1000;
-    console.log("Starting Refresh Timer: " + refreshTime);
-    setTimeout(function () {
-        //only refresh when checkbox is checked
-        if ($('input[name ="gs-auto-update"]').is(':checked')) {
-            updateAllCharData();
-        }else{
-            startRefreshTimer();
-        }
-    }, refreshTimeMiliSecs);
-}
-
-// --------------------------------------------------------------------------------
-//        Element Updating Functions
-// --------------------------------------------------------------------------------
-
-function insertCampaignElements() {
-    console.log("Inseting Campaign Elements");
-    let campaignPrefix = scriptVarPrefix + "-" + campaignID;
-    $(campaignElementTarget + " > div:nth-child(1)").after(controlsHTML);
-    campaignNode = $(".gs-campaign");
-    insertControls(campaignNode, campaignPrefix);
-    insertVisibilityControls(campaignNode, campaignPrefix);
-    insertStoredElements(campaignNode, campaignPrefix);
-}
-
-function insertControls(parent, campaignPrefix) {
-    console.log("Inseting Main Controls");
-
-    let controlsNode = parent.find('.gs-controls');
-
-    let autoUpdate = controlsNode.find('input[name ="gs-auto-update"]');
-    let autoDuration = controlsNode.find('input[name ="gs-auto-duration"]');
-
-    // Loads ideally value set for this campaign, if not found it loads the last saved value otherwise it defaults
-    let autoUpdateLoaded = GM_getValue(campaignPrefix + "-autoUpdate", GM_getValue(scriptVarPrefix + "-autoUpdate", autoUpdateDefault));
-    let updateDurationLoaded = GM_getValue(campaignPrefix + "-updateDuration", GM_getValue(scriptVarPrefix + "-updateDuration", updateDurationDefault))
-
-    autoUpdate.prop('checked', autoUpdateLoaded);
-    autoDuration.prop('value', updateDurationLoaded);
-
-    autoUpdate.change(function () {
-        let updatedAutoUpdate = parseBool($(this).prop("checked"));
-        GM_setValue(campaignPrefix + "-autoUpdate", updatedAutoUpdate);
-        GM_setValue(scriptVarPrefix + "-autoUpdate", updatedAutoUpdate);
-    });
-    autoDuration.change(function () {
-        let updatedAutoDuration = parseIntSafe($(this).val());
-        GM_setValue(campaignPrefix + "-updateDuration", updatedAutoDuration);
-        GM_setValue(scriptVarPrefix + "-updateDuration", updatedAutoDuration);
-    });
-}
-
-function insertVisibilityControls(parent, campaignPrefix) {
-    console.log("Inseting Visibility Controls");
-
-    let controlsNode = parent.find('.gs-views');
-
-    let showAbilities = controlsNode.find('input[name ="gs-show-abilities"]');
-    let showSavingThrows = controlsNode.find('input[name ="gs-show-saving-throws"]');
-    let showSenses = controlsNode.find('input[name ="gs-show-senses"]');
-    let showClasses = controlsNode.find('input[name ="gs-show-classes"]');
-    let showResources = controlsNode.find('input[name ="gs-show-resources"]');
-
-    // Loads ideally value set for this campaign, if not found it loads the last saved value otherwise it defaults
-    let showAbilitiesLoaded = GM_getValue(campaignPrefix + "-showAbilities", GM_getValue(scriptVarPrefix + "-showAbilities", showAbilitiesDefault));
-    let showSavingThrowsLoaded = GM_getValue(campaignPrefix + "-showSavingThrows", GM_getValue(scriptVarPrefix + "-showSavingThrows", showSavingThrowsDefault));
-    let showSensesLoaded = GM_getValue(campaignPrefix + "-showSenses", GM_getValue(scriptVarPrefix + "-showSenses", showSensesDefault));
-    let showClassesLoaded = GM_getValue(campaignPrefix + "-showClasses", GM_getValue(scriptVarPrefix + "-showClasses", showClassesDefault));
-    let showResourcesLoaded = GM_getValue(campaignPrefix + "-showResources", GM_getValue(scriptVarPrefix + "-showResources", showResourcesDefault));
-
-    showAbilities.prop('checked', showAbilitiesLoaded);
-    showSavingThrows.prop('checked', showSavingThrowsLoaded);
-    showSenses.prop('checked', showSensesLoaded);
-    showClasses.prop('checked', showClassesLoaded);
-    showResources.prop('checked', showResourcesLoaded);
-
-    showAbilities.change(function () {
-        let updatedShowAbilities = parseBool($(this).prop("checked"));
-        GM_setValue(campaignPrefix + "-showAbilities", updatedShowAbilities);
-        GM_setValue(scriptVarPrefix + "-showAbilities", updatedShowAbilities);
-        updateVisibility();
-    });
-    showSavingThrows.change(function () {
-        let updatedShowSavingThrows = parseBool($(this).prop("checked"));
-        GM_setValue(campaignPrefix + "-showSavingThrows", updatedShowSavingThrows);
-        GM_setValue(scriptVarPrefix + "-showSavingThrows", updatedShowSavingThrows);
-        updateVisibility();
-    });
-    showSenses.change(function () {
-        let updatedShowSensesUpdate = parseBool($(this).prop("checked"));
-        GM_setValue(campaignPrefix + "-showSenses", updatedShowSensesUpdate);
-        GM_setValue(scriptVarPrefix + "-showSenses", updatedShowSensesUpdate);
-        updateVisibility();
-    });
-    showClasses.change(function () {
-        let updatedShowClasses = parseBool($(this).prop("checked"));
-        GM_setValue(campaignPrefix + "-showClasses", updatedShowClasses);
-        GM_setValue(scriptVarPrefix + "-showClasses", updatedShowClasses);
-        updateVisibility();
-    });
-    showResources.change(function () {
-        let updatedShowResources = parseBool($(this).prop("checked"));
-        GM_setValue(campaignPrefix + "-showResources", updatedShowResources);
-        GM_setValue(scriptVarPrefix + "-showResources", updatedShowResources);
-        updateVisibility();
-    });
-}
-
-function updateVisibility() {
-    console.log("Updating data visibility");
-
-    let abilities = $('input[name ="gs-show-abilities"]').is(':checked');
-    let saves = $('input[name ="gs-show-saving-throws"]').is(':checked');
-    let senses = $('input[name ="gs-show-senses"]').is(':checked');
-    let classes = $('input[name ="gs-show-classes"]').is(':checked');
-    let resources = $('input[name ="gs-show-resources"]').is(':checked');
-
-    $('.gs-main-able').toggle(abilities);
-    $('.gs-main-saves').toggle(saves);
-    $('.gs-main-able').parents('.gs-container').toggle(abilities || saves);
-
-    $('.gs-senses').toggle(senses);
-    $('.gs-classes').toggle(classes);
-    $('.gs-resources').toggle(resources);
-    $('.gs-senses').parents('.gs-container').toggle(senses || classes || resources);
-}
-
-function insertStoredElements(parent, campaignPrefix) {
-    console.log("Inseting Stored Elements");
-    let storedNode = parent.find('.gs-stored');
-    insertCurrencies(storedNode, campaignPrefix);
-}
-
-function insertCurrencies(parent, campaignPrefix){
-    console.log("Updating Campaign Currencies Data");
-    let currenciesLoaded = GM_getValue(campaignPrefix + "-currencies", currenciesDefault);
-    //console.log(currenciesLoaded);
-    let container = parent.find('.gs-camp-currencies > .gs-container');
-
-    let currencyAmount = parent.find('.gs-camp-currencies > .gs-form-group input[name="gs-currency-amount"]');
-    let currencyType = parent.find('.gs-camp-currencies > .gs-form-group select[name="gs-currency-type"]');
-    let currencyConfirm = parent.find('.gs-camp-currencies > .gs-form-group button[name="gs-currency-confirm"]');
-
-    for(let id in currenciesTypeDefault){
-        let currency = currenciesTypeDefault[id];
-        $('<option/>', {
-            value: id,
-            class: 'gs-currency-type-option gs-currency-type-' + id + '-option',
-            html: currency.name
-        }).appendTo(currencyType);
-    }
-
-    currencyType.val(currenciesMainDefault);
-
-    currencyConfirm.click(function () {
-        let updatedAmount = parseIntSafe(currencyAmount.val());
-        if(updatedAmount != 0){
-            let selectedType = currencyType.val();
-            if(updatedAmount != undefined){
-                let currenciesUpdate = GM_getValue(campaignPrefix + "-currencies", currenciesDefault);
-                if(currenciesUpdate[selectedType] == undefined){
-                    currenciesUpdate[selectedType] = 0;
-                }
-                currenciesUpdate[selectedType] += updatedAmount;
-                GM_setValue(campaignPrefix + "-currencies", currenciesUpdate);
-                updateCurrency(container, selectedType, currenciesUpdate[selectedType]);
-            }
-        }
-    });
-
-    for(let id in currenciesLoaded){
-        updateCurrency(container, id, currenciesLoaded[id]);
-    }
-}
-
-function updateCurrency(parent, id, value){
-    let curCurrency = parent.find('.gs-currency-' + id);
-    //console.log(curCurrency);
-    if (curCurrency.length < 1) {
-        parent.append(currencyHTML);
-        curCurrency = parent.children().last();
-        curCurrency.addClass('gs-currency-' + id);
-        curCurrency.find('.gs-currency-label').html(id);
-    }
-    curCurrency.find('.gs-currency-number').html(value);
-}
-
-function updateCampaignData(){
-    console.log("Updating Campaign Data");
-    let outputsNode = campaignNode.find(".gs-outputs");
-    updateLanguages(outputsNode);
-}
-
-function updateLanguages(parent){
-    console.log("Updating Campaign Languages Data");
-    let languages = {};
-    for(let id in charactersData){
-        let character = charactersData[id];
-        if(character.type == 'active'){
-            let charLanguages = character.data.proficiencyGroups.find(function (e) { return e.label == 'Languages'; });
-            for(let index in charLanguages.modifierGroups){
-                let language = charLanguages.modifierGroups[index];
-                if (language.label != undefined){
-                    if(languages[language.label] == undefined){
-                        languages[language.label] = [];
-                    }
-                    languages[language.label].push({
-                        id: id,
-                        name: character.data.name
-                    });
-                }
-            }
-        }
-    }
-    let container = parent.find('.gs-camp-languages > .gs-container');
-    container.empty();
-
-    //console.log(languages);
-    for(let id in languages){
-        container.append(languageHTML);
-        let curLanguage = container.children().last();
-        curLanguage.addClass('gs-language-' + id);
-        curLanguage.find('.gs-language-text').html(id);
-    }
 }
 
 
-function updateElementData(character) { // function that builds the scraped data and renders it on the page.
-    //console.log("Updating Information in HTML Elements");
-    updateQuickInfo(character.node, character.data);
-    updateMainInfo(character.node, character.data);
+/**
+* FUNCTIONS FOR UPDATING THE PAGE STRUCTURE
+*/
+function injectNewCharacterCardElements(characterID) {
+    let targetNode = charactersData[characterID].node.find('.ddb-campaigns-character-card-header');
+    targetNode.append(defineHTMLsnippets());
 }
 
-function updateQuickInfo(parent, character){
-    var quickInfo = parent.find('.gs-quick-info');
-    updateHitPointInfo(quickInfo, character.hitPointInfo);
-    updateArmorClass(quickInfo, character.armorClass);
-    updateInitiative(quickInfo, character.initiative);
-    updateSpeeds(quickInfo, character.speeds);
+/**
+* FUNCTIONS FOR UPDATING THE PAGE DATA
+*/
+
+// Updates the Character Class based on data
+function updateCharacterClasses(characterID) {
+    let targetNode = charactersData[characterID].node.find('.ddb-campaigns-character-card-header-upper-character-info-secondary').first();
+    targetNode.html('Variant Human - Barbarian 4 / Sorceror 3');
+    // TODO: Plug in the actual data
 }
 
-function updateHitPointInfo(parent, hitPointInfo){
-    parent.find('.gs-hp-cur').html(hitPointInfo.remainingHp);
-    parent.find('.gs-hp-max').html(hitPointInfo.totalHp);
-}
+/**
+* GENERIC FUNCTIONS
+*/
 
-function updateArmorClass(parent, armorClass){
-    parent.find('.gs-ac-value').html(armorClass);
-}
-
-function updateInitiative(parent, initiative){
-    parent.find('.gs-intv-sign').html(getSign(initiative));
-    parent.find('.gs-intv-number').html(Math.abs(initiative));
-}
-
-function updateSpeeds(parent, speeds){
-    //Adds character speeds to the speed module
-    let container = parent.find('.gs-speeds > .gs-container');
-    container.empty();
-
-    speeds.forEach(function(item, index){
-        //console.log(item);
-        if(item.distance > 0){
-            container.append(speedHTML);
-            let curSpeed = container.children().last();
-            //console.log(curSpeed);
-            curSpeed.addClass('gs-speed-' + item.key);
-            curSpeed.find('.gs-speed-label').html(item.name);
-            curSpeed.find('.gs-speed-number').html(item.distance);
-            curSpeed.find('.gs-speed-affix').html(distanceUnit(item.distance));
-        }
-    });
-    if (container.children().length < 1) {
-        parent.find('.gs-speeds').addClass("gs-empty");
-    }
-}
-
-function updateMainInfo(parent, character){
-    var mainInfo = parent.find('.gs-main-info');
-    updateAbilties(mainInfo, character.abilities);
-    updatePassives(mainInfo, character.passivePerception, character.passiveInvestigation, character.passiveInsight);
-    updateSenses(mainInfo, character.senses);
-    updateClasses(mainInfo, character.classes, character.spellCasterInfo.castingInfo);
-    updateResources(mainInfo, character.inventory);
-}
-
-function updateAbilties(parent, abilities){
-    var containerAble = parent.find('.gs-main-able > .gs-container');
-    var containerSave = parent.find('.gs-main-saves > .gs-container');
-    containerAble.empty();
-    containerSave.empty();
-    abilities.forEach(function(item, index){
-        //console.log(item);
-        // Abilities
-        containerAble.append(abilityHTML);
-        let curAble = containerAble.children().last();
-        curAble.addClass('gs-able-' + item.name);
-        curAble.find('.gs-able-label').html(item.name);
-        curAble.find('.gs-able-prefix').html(abilitySVGs[item.name]);
-        curAble.find('.gs-able-number').html(item.totalScore);
-        curAble.find('.gs-able-mod-sign').html(getSign(item.modifier));
-        curAble.find('.gs-able-mod-value').html(Math.abs(item.modifier));
-
-        // Saving Throws
-        containerSave.append(savingThrowsHTML);
-        let curSave = containerSave.children().last();
-        curSave.addClass('gs-saves-' + item.name);
-        curSave.find('.gs-saves-label').html(item.name);
-        curSave.find('.gs-saves-prefix').html(abilitySVGs[item.name]);
-        curSave.find('.gs-saves-sign').html(getSign(item.save));
-        curSave.find('.gs-saves-number').html(Math.abs(item.save));
-    });
-}
-
-function updatePassives(parent, passPerception, passInvestigation, passInsight){
-    // add passive senses data
-    let container = parent.find('.gs-passives > .gs-container');
-    container.find('.gs-passivePerception .gs-passives-number').html(passPerception);
-    container.find('.gs-passiveInvestigation .gs-passives-number').html(passInvestigation);
-    container.find('.gs-passiveInsight .gs-passives-number').html(passInsight);
-}
-
-function updateSenses(parent, senses){
-    // add additional senses data if exsists
-    let container = parent.find('.gs-additonal-senses > .gs-container');
-    container.empty();
-    senses.forEach(function(item, index){
-        //console.log(item);
-        if(item.distance > 0){
-            container.append(additonalSenseHTML);
-            let curSense = container.children().last();
-            curSense.addClass('gs-additonal-sense-' + item.key);
-            curSense.find('.gs-additonal-sense-text').html(item.name);
-            curSense.find('.gs-additonal-sense-number').html(item.distance);
-            curSense.find('.gs-additonal-sense-affix').html(distanceUnit(item.distance));
-        }
-    });
-    if (container.children().length < 1) {
-        parent.find('.gs-additonal-senses').addClass("gs-empty");
-    }
-}
-
-function updateClasses(parent, classes, casting){
-    //Adds classes and thier relevant spell modifiers, save dcs and attacks to the classes module
-    let container = parent.find('.gs-classes > .gs-container');
-    container.empty();
-
-    for(let i = 0; i < casting.modifiers.length; i++ ) {
-        let modifier = casting.modifiers[i];
-        let saveDc = casting.saveDcs[i];
-        let attacks = casting.spellAttacks[i];
-        let charClass = classes.find(function (e) { return e.id == modifier.sources[0].id; })
-
-        container.append(classHTML);
-        let curClass = container.children().last();
-
-        curClass.addClass('gs-class-' + charClass.slug);
-        curClass.find('.gs-class-label').html(charClass.definition.name);
-        curClass.find('.gs-spellmod-number').html(modifier.value);
-        curClass.find('.gs-spellsavedc-number').html(saveDc.value);
-        curClass.find('.gs-spellattack-number').html(attacks.value);
-    }
-    if (container.children().length < 1) {
-        parent.find('.gs-classes').addClass("gs-empty");
-    }
-}
-
-function updateResources(parent, infos){
-    //Adds resources quantities
-    let container = parent.find('.gs-resources > .gs-container');
-    container.empty();
-
-    let listResources = {
-        "Rations (1 day)": "ration",
-        "Healing Potion": "healing-potion"
-    };
-
-    for (let i = 0; i < infos.length; i++){
-        let currentItem = infos[i];
-
-        if (!(currentItem.definition.name in listResources)) {
-            continue;
-        }
-
-        let divInfo = listResources[currentItem.definition.name];
-
-        container.append(resourcesHTML);
-        let curClass = container.children().last();
-
-        curClass.addClass('gs-class-resources');
-        curClass.find('.gs-' + divInfo + '-number').html(currentItem.quantity);
-        console.log(curClass);
-    }
-    if (container.children().length < 1) {
-        parent.find('.gs-resources').addClass("gs-empty");
-    }
-}
-
-
-
-// --------------------------------------------------------------------------------
-//        D&DBeyond Module Loader
-// --------------------------------------------------------------------------------
-
-function loadModules(modules) {
-    /*
-        A near direct copy of the function from http://media.dndbeyond.com/character-tools/characterTools.bundle.71970e5a4989d91edc1e.min.js
-        This basically loads in the modules in https://media.dndbeyond.com/character-tools/vendors~characterTools.bundle.f8b53c07d1796f1d29cb.min.js and similar module based scripts
-        these are stored in window.jsonpDDBCT and can be loaded by this script and interacted with by active modules
-    */
-    console.log("Loading modules");
-    function webpackJsonpCallback(data) {
-        /*
-            This allows additonal modules to be added run, the input format needs to be at least a two dimentional array,
-            e.g. [[2],[function (module, exports, __webpack_require__) {...},...]] or [2],{34: function (module, exports, __webpack_require__) {...},...}] if you want to have set module id's
-            you can also run modules by adding a third element to the argument data, e.g. [4],{69: function (module, __webpack_exports__, __webpack_require__) {...},...}, [69,4]] which will run the module 69 in chunk 4
-            I am not 100% on the logic of this, so feel free to expand on this and futher comment to help out!
-        */
-        var chunkIds = data[0];
-        var moreModules = data[1];
-        var executeModules = data[2];
-        var moduleId,
-            chunkId,
-            i = 0,
-            resolves = [];
-        for (; i < chunkIds.length; i++) {
-            chunkId = chunkIds[i];
-            if (Object.prototype.hasOwnProperty.call(installedChunks, chunkId) && installedChunks[chunkId]) {
-                resolves.push(installedChunks[chunkId][0])
-            }
-            installedChunks[chunkId] = 0
-        }
-        for (moduleId in moreModules) {
-            if (Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
-                modules[moduleId] = moreModules[moduleId]
-            }
-        }
-        if (parentJsonpFunction) parentJsonpFunction(data);
-        while (resolves.length) {
-            resolves.shift()()
-        }
-        deferredModules.push.apply(deferredModules, executeModules || []);
-        return checkDeferredModules()
-    }
-    function checkDeferredModules() {
-        var result;
-        for (var i = 0; i < deferredModules.length; i++) {
-            var deferredModule = deferredModules[i];
-            var fulfilled = true;
-            for (var j = 1; j < deferredModule.length; j++) {
-                var depId = deferredModule[j];
-                if (installedChunks[depId] !== 0) fulfilled = false
-            }
-            if (fulfilled) {
-                deferredModules.splice(i--, 1);
-                result = __webpack_require__(__webpack_require__.s = deferredModule[0])
-            }
-        }
-        return result
-    }
-    var installedModules = {};
-    var installedChunks = {
-        0: 0
-    };
-    var deferredModules = [];
-    function __webpack_require__(moduleId) {
-        if (installedModules[moduleId]) {
-            return installedModules[moduleId].exports
-        }
-        var module = installedModules[moduleId] = {
-            i: moduleId,
-            l: false,
-            exports: {}
-        };
-        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-        module.l = true;
-        return module.exports
-    }
-    __webpack_require__.m = modules;
-    __webpack_require__.c = installedModules;
-    __webpack_require__.d = function (exports, name, getter) {
-        if (!__webpack_require__.o(exports, name)) {
-            Object.defineProperty(exports, name, {
-                enumerable: true,
-                get: getter
-            })
-        }
-    };
-    __webpack_require__.r = function (exports) {
-        if (typeof Symbol !== "undefined" && Symbol.toStringTag) {
-            Object.defineProperty(exports, Symbol.toStringTag, {
-                value: "Module"
-            })
-        }
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        })
-    };
-    __webpack_require__.t = function (value, mode) {
-        if (mode & 1) value = __webpack_require__(value);
-        if (mode & 8) return value;
-        if (mode & 4 && typeof value === "object" && value && value.__esModule) return value;
-        var ns = Object.create(null);
-        __webpack_require__.r(ns);
-        Object.defineProperty(ns, "default", {
-            enumerable: true,
-            value: value
-        });
-        if (mode & 2 && typeof value != "string"){
-            for (var key in value){
-                __webpack_require__.d(ns, key, function (key) {
-                    return value[key]
-                }.bind(null, key));
-            }
-        }
-
-        return ns
-    };
-    __webpack_require__.n = function (module) {
-        var getter = module && module.__esModule ? function getDefault() {
-            return module.default
-        }
-        : function getModuleExports() {
-            return module
-        };
-        __webpack_require__.d(getter, "a", getter);
-        return getter
-    };
-    __webpack_require__.o = function (object, property) {
-        return Object.prototype.hasOwnProperty.call(object, property)
-    };
-    __webpack_require__.p = "";
-    var jsonpArray = window.jsonpDDBCT = window.jsonpDDBCT || [];
-    var oldJsonpFunction = jsonpArray.push.bind(jsonpArray); //This allows additonal modules to be added and run by using window.jsonpDDBCT.push(modules) which calls webpackJsonpCallback(modules) above
-    jsonpArray.push2 = webpackJsonpCallback;
-    jsonpArray = jsonpArray.slice();
-    for (var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
-    var parentJsonpFunction = oldJsonpFunction;
-    deferredModules.push([2080, 2]); //This sets module 2080 as an active module and is run after the other modules are loaded
-    checkDeferredModules();
-    console.log("Finished loading modules");
-}
-
-
-// --------------------------------------------------------------------------------
-//        Generic Functions
-// --------------------------------------------------------------------------------
-
-function isSuccessfulJSON(js, name){
-    let success = true;
-    if(js.length < 1 || js.success == undefined){
-        console.warn("JSON " + name + " is malformed");
-        return false;
-    } else if (js.success == false){
-        console.warn("JSON " + name + "'s retrieval was unsuccessful");
-        return false;
-    } else if (js.success != true) {
-        console.warn("JSON " + name + "'s retrieval was unsuccessful and is malformed");
-        return false;
-    } else if (js.data == undefined || js.data.length < 1) {
-        console.warn("JSON " + name + "'s data is malformed");
-        return false;
-    }
-    return true;
+function writeDebugData(data) {
+  if (debugMode === true) {
+    console.log("DDBLC:: " + data);
+  }
 }
 
 function loadStylesheet(href) {
@@ -1076,92 +152,49 @@ function loadStylesheet(href) {
     console.debug('Done: Adding CSS Stylesheet');
 }
 
-function getJSONfromURLs(urls, body, headers, cookies) {
-    return new Promise(function (resolve, reject) {
-        console.log("Fetching: ", urls);
-        var proms = urls.map(d => fetchRequest(d, body, cookies));
-        Promise.all(proms)
-            .then(ps => Promise.all(ps.map(p => p.json()))) // p.json() also returns a promise
-            .then(jsons => {
-            console.log("JSON Data Retrived");
-            resolve(jsons);
-        })
-            .catch((error) => {
-            reject(error);
-        });
-    });
-}
-function fetchRequest(url, body, headers, cookies) {
-    let options = {};
-    let myHeaders = new Headers({
-        'X-Custom-Header': 'hello world',
-    });
-    for(let id in authHeaders){
-        myHeaders.append(id, authHeaders[id]);
-    }
-    if(body != undefined && body != ''){
-        options.method = 'POST'
-        myHeaders.append('Accept','application/json');
-        myHeaders.append('Content-Type','application/json');
-        options.body = JSON.stringify(body);
-    }
-    if(cookies != undefined && cookies != ''){
-        options.cookies = cookies;
-    }
-    options.credentials = 'include';
-    options.headers = myHeaders;
-    console.log(options);
-    return fetch(url, options);
+/**
+* DEFINE SVG IMAGES so they can be used later on.
+* * Reference example: svgImageData.armorClass
+*/
+function defineSVGimageData() {
+    svgImageData = {
+        armorClass:     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 79 90" class="ddbc-svg ddbc-armor-class-box-svg "><path fill="#FEFEFE" d="M72.8,30.7v13.7c-1,3.6-9.7,30.9-31.9,38.6c-0.3-0.4-0.8-0.7-1.4-0.7c-0.6,0-1,0.3-1.4,0.7 C26,78.7,17.9,68.6,12.9,59.8c0,0,0,0,0,0c-0.3-0.5-0.6-1-0.8-1.5c-3.6-6.7-5.4-12.4-5.9-14V30.7c0.7-0.3,1.2-0.9,1.2-1.7 c0-0.1,0-0.2-0.1-0.3c6.2-4,8.5-11.5,9.2-15.2L38.1,7c0.3,0.4,0.8,0.7,1.4,0.7c0.6,0,1.1-0.3,1.4-0.7l21.4,6.6 c0.8,3.6,3,11.1,9.2,15.2V29c0,0.2,0,0.4,0.1,0.6C71.8,30.1,72.3,30.5,72.8,30.7z"></path><path fill="#C53131" d="M73.2,27.3c-0.4,0-0.8,0.2-1.1,0.4c-5.8-3.9-7.9-11.3-8.6-14.5l-0.1-0.4l-22-6.7c-0.1-0.9-0.8-1.7-1.8-1.7 s-1.7,0.8-1.8,1.7l-22,6.7l-0.1,0.4c-0.6,3.2-2.7,10.6-8.6,14.5c-0.3-0.3-0.7-0.4-1.1-0.4c-1,0-1.8,0.8-1.8,1.9 c0,0.8,0.5,1.5,1.2,1.7v13.5v0.2c0.9,3.2,9.7,31.2,32.4,39.2c0.1,1,0.8,1.8,1.8,1.8s1.8-0.8,1.8-1.8c9.3-3.3,17.3-10.1,23.8-20.4 c5.3-8.4,7.9-16.5,8.6-18.8V30.9c0.7-0.3,1.2-0.9,1.2-1.7C75,28.1,74.2,27.3,73.2,27.3z M72.5,44.3c-1,3.6-9.6,30.5-31.5,38.2 c-0.3-0.4-0.8-0.7-1.4-0.7c-0.6,0-1,0.3-1.4,0.7C16.3,74.8,7.8,47.9,6.7,44.3V30.9c0.7-0.3,1.2-0.9,1.2-1.7c0-0.1,0-0.2-0.1-0.3 c6.1-4,8.4-11.4,9.1-15l21.3-6.5c0.3,0.4,0.8,0.7,1.4,0.7c0.6,0,1.1-0.3,1.4-0.7l21.2,6.5c0.8,3.6,3,11,9.1,15c0,0.1,0,0.2,0,0.3 c0,0.8,0.5,1.5,1.2,1.7V44.3z M73.2,27.3c-0.4,0-0.8,0.2-1.1,0.4c-5.8-3.9-7.9-11.3-8.6-14.5l-0.1-0.4l-22-6.7 c-0.1-0.9-0.8-1.7-1.8-1.7s-1.7,0.8-1.8,1.7l-22,6.7l-0.1,0.4c-0.6,3.2-2.7,10.6-8.6,14.5c-0.3-0.3-0.7-0.4-1.1-0.4 c-1,0-1.8,0.8-1.8,1.9c0,0.8,0.5,1.5,1.2,1.7v13.5v0.2c0.9,3.2,9.7,31.2,32.4,39.2c0.1,1,0.8,1.8,1.8,1.8s1.8-0.8,1.8-1.8 c9.3-3.3,17.3-10.1,23.8-20.4c5.3-8.4,7.9-16.5,8.6-18.8V30.9c0.7-0.3,1.2-0.9,1.2-1.7C75,28.1,74.2,27.3,73.2,27.3z M72.5,44.3 c-1,3.6-9.6,30.5-31.5,38.2c-0.3-0.4-0.8-0.7-1.4-0.7c-0.6,0-1,0.3-1.4,0.7C16.3,74.8,7.8,47.9,6.7,44.3V30.9 c0.7-0.3,1.2-0.9,1.2-1.7c0-0.1,0-0.2-0.1-0.3c6.1-4,8.4-11.4,9.1-15l21.3-6.5c0.3,0.4,0.8,0.7,1.4,0.7c0.6,0,1.1-0.3,1.4-0.7 l21.2,6.5c0.8,3.6,3,11,9.1,15c0,0.1,0,0.2,0,0.3c0,0.8,0.5,1.5,1.2,1.7V44.3z M78.1,24.5c-8.7-1.8-9.9-14.9-9.9-15l-0.1-0.8L39.5,0 L10.9,8.7l-0.1,0.8c0,0.1-1.2,13.3-9.9,15l-1,0.2v20.4v0.3C0,45.8,9.6,82.1,39.1,89.9l0.3,0.1l0.3-0.1C69.5,82.1,79,45.8,79.1,45.4 V24.7L78.1,24.5z M76.7,45C76,47.5,66.6,80.1,39.5,87.5C12.6,80.1,3.2,47.4,2.5,45V26.7c8.3-2.4,10.3-13,10.7-16.1l26.4-8l26.4,8 c0.4,3.1,2.4,13.7,10.7,16.1V45z M63.5,13.2l-0.1-0.4l-22-6.7c-0.1-0.9-0.8-1.7-1.8-1.7s-1.7,0.8-1.8,1.7l-22,6.7l-0.1,0.4 c-0.6,3.2-2.7,10.6-8.6,14.5c-0.3-0.3-0.7-0.4-1.1-0.4c-1,0-1.8,0.8-1.8,1.9c0,0.8,0.5,1.5,1.2,1.7v13.5v0.2 c0.9,3.2,9.7,31.2,32.4,39.2c0.1,1,0.8,1.8,1.8,1.8s1.8-0.8,1.8-1.8c9.3-3.3,17.3-10.1,23.8-20.4c5.3-8.4,7.9-16.5,8.6-18.8V30.9 c0.7-0.3,1.2-0.9,1.2-1.7c0-1-0.8-1.9-1.8-1.9c-0.4,0-0.8,0.2-1.1,0.4C66.2,23.9,64.1,16.4,63.5,13.2z M72.5,30.9v13.5 c-1,3.6-9.6,30.5-31.5,38.2c-0.3-0.4-0.8-0.7-1.4-0.7c-0.6,0-1,0.3-1.4,0.7C16.3,74.8,7.8,47.9,6.7,44.3V30.9 c0.7-0.3,1.2-0.9,1.2-1.7c0-0.1,0-0.2-0.1-0.3c6.1-4,8.4-11.4,9.1-15l21.3-6.5c0.3,0.4,0.8,0.7,1.4,0.7c0.6,0,1.1-0.3,1.4-0.7 l21.2,6.5c0.8,3.6,3,11,9.1,15c0,0.1,0,0.2,0,0.3C71.3,30,71.8,30.6,72.5,30.9z"></path></svg>`,
+        attributeBox:   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81 95" class="ddbc-svg ddbc-ability-score-box-svg "><path fill="#FEFEFE" d="M77.56,53.81a4.55,4.55,0,0,1-1.64-3.69c0-6.29-1.3-14.52,1.37-20.68A5,5,0,0,1,76,26.51a5.3,5.3,0,0,1-.72-6c1.28-2.68,1.17-6.68.88-9.54a4.15,4.15,0,0,1,1.22-3.27c.12-.62.23-1.24.35-1.86C73.47,7.49,70.86,2,70.86,2H10.14S8,6.44,4.48,6.16A5.61,5.61,0,0,1,4.63,7.5c0,1.54-.17,3.1-.21,4.66.09,1.24.23,2.47.44,3.68a33,33,0,0,1,1.58,7.78,4.58,4.58,0,0,1-1.05,3.21,4.79,4.79,0,0,1-1.47,2.34,5.17,5.17,0,0,1,.5,2.12c.18,6.94.78,13.53.25,20.5a5,5,0,0,1-1.2,3c.06,2,0,4,0,6.07a4.61,4.61,0,0,1,.44,3.71C1.64,73,6.36,78,12.35,82.16a5.16,5.16,0,0,1,.49.21c.91.5,1.81,1,2.73,1.55a1,1,0,0,0,.17.1c.54.3,1.09.59,1.66.85a2.39,2.39,0,0,1,.21.13h1.85a4.21,4.21,0,0,1-1.19-1.92,9.45,9.45,0,0,1-.9-6.13,3.71,3.71,0,0,1,.18-1.22c.16-.41.32-.79.49-1.15A10.44,10.44,0,0,1,21,70.26c.11-.12.21-.25.32-.36a14.53,14.53,0,0,1,1.91-1.84,18.26,18.26,0,0,1,6-3.17,21.13,21.13,0,0,1,4.9-1.39c6.15-1.45,14.34-.72,19.85,2.51.67.3,1.33.62,1.94,1a6.52,6.52,0,0,1,.67.45l.07,0a14.44,14.44,0,0,1,4,3.33,4.51,4.51,0,0,1,.77,1,22.47,22.47,0,0,1,1.29,1.89,4.61,4.61,0,0,1,.57,3.41,5.42,5.42,0,0,1,.27,1.78,5.73,5.73,0,0,1-.27,2.33,5.11,5.11,0,0,1-1.29,3.1,3.79,3.79,0,0,1-.66.72h2.68a4.41,4.41,0,0,1,2.21-1.49c1.34-.86,2.74-1.65,4.06-2.61,1.7-1.26,5.14-3.55,5.9-5.61A5.51,5.51,0,0,1,76.8,74a7.8,7.8,0,0,0,.37-1.71,5.4,5.4,0,0,1,.34-1.56c-.09-1.51-.18-3-.41-4.53a6.21,6.21,0,0,1,.5-3.74C77.46,59.57,77.46,56.64,77.56,53.81Z"></path><path fill="#FEFEFE" d="M40.5,66C50.7,66,59,71.61,59,78.5S50.7,91,40.5,91,22,85.39,22,78.5,30.3,66,40.5,66"></path><path fill="#C53131" d="M4.52,13.62A34.66,34.66,0,0,1,3.08,6.26l0-.42.63-.2C5.22,5.18,9.41,3.35,9.41,1V0H71.59V1c0,2.37,4.19,4.2,5.66,4.66l.63.2,0,.42a35.34,35.34,0,0,1-1.44,7.36L76,7.3C74.42,6.71,70.47,5,69.74,2H11.26C10.52,5,6.58,6.71,5,7.3ZM2.32,79.46H2.6c.08-1.12.16-2.38.24-3.76A13,13,0,0,1,.63,69.83,9.4,9.4,0,0,1,3.21,62.6V61.43S1.83,35.67.56,31.56L.4,31l.47-.29a12.31,12.31,0,0,0,2.2-1.87,6.23,6.23,0,0,0,1.55-2.24A5.08,5.08,0,0,0,5,23.27c0-.11-.58-1.35-1.12-3l-.26,2.85c.27.79.5,1.63.71,2.49a5.17,5.17,0,0,1-1.56,2A33.13,33.13,0,0,0,1.74,23.6l-.07-.2L2.91,9.63c0,2,1.38,6.53,1.38,6.53a36.23,36.23,0,0,0,2.1,6.67A7.13,7.13,0,0,1,5,28.71C6.68,38,5.08,71,4.87,74.89A15.6,15.6,0,0,1,3,71.41c.08-2,.13-4.16.16-6.41a7.57,7.57,0,0,0-1.15,4.71,12,12,0,0,0,2.1,5.41l.15.22.45.64.06.07h0a29.64,29.64,0,0,0,5.74,5.66A39.48,39.48,0,0,1,14,83.83h0l.26.18c.79.54,1.55,1.09,2.29,1.65l.18.13h0c1.42,1.09,2.71,2.17,3.78,3.11,1.39,0,2.75.11,4,.22a16.4,16.4,0,0,1-3.19-3.33H17.91l-2.49-2h2.32a16.19,16.19,0,0,1-.88-4.16,4.31,4.31,0,0,1-5.21,1.79c.59.18,3,.53,5.24-4.08v0a8.24,8.24,0,0,1,2.52-5.32,13.54,13.54,0,0,0-1,10.29A1.76,1.76,0,0,0,19.8,83,11.36,11.36,0,0,1,19,78.77c0-8.55,9.66-15.51,21.54-15.51S62,70.22,62,78.77A11.36,11.36,0,0,1,61.2,83a1.76,1.76,0,0,0,1.34-.64,13.54,13.54,0,0,0-1-10.29A8.24,8.24,0,0,1,64.1,77.4v0c2.2,4.61,4.64,4.26,5.24,4.08a4.31,4.31,0,0,1-5.21-1.79,16.19,16.19,0,0,1-.88,4.16h2.32l-2.49,2H59.68a16.4,16.4,0,0,1-3.19,3.33c1.2-.11,2.57-.21,4-.22,1.07-.94,2.36-2,3.78-3.11h0l.18-.13c.74-.56,1.5-1.11,2.29-1.65l.26-.18h0a39.48,39.48,0,0,1,3.49-2.11,29.64,29.64,0,0,0,5.74-5.66h0l.06-.07.45-.64.15-.22A12,12,0,0,0,79,69.71,7.64,7.64,0,0,0,77.8,65c0,2.25.08,4.41.16,6.41a15.6,15.6,0,0,1-1.83,3.48C75.92,71,74.32,38,76,28.71a7.1,7.1,0,0,1-1.34-5.88,38.28,38.28,0,0,0,2.09-6.67s1.4-4.48,1.38-6.53L79.33,23.4l-.07.2a33.13,33.13,0,0,0-1.07,4.08,5.39,5.39,0,0,1-1.57-2c.22-.86.45-1.7.71-2.49l-.25-2.85c-.54,1.61-1.07,2.85-1.12,3a5.08,5.08,0,0,0,.42,3.36,6.23,6.23,0,0,0,1.55,2.24,12.31,12.31,0,0,0,2.2,1.87l.48.29-.17.53c-1.26,4.11-2.64,29.87-2.64,29.87,0,.39,0,.79,0,1.17a9.4,9.4,0,0,1,2.58,7.23,13.37,13.37,0,0,1-2.2,5.89c.07,1.38.15,2.64.23,3.76h.28c1.49-.12,2.79.71,2.16,1.75a2.46,2.46,0,0,1-1.72,1.15,2.58,2.58,0,0,0,.75-.85c.17-.3,0-.44-.14-.51l-.38,0h0a7.86,7.86,0,0,0-.84,0c.18,2.31.32,3.71.33,3.79L79,85.79H66.64c-1.46,1-2.84,2.15-4,3.15a11.85,11.85,0,0,1,7,2.12l-2.75,1.09h0a30,30,0,0,1-5.35,1.74h0l-.33,0L61,94c-9.66,1.67-10.67.75-10.67.75A10.09,10.09,0,0,0,57.11,92l.23-.24c.1-.1.62-.62,1.46-1.4-.62,0-1.22.07-1.81.12h0l-.44,0a8.82,8.82,0,0,0-1.18.23,7.12,7.12,0,0,0-.87.27l-.14,0a6.24,6.24,0,0,0-1,.44l-.11.07a5.63,5.63,0,0,0-.77.54l-.22.19a4.82,4.82,0,0,0-.75.86l-7.89.9.06,0a26.18,26.18,0,0,1-6.46,0l.06,0-7.89-.9a4.5,4.5,0,0,0-.76-.86l-.22-.2a7,7,0,0,0-.79-.55l-.09-.06a8.88,8.88,0,0,0-.95-.44L26.45,91c-.3-.11-.59-.2-.86-.27-.46-.11-.86-.17-1.14-.21l-.44,0h0c-.59,0-1.19-.09-1.81-.12.84.78,1.36,1.3,1.45,1.4l.24.24a10.09,10.09,0,0,0,6.78,2.71s-1,.92-10.67-.75l-.24,0-.33,0h0a29.76,29.76,0,0,1-5.35-1.74h0l-2.75-1.09a11.85,11.85,0,0,1,7-2.12c-1.2-1-2.58-2.1-4-3.15H2l.12-1.08c0-.08.15-1.48.33-3.79a7.86,7.86,0,0,0-.84,0h0l-.38,0c-.17.07-.31.21-.14.51a2.5,2.5,0,0,0,.74.85A2.47,2.47,0,0,1,.16,81.21c-.63-1,.67-1.87,2.16-1.75ZM76.78,49.11c.53-5.66,1.25-14.21,2.15-17.46a15.6,15.6,0,0,1-1.28-1,144.6,144.6,0,0,0-.87,18.5ZM74.63,80a11.89,11.89,0,0,1,1.8-.35c0-.46-.07-1-.1-1.48-.57.67-1.15,1.28-1.7,1.83Zm-5,3.82h7.17c-.06-.66-.15-1.61-.24-2.76a18.56,18.56,0,0,0-6.93,2.76ZM58.69,92.48l.07,0c1.06.59,4.54-.45,7.31-1.59a17.09,17.09,0,0,0-5.08-.6c-1.07,1-1.88,1.72-2.3,2.14ZM40.5,92.14c7,0,13-2.55,16.48-6.35.27-.3.53-.62.78-.94a.61.61,0,0,1,.07-.1,9.16,9.16,0,0,0,.61-.92,9.74,9.74,0,0,0,1.46-5.06c0-7.37-8.7-13.37-19.4-13.37s-19.4,6-19.4,13.37a9.83,9.83,0,0,0,1.45,5.06c.19.32.4.62.62.92l.08.1c.24.32.5.64.77.94,3.43,3.8,9.52,6.35,16.48,6.35ZM20,90.34a17.09,17.09,0,0,0-5.08.6c2.78,1.14,6.25,2.18,7.31,1.59l.07,0c-.42-.42-1.22-1.18-2.3-2.14ZM4.57,79.66a12.14,12.14,0,0,1,1.8.35c-.55-.55-1.13-1.16-1.7-1.83,0,.52-.07,1-.1,1.48Zm-.35,4.17h7.17a18.62,18.62,0,0,0-6.93-2.76c-.09,1.15-.18,2.1-.24,2.76Zm0-34.72a144.6,144.6,0,0,0-.87-18.5,15.6,15.6,0,0,1-1.28,1C3,34.9,3.68,43.45,4.22,49.11Z"></path></svg>`,
+        hitPointBox:    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 89" class="ddbc-svg "><path fill="#FEFEFE" d="M87.54,9.45a42.28,42.28,0,0,1-3-3A42.91,42.91,0,0,0,74.21,1H18.36a11,11,0,0,0-1.53.59A4.9,4.9,0,0,1,15.36,2.7,21.09,21.09,0,0,0,6,12.28a5.14,5.14,0,0,1,.12,1.59,5.15,5.15,0,0,1,.24,1.18c1,12.72.57,25.84.4,38.59-.09,6.5,0,13-.05,19.48,0,2-.11,4.08-.22,6.12a17.93,17.93,0,0,0,2.78,2.94A73.22,73.22,0,0,0,16.51,87H78l.07-.06a32.31,32.31,0,0,0,9.31-8.5c.13-6,.65-12,.36-18s.2-11.89.36-17.9c.16-6.53,0-13.11-.17-19.64C87.84,18.57,88.07,13.86,87.54,9.45Z"></path><path fill="#C53131" d="M85,0H9L0,9.05V80l9,9H85l9-9V9.05Zm6.55,10.08v7a29.26,29.26,0,0,0-3.24-6.78v-.13h-.08a20.45,20.45,0,0,0-9.13-7.69H84ZM75.6,86.52H18.36a19,19,0,0,1-11.3-7.73V10.25A19.27,19.27,0,0,1,18.4,2.48H75.64a18.94,18.94,0,0,1,11.3,7.73V78.75A19.27,19.27,0,0,1,75.6,86.52ZM2.47,21.18a31.7,31.7,0,0,1,3.24-8.8V76.64c-.3-.53-.62-1-.89-1.62a32.92,32.92,0,0,1-2.35-7.11Zm85.82-8.82c.3.53.62,1,.89,1.62a32.92,32.92,0,0,1,2.35,7.11V67.81a31.64,31.64,0,0,1-3.24,8.81ZM10.05,2.48h4.87a20.45,20.45,0,0,0-9.13,7.69H5.71v.13a29.26,29.26,0,0,0-3.24,6.78v-7ZM2.47,78.92v-7A29.45,29.45,0,0,0,5.71,78.7v.13h.08a20.45,20.45,0,0,0,9.13,7.69H10.05ZM84,86.52H79.08a20.45,20.45,0,0,0,9.13-7.69h.08V78.7a29.45,29.45,0,0,0,3.24-6.78v7Z"></path></svg>`,
+        initiativeBox:  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 45" class="ddbc-svg ddbc-initiative-box-svg "><polygon fill="#FEFEFE" points="68.8,22.5 55.8,43.3 14.2,43.3 1.2,22.5 14.2,1.8 14.3,1.7 55.7,1.7 55.8,1.8 "></polygon><path fill="#C53131" d="M59.1,0H10.9L0,17.2v10.5L10.9,45H59l11-17.2V17.2L59.1,0z M58.2,2.2l10,15.8v3L56.5,2.3l-0.1-0.1H58.2z M14.8,2.2h40.5 l0.1,0.1L68,22.5L55.3,42.8H14.7L2,22.5L14.8,2.2L14.8,2.2z M1.8,18l10-15.8h1.8l-0.1,0.1L1.8,21V18z M11.8,42.8L1.8,27v-3 l11.7,18.8H11.8z M68.2,27l-10,15.8h-1.7L68.2,24V27z"></path></svg>`,
+    };
 }
 
-function getSign(input){
-    let number = parseIntSafe(input);
-    return number >= 0 ? positiveSign : negativeSign
-}
-
-function roundDown(input){
-    let number = parseInt(input);
-    if (isNaN(number)) {
-        return NaN;
-    }
-    return Math.floor(input);
-}
-
-function roundUp(input){
-    let number = parseInt(input);
-    if (isNaN(number)) {
-        return NaN;
-    }
-    return Math.ceil(input);
-}
-
-function divide(numeratorInput, denominatorInput){
-    let numerator = parseInt(numeratorInput);
-    let denominator = parseInt(denominatorInput);
-    if (isNaN(numerator) || isNaN(denominator)) {
-        return NaN;
-    }
-    return numerator/denominator;
-}
-
-function distanceUnit(input){
-    let number = parseIntSafe(input);
-    let unit = 'ft.';
-    if (number && number % FEET_IN_MILES === 0) {
-        number = number / FEET_IN_MILES;
-        unit = 'mile' + (Math.abs(number) === 1 ? '' : 's');
-    }
-    return unit;
-}
-
-function parseIntSafe(input){
-    let number = parseInt(input);
-    if (isNaN(number)) {
-        number = 0;
-    }
-    return number;
-}
-
-function parseBool(x) {
-    return x ? true : false;
+/**
+* DEFINE HTML SNIPPETS that will be injected into the page.
+* * Reference example: htmlSnippetData.armorClass
+*/
+function defineHTMLsnippets() {
+    let htmlSnippetData = `
+            <div class="ddb-lc-character-stats">
+                <div class="ddb-lc-character-stats-armorclass">
+                </div>
+                <div class="ddb-lc-character-stats-hitpoints">
+                </div>
+                <div class="ddb-lc-character-stats-initiative">
+                </div>
+                <div class="ddb-lc-character-stats-passives">
+                </div>
+            </div>
+            <div class="ddb-lc-character-attributes">
+                <div class="ddb-lc-character-attributes-str">
+                </div>
+                <div class="ddb-lc-character-attributes-dex">
+                </div>
+                <div class="ddb-lc-character-attributes-con">
+                </div>
+                <div class="ddb-lc-character-attributes-int">
+                </div>
+                <div class="ddb-lc-character-attributes-wis">
+                </div>
+                <div class="ddb-lc-character-attributes-cha">
+                </div>
+            </div>
+    `;
+    return htmlSnippetData;
 }

@@ -43,7 +43,6 @@ You'll now see additional information displayed on the card of each character, s
 - Current Armor Class
 - Ability Scores
 - Passive Perception / Investigation / Insight
-- Resistances
 
 The data is automatically updated every 60 seconds.
 
