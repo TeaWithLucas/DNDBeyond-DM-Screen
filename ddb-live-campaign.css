@@ -11,16 +11,24 @@
 
 .ddb-lc-character-stats {
     display: flex;
+    gap: 10px;
 }
 .ddb-lc-character-stats > * {
     height: 55px;
-    background-color: yellow;
 }
 .ddb-lc-character-stats-armorclass {
+    flex-basis: 50px;
+    margin-left: 6px;
+    background-color: yellow;
 }
 .ddb-lc-character-stats-hitpoints {
+    flex-basis: 50px;
+    background-color: lime;
 }
 .ddb-lc-character-stats-initiative {
+    flex-basis: 50px;
+    background-color: cyan;
 }
 .ddb-lc-character-stats-passives {
+    background-color: magenta;
 }
