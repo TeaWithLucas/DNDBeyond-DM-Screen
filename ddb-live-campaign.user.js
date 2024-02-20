@@ -174,6 +174,7 @@ function defineHTMLsnippets() {
             <div class="ddb-lc-character-stats">
                 <div class="ddb-lc-character-stats-armorclass">
                     <div class="ddb-lc-background-svg">` + svgImageData.armorClass + `</div>
+                    <div class="ddb-lc-character-stats-armorclass-text">21</div>
                 </div>
                 <div class="ddb-lc-character-stats-hitpoints">
                 </div>

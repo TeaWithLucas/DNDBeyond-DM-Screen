@@ -20,18 +20,20 @@
     width: 50px;
     margin-left: 6px;
     display: block;
-    background-color: yellow;
 }
 .ddb-lc-character-stats-hitpoints {
     width: 50px;
+    display: block;
     background-color: lime;
 }
 .ddb-lc-character-stats-initiative {
     width: 50px;
+    display: block;
     background-color: cyan;
 }
 .ddb-lc-character-stats-passives {
     flex: 1;
+    display: block;
     background-color: magenta;
 }
 .ddb-lc-background-svg {
@@ -40,10 +42,14 @@
     left: 0px;
     top: 0px;
     right: 0px;
+    width: 100%;
+    height: 100%;
     position: absolute;
 }
-
 .ddb-lc-svg {
-   width: 100%;
-   height: 100%;
+    width: 100%;
+    height: 100%;
+}
+.ddb-lc-character-stats-armorclass-text {
+    position: relative;
 }
