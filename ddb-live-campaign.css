@@ -11,7 +11,7 @@
 
 .ddb-lc-character-expanded {
     display: block;
-    z-index: 1;
+    /* z-index: 1; */
 }
 .ddb-lc-character-stats {
     display: flex;
@@ -22,46 +22,44 @@
 .ddb-lc-character-stats > * {
     height: 55px;
 }
+/* -- Armor Class -- */
 .ddb-lc-character-stats-armorclass {
     display: block;
+    position: relative;
+    width: 50px;
     margin-left: 6px;
+    background-color: yellow;
+}
+.ddb-lc-character-stats-armorclass span {
+    display: block;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    line-height: 50px;
+    color: #000000;
+    font-weight: bold;
+    font-size: 18px;
+}
+.ddb-lc-character-stats-armorclass svg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
 }
 .ddb-lc-character-stats-hitpoints {
-    width: 50px;
     display: block;
+    position: relative;
+    width: 50px;
     background-color: lime;
 }
 .ddb-lc-character-stats-initiative {
-    width: 50px;
     display: block;
+    width: 50px;
     background-color: cyan;
 }
 .ddb-lc-character-stats-passives {
+    display: block;
     flex: 1;
-    display: block;
     background-color: magenta;
-}
-.ddb-lc-flex {
-    display: flex;
-    flex-direction: column;
-    width: 50px;
-    height: 55px;
-}
-.ddb-lc-background-svg {
-    display: block;
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    top: 0px;
-    right: 0px;
-}
-.ddb-lc-svg {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-.ddb-lc-character-stats-armorclass-text {
-    display: block;
-    position: relative;
-    color: #000000;
 }
