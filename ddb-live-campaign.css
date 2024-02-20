@@ -9,6 +9,10 @@
 
 /*! ADD CSS FOR NEW ELEMENTS ON CHARACTER CARDS */
 
+.ddb-lc-character-expanded {
+    display: block;
+    z-index: 1;
+}
 .ddb-lc-character-stats {
     display: flex;
     gap: 10px;
@@ -36,6 +40,12 @@
     display: block;
     background-color: magenta;
 }
+.ddb-lc-flex {
+    display: flex;
+    flex-direction: column;
+    height: 55px;
+    width: 50px;
+}
 .ddb-lc-background-svg {
     display: block;
     bottom: 0px;
@@ -51,5 +61,7 @@
     height: 100%;
 }
 .ddb-lc-character-stats-armorclass-text {
+    display: block;
     position: relative;
+    color: #000000;
 }

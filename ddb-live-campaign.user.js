@@ -171,30 +171,34 @@ function defineSVGimageData() {
 */
 function defineHTMLsnippets() {
     let htmlSnippetData = `
-            <div class="ddb-lc-character-stats">
-                <div class="ddb-lc-character-stats-armorclass">
-                    <div class="ddb-lc-background-svg">` + svgImageData.armorClass + `</div>
-                    <div class="ddb-lc-character-stats-armorclass-text">21</div>
+            <div class="ddb-lc-character-expanded">
+                <div class="ddb-lc-character-stats">
+                    <div class="ddb-lc-character-stats-armorclass">
+                        <div class="ddb-lc-flex">
+                            <div class="ddb-lc-background-svg">` + svgImageData.armorClass + `</div>
+                            <div class="ddb-lc-character-stats-armorclass-text">21</div>
+                        </div>
+                    </div>
+                    <div class="ddb-lc-character-stats-hitpoints">
+                    </div>
+                    <div class="ddb-lc-character-stats-initiative">
+                    </div>
+                    <div class="ddb-lc-character-stats-passives">
+                    </div>
                 </div>
-                <div class="ddb-lc-character-stats-hitpoints">
-                </div>
-                <div class="ddb-lc-character-stats-initiative">
-                </div>
-                <div class="ddb-lc-character-stats-passives">
-                </div>
-            </div>
-            <div class="ddb-lc-character-attributes">
-                <div class="ddb-lc-character-attributes-str">
-                </div>
-                <div class="ddb-lc-character-attributes-dex">
-                </div>
-                <div class="ddb-lc-character-attributes-con">
-                </div>
-                <div class="ddb-lc-character-attributes-int">
-                </div>
-                <div class="ddb-lc-character-attributes-wis">
-                </div>
-                <div class="ddb-lc-character-attributes-cha">
+                <div class="ddb-lc-character-attributes">
+                    <div class="ddb-lc-character-attributes-str">
+                    </div>
+                    <div class="ddb-lc-character-attributes-dex">
+                    </div>
+                    <div class="ddb-lc-character-attributes-con">
+                    </div>
+                    <div class="ddb-lc-character-attributes-int">
+                    </div>
+                    <div class="ddb-lc-character-attributes-wis">
+                    </div>
+                    <div class="ddb-lc-character-attributes-cha">
+                    </div>
                 </div>
             </div>
     `;
