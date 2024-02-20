@@ -33,3 +33,7 @@
     flex: 1;
     background-color: magenta;
 }
+.ddb-lc-background-svg {
+   width: 100%;
+   height: 100%;
+}
