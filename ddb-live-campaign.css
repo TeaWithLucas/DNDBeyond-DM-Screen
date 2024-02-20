@@ -55,11 +55,13 @@
 }
 .ddb-lc-character-stats-initiative {
     display: block;
+    position: relative;
     width: 50px;
     background-color: cyan;
 }
 .ddb-lc-character-stats-passives {
     display: block;
+    position: relative;
     flex: 1;
     background-color: magenta;
 }
