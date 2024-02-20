@@ -47,18 +47,24 @@
     left: 0px;
     top: 0px;
 }
+
+/* -- Hit Points -- */
 .ddb-lc-character-stats-hitpoints {
     display: block;
     position: relative;
     width: 50px;
     background-color: lime;
 }
+
+/* -- Initiative -- */
 .ddb-lc-character-stats-initiative {
     display: block;
     position: relative;
     width: 50px;
     background-color: cyan;
 }
+
+/* -- Passives -- */
 .ddb-lc-character-stats-passives {
     display: block;
     position: relative;
