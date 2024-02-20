@@ -11,7 +11,7 @@
 
 .ddb-lc-character-expanded {
     display: block;
-    /* z-index: 1; */
+    z-index: 1;
 }
 .ddb-lc-character-stats {
     display: flex;
@@ -33,7 +33,7 @@
 .ddb-lc-character-stats-armorclass span {
     display: block;
     position: relative;
-    z-index: 1;
+    z-index: 2;
     text-align: center;
     line-height: 50px;
     color: #000000;
