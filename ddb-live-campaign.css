@@ -15,15 +15,16 @@
 }
 .ddb-lc-character-stats {
     display: flex;
+    justify-content: space-around;
     gap: 10px;
+    margin: 0px;
 }
 .ddb-lc-character-stats > * {
     height: 55px;
 }
 .ddb-lc-character-stats-armorclass {
-    width: 50px;
-    margin-left: 6px;
     display: block;
+    margin-left: 6px;
 }
 .ddb-lc-character-stats-hitpoints {
     width: 50px;
@@ -43,18 +44,16 @@
 .ddb-lc-flex {
     display: flex;
     flex-direction: column;
-    height: 55px;
     width: 50px;
+    height: 55px;
 }
 .ddb-lc-background-svg {
     display: block;
+    position: absolute;
     bottom: 0px;
     left: 0px;
     top: 0px;
     right: 0px;
-    width: 100%;
-    height: 100%;
-    position: absolute;
 }
 .ddb-lc-svg {
 }
